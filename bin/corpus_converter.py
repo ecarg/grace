@@ -3,7 +3,7 @@
 
 
 """
-JSON 포맷의 코퍼스를 엑소브레인 코퍼스 포맷으로 변환하는 스크립트
+각종 포맷의 코퍼스를 엑소브레인 코퍼스 포맷으로 변환하는 스크립트
 __author__ = 'krikit (krikit@naver.com)'
 __copyright__ = 'No copyright. Just copyleft!'
 """
@@ -22,9 +22,20 @@ import sys
 #############
 # functions #
 #############
-def run():
+def _print_line(line):
     """
-    actual function which is doing some task
+    한 줄(문장)을 출력한다. 정규화도 동시에 수행한다.
+    :param  line:  줄
+    """
+    line = line.strip()
+    if not line:
+        return
+    print(' '.join(line.split()))
+
+
+def _json2exo():
+    """
+    작년(2016년) 대회 코퍼스 형식인 JSON 포맷으로부터 변환
     """
     json_obj = json.load(sys.stdin)
     for sent in json_obj['sentence']:
@@ -49,7 +60,41 @@ def run():
             sent_byte = (sent_byte[:position] + '<'.encode('UTF-8') + ne_byte +
                          ':'.encode('UTF-8') + ne_['type'].encode('UTF-8') +
                          '>'.encode('UTF-8') + sent_byte[position + len(ne_byte):])
-        print(str(sent_byte, 'UTF-8'))
+        _print_line(str(sent_byte, 'UTF-8'))
+
+
+def _normalize():
+    """
+    엑소브레인 코퍼스는 정규화만 수행하여 출력한다.
+    """
+    for line in sys.stdin:
+        _print_line(line)
+
+
+def _train2exo():
+    """
+    올해(2017년) 대회 코퍼스 중 가운데 엑소브레인 코퍼스만 출력한다.
+    """
+    for line in sys.stdin:
+        line = line.strip()
+        if not line or line[0] != '$':
+            continue
+        _print_line(line[1:])
+
+
+def run(args):
+    """
+    actual function which is doing some task
+    :param  args:  arguments
+    """
+    if args.format.lower() == 'json':
+        _json2exo()
+    elif args.format.lower() == 'exo':
+        _normalize()
+    elif args.format.lower() == 'train':
+        _train2exo()
+    else:
+        raise RuntimeError('invalid format: %s' % args.format)
 
 
 ########
@@ -59,8 +104,10 @@ def main():
     """
     main function processes only argument parsing
     """
-    parser = argparse.ArgumentParser(description='JSON 포맷의 코퍼스를 엑소브레인 코퍼스 포맷으로 변환하는'
+    parser = argparse.ArgumentParser(description='각종 포맷의 코퍼스를 엑소브레인 코퍼스 포맷으로 변환하는'
                                                  ' 스크립트')
+    parser.add_argument('-f', '--format', help='input file format <json, exo, train>',
+                        metavar='NAME', required=True)
     parser.add_argument('--input', help='input file <default: stdin>', metavar='FILE')
     parser.add_argument('--output', help='output file <default: stdout>', metavar='FILE')
     parser.add_argument('--debug', help='enable debug', action='store_true')
@@ -75,7 +122,7 @@ def main():
     else:
         logging.basicConfig(level=logging.INFO)
 
-    run()
+    run(args)
 
 
 if __name__ == '__main__':
