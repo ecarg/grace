@@ -1,3 +1,21 @@
+# corpus_converter.py
+* 여러 포맷의 코퍼스를 엑소브레인 코퍼스 형태로 변환합니다.
+* 사용법
+```
+usage: corpus_converter.py [-h] -f NAME [--input FILE] [--output FILE]
+                           [--debug]
+
+각종 포맷의 코퍼스를 엑소브레인 코퍼스 포맷으로 변환하는 스크립트
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -f NAME, --format NAME
+                        input file format <json, exo, train>
+  --input FILE          input file <default: stdin>
+  --output FILE         output file <default: stdout>
+  --debug               enable debug
+```
+
 # parser.py
 * 다음과 같은 형식을 가지는 raw 코퍼스를 파싱합니다.
 * 출력은 파싱 후, 원문을 그대로 출력합니다.
@@ -42,4 +60,46 @@ O    지 영 ( 이 상 <w> 경 성 대 ) 이 : w q </w> </p> </p> </p> </p> </p>
 O    영 ( 이 상 <w> 경 성 대 ) 이 : w q </w> </p> </p> </p> </p> </p> </p> </p>
 O    ( 이 상 <w> 경 성 대 ) 이 : w q </w> </p> </p> </p> </p> </p> </p> </p> </p>
 O    이 상 <w> 경 성 대 ) 이 : w q </w> </p> </p> </p> </p> </p> </p> </p> </p> </p>
+```
+
+# make_voca.bash
+* 위 make_training.py에 의해 생성한 학습 코퍼스로부터 input/output vocabulary를 생성합니다.
+* 사용법
+```bash
+./make_voca.bash train.chr rsc
+```
+
+# train.py
+* 학습을 수행합니다.
+* 사용법
+```
+usage: train.py [-h] -r DIR -i DIR -p NAME -m NAME -o FILE [--log FILE]
+                [--window INT] [--embed-dim INT] [--gpu-num INT]
+                [--batch-size INT] [--epoch-num INT] [--debug]
+
+train model from data
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -r DIR, --rsc-dir DIR
+                        resource directory
+  -i DIR, --in-dir DIR  input directory
+  -p NAME, --in-pfx NAME
+                        input data prefix
+  -m NAME, --model NAME
+                        model name
+  -o FILE, --output FILE
+                        model output file
+  --log FILE            loss and accuracy log file
+  --window INT          left/right character window length <default: 10>
+  --embed-dim INT       embedding dimension <default: 50>
+  --gpu-num INT         GPU number to use <default: 0>
+  --batch-size INT      batch size <default: 100>
+  --epoch-num INT       epoch number <default: 100>
+  --debug               enable debug
+```
+
+* 사용예
+```bash
+bin/train.py -r rsc -i data -p chr -m fnn -o fnn.pkl --log fnn.log
 ```
