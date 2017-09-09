@@ -68,3 +68,38 @@ O    이 상 <w> 경 성 대 ) 이 : w q </w> </p> </p> </p> </p> </p> </p> </p>
 ```bash
 ./make_voca.bash train.chr rsc
 ```
+
+# train.py
+* 학습을 수행합니다.
+* 사용법
+```
+usage: train.py [-h] -r DIR -i DIR -p NAME -m NAME -o FILE [--log FILE]
+                [--window INT] [--embed-dim INT] [--gpu-num INT]
+                [--batch-size INT] [--epoch-num INT] [--debug]
+
+train model from data
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -r DIR, --rsc-dir DIR
+                        resource directory
+  -i DIR, --in-dir DIR  input directory
+  -p NAME, --in-pfx NAME
+                        input data prefix
+  -m NAME, --model NAME
+                        model name
+  -o FILE, --output FILE
+                        model output file
+  --log FILE            loss and accuracy log file
+  --window INT          left/right character window length <default: 10>
+  --embed-dim INT       embedding dimension <default: 50>
+  --gpu-num INT         GPU number to use <default: 0>
+  --batch-size INT      batch size <default: 100>
+  --epoch-num INT       epoch number <default: 100>
+  --debug               enable debug
+```
+
+* 사용예
+```bash
+bin/train.py -r rsc -i data -p chr -m fnn -o fnn.pkl --log fnn.log
+```
