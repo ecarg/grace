@@ -15,6 +15,8 @@ import argparse
 import logging
 import sys
 
+import corpus_parser
+
 
 OPEN_PADDING = '<p>'
 CLOSE_PADDING = '</p>'
@@ -55,10 +57,7 @@ def run(args): # pylint: disable=too-many-locals
     좌우, 특정 길이만큼 컨텍스트를 갖는 학습데이터를 생성합니다.
     :param  args:  arguments
     """
-    sys.path.append('%s/src' % args.ner_dir)
-    import parser # pylint: disable=import-error
-
-    for sent in parser.sents(sys.stdin):
+    for sent in corpus_parser.sents(sys.stdin):
         org_sen = sent.raw_str().split(" ")
         words = [list(word) for word in org_sen]
 
@@ -70,7 +69,7 @@ def run(args): # pylint: disable=too-many-locals
             for syl in word:
                 left, right = get_context(cur_idx, marked_text, args.context_size)
                 bio, tag = sent.syl2tag[cur_idx+idx_1]
-                if tag == parser.OUTSIDE_TAG:
+                if tag == corpus_parser.OUTSIDE_TAG:
                     label = bio
                 else:
                     label = '%s-%s' % (bio, tag)
@@ -86,12 +85,8 @@ def main():
     make training set
     """
     parser = argparse.ArgumentParser(description='make training set for sequence to sequence model')
-    parser.add_argument('-m', '--ner-dir', help='ner repository dir', metavar='DIR',
-                        required=True)
     parser.add_argument('--input', help='input file <default: stdin>', metavar='FILE')
     parser.add_argument('--output', help='output file <default: stdout>', metavar='FILE')
-    parser.add_argument('--level', help='named entity level. [main|sc2015]',\
-            default='main', metavar='STRING')
     parser.add_argument('--context-size', help='set context size]',\
             default=10, metavar='INT', type=int)
     parser.add_argument('--debug', help='enable debug', action='store_true')
