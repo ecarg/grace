@@ -15,7 +15,6 @@ __copyright__ = 'No copyright. Just copyleft!'
 import argparse
 import logging
 import os
-import pickle
 import sys
 
 import torch
@@ -52,7 +51,7 @@ def _accuracy(model_, labels, contexts):
     if torch.cuda.is_available():
         labels = labels.cuda()
         contexts = contexts.cuda()
-    model.is_training = False
+    model_.is_training = False
     outputs = model_(autograd.Variable(contexts))
     _, predicts = F.softmax(outputs).max(1)
     total = labels.size(0)
@@ -66,10 +65,10 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
     :param  args:  arguments
     """
     voca = data.load_voca(args.rsc_dir)
-    if args.model.lower() == 'fnn':
+    if args.model_name.lower() == 'fnn':
         hidden_dim = (2 * args.window + 1) * args.embed_dim + len(voca['out'])
         model_ = model.Fnn(args.window, voca, args.embed_dim, hidden_dim)
-    elif args.model.lower() == 'cnn':
+    elif args.model_name.lower() == 'cnn':
         hidden_dim = ((2 + 3 + 3 + 4 + 1) * args.embed_dim * 4 + len(voca['out'])) // 2
         model_ = model.Cnn(args.window, voca, args.embed_dim, hidden_dim)
 
@@ -96,7 +95,7 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
                 labels = labels.cuda()
                 contexts = contexts.cuda()
             optimizer.zero_grad()
-            model.is_training = True
+            model_.is_training = True
             outputs = model_(autograd.Variable(contexts))
             loss = criterion(outputs, autograd.Variable(labels))
             loss.backward()
@@ -117,8 +116,7 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
                              epoch, iter_, losses[-1], accuracies[-1], max(accuracies))
                 if iter_ > 10000 and accuracy == max(accuracies):
                     logging.info('writing best model..')
-                    with open(args.output, 'wb') as fout:
-                        pickle.dump(model_, fout, protocol=pickle.HIGHEST_PROTOCOL)
+                    torch.save(model_.state_dict(), args.output)
                 if args.log:
                     print('{}\t{}'.format(losses[-1], accuracies[-1]), file=args.log)
                     args.log.flush()
@@ -138,7 +136,7 @@ def main():
     parser.add_argument('-r', '--rsc-dir', help='resource directory', metavar='DIR', required=True)
     parser.add_argument('-i', '--in-dir', help='input directory', metavar='DIR', required=True)
     parser.add_argument('-p', '--in-pfx', help='input data prefix', metavar='NAME', required=True)
-    parser.add_argument('-m', '--model', help='model name', metavar='NAME', required=True)
+    parser.add_argument('-m', '--model-name', help='model name', metavar='NAME', required=True)
     parser.add_argument('-o', '--output', help='model output file', metavar='FILE', required=True)
     parser.add_argument('--log', help='loss and accuracy log file', metavar='FILE',
                         type=argparse.FileType('wt'))
