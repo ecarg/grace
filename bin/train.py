@@ -88,7 +88,7 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
     optimizer = torch.optim.Adam(model_.parameters())
 
     if args.log:
-        print('iter\tloss\taccuracy', file=args.log)
+        print('iter\tloss\taccuracy\tf-score', file=args.log)
     losses = []
     accuracies = []
     f_scores = []
@@ -139,7 +139,7 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
                              epoch, iter_ // 1000, losses[-1], accuracy_char, f_score,
                              max(f_scores))
                 if args.log:
-                    print('{}\t{}\t{}\t{}'.format(iter_ // 1000, loss, accuracy_char, f_score),
+                    print('{}\t{}\t{}\t{}'.format(iter_ // 1000, losses[-1], accuracy_char, f_score),
                           file=args.log)
                     args.log.flush()
             elif iter_ % 100 == 0:

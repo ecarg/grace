@@ -113,7 +113,7 @@ class Cnn(Ner):    # pylint: disable=too-many-instance-attributes
         self.conv_tri = nn.Conv1d(embed_dim, embed_dim * 4, 3)
         self.relu_tri = nn.ReLU()
         self.hidden = autograd.Variable(torch.zeros(1, 1, hidden_dim))
-        self.relu_h = nn.SELU()
+        self.relu_h = nn.ReLU()
         self.conv2hidden = nn.Linear((2 + 3 + 3 + 4 + 1) * embed_dim * 4, hidden_dim)
         self.hidden2tag = nn.Linear(hidden_dim, len(voca['out']))
 
