@@ -13,14 +13,15 @@ __copyright__ = 'No copyright. Just copyleft!'
 ###########
 import codecs
 from collections import defaultdict
-import torch
-import torch.utils.data
+import random
+
+import corpus_parser
 
 
 #########
 # types #
 #########
-class NerDataset(torch.utils.data.Dataset):
+class NerDataset(object):
     """
     part-of-speech tag dataset
     """
@@ -31,8 +32,8 @@ class NerDataset(torch.utils.data.Dataset):
         """
         self.fin = fin
         self.voca = voca
-        self.data_ = []
-        self.sent_seps = []    # word separator positions
+        self.sents = []
+        self.sent_idx = -1
         self._load()
 
     def _load(self):
@@ -42,37 +43,19 @@ class NerDataset(torch.utils.data.Dataset):
         for line in self.fin:
             line = line.rstrip('\r\n')
             if not line:
-                self.sent_seps.append(len(self.data_))
                 continue
-            out_label, in_context = line.split('\t')
-            self.data_.append((self.voca['out'][out_label],
-                               torch.LongTensor([self.voca['in'][_] for _ in in_context.split()])))
+            self.sents.append(corpus_parser.Sentence(line))
 
-    def __len__(self):
-        return len(self.data_)
+    def __iter__(self):
+        self.sent_idx = -1
+        random.shuffle(self.sents)
+        return self
 
-    def __getitem__(self, idx):
-        return self.data_[idx]
-
-    def all(self):
-        """
-        return all data
-        :return:  (labels, features) pair
-        """
-        return torch.LongTensor([label for label, _ in self.data_]), \
-               torch.stack([context for _, context in self.data_])
-
-    def sents(self):
-        """
-        get sentences (generator)
-        :yield:  sentence
-        """
-        begin = 0
-        for end in self.sent_seps:
-            if end > begin:
-                yield torch.LongTensor([label for label, _ in self.data_[begin:end]]), \
-                      torch.stack([context for _, context in self.data_[begin:end]])
-            begin = end
+    def __next__(self):
+        self.sent_idx += 1
+        if self.sent_idx >= len(self.sents):
+            raise StopIteration()
+        return self.sents[self.sent_idx]
 
 
 #############

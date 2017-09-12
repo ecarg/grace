@@ -67,8 +67,7 @@ class Fnn(Ner):
         hidden_out = self.embeds2hidden(embeds.view(len(contexts), -1))
         hidden_relu = self.relu(hidden_out)
         hidden_drop = F.dropout(hidden_relu, training=self.is_training)
-        tag_space = self.hidden2tag(hidden_drop)
-        tag_out = F.log_softmax(tag_space)
+        tag_out = self.hidden2tag(hidden_drop)
         return tag_out
 
 
@@ -150,6 +149,5 @@ class Cnn(Ner):    # pylint: disable=too-many-instance-attributes
         hidden_out = self.conv2hidden(features.view(len(contexts), -1))
         hidden_relu = self.relu_h(hidden_out)
         hidden_drop = F.dropout(hidden_relu, training=self.is_training)
-        tag_space = self.hidden2tag(hidden_drop)
-        tag_out = F.log_softmax(tag_space)
+        tag_out = self.hidden2tag(hidden_drop)
         return tag_out
