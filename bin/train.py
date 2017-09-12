@@ -80,7 +80,13 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
     if torch.cuda.is_available():
         model_.cuda()
 
-    criterion = nn.CrossEntropyLoss()
+    weight = [1.0, ] * len(voca['out'])
+    weight[voca['out']['O']] = 10.0
+    weight_tensor = torch.Tensor(weight)
+    if torch.cuda.is_available():
+        weight_tensor = weight_tensor.cuda()
+
+    criterion = nn.CrossEntropyLoss(weight=weight_tensor)
     optimizer = torch.optim.Adam(model_.parameters())
 
     if args.log:

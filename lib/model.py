@@ -33,9 +33,29 @@ class Ner(nn.Module):
         self.is_training = True    # is training phase or not (use drop-out at training)
         self.window = window
         self.voca = voca
+        self.o_tag = voca['out']['O']
 
     def forward(self, *inputs):
         raise NotImplementedError
+
+    def o_tag_loss_tune(self, tag_out):
+        """
+        tune the loss of O prediction
+        :param  tag_out:  output tag scores
+        """
+        if not self.is_training:
+            return tag_out
+        _, predicts = tag_out.max(1)
+        for predict, out_vec in zip(predicts, tag_out):
+            if predict.data[0] != self.o_tag:
+                continue
+            for idx in range(len(out_vec)):
+                if idx == self.o_tag:
+                    out_vec.data[idx] /= out_vec.data[idx]
+                else:
+                    out_vec.data[idx] *= 1e-6
+                    out_vec.data[idx] -= 1
+        return tag_out
 
 
 class Fnn(Ner):
@@ -67,9 +87,8 @@ class Fnn(Ner):
         hidden_out = self.embeds2hidden(embeds.view(len(contexts), -1))
         hidden_relu = self.relu(hidden_out)
         hidden_drop = F.dropout(hidden_relu, training=self.is_training)
-        tag_space = self.hidden2tag(hidden_drop)
-        tag_out = F.log_softmax(tag_space)
-        return tag_out
+        tag_out = self.hidden2tag(hidden_drop)
+        return self.o_tag_loss_tune(tag_out)
 
 
 class Cnn(Ner):    # pylint: disable=too-many-instance-attributes
@@ -150,6 +169,5 @@ class Cnn(Ner):    # pylint: disable=too-many-instance-attributes
         hidden_out = self.conv2hidden(features.view(len(contexts), -1))
         hidden_relu = self.relu_h(hidden_out)
         hidden_drop = F.dropout(hidden_relu, training=self.is_training)
-        tag_space = self.hidden2tag(hidden_drop)
-        tag_out = F.log_softmax(tag_space)
-        return tag_out
+        tag_out = self.hidden2tag(hidden_drop)
+        return self.o_tag_loss_tune(tag_out)
