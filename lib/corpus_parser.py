@@ -19,6 +19,10 @@ import hashlib
 import collections
 import math
 
+import torch
+import torch.utils.data
+
+
 ##########
 # global #
 ##########
@@ -102,6 +106,10 @@ class Sentence(object):
         self.syl2tag = {}
         self.tagcnt = {}
         self.md5 = hashlib.sha224(sent.encode("UTF-8")).hexdigest()
+        self.label_nums = []
+        self.context_nums = []
+        self.label_tensors = None
+        self.context_tensors = None
 
         for item in NamedEntity.parse(sent):
             self.named_entity.append(item)
@@ -114,6 +122,32 @@ class Sentence(object):
 
     def __len__(self):
         return len(self.org)
+
+    def to_num_arr(self, voca):
+        """
+        문장을 문장에 포함된 문자 갯수 만큼의 배치 크기의 숫자 배열을 생성하여 리턴한다.
+        :param  voca:  in/out vocabulary
+        :return:  문자 갯수만큼의 숫자 배열
+        """
+        if self.label_nums and self.context_nums:
+            return self.label_nums, self.context_nums
+        for label, context in self.translate_cnn_corpus(10):
+            self.label_nums.append(voca['out'][label])
+            self.context_nums.append([voca['in'][char] for char in context.split()])
+        return self.label_nums, self.context_nums
+
+    def to_tensor(self, voca):
+        """
+        문장을 문장에 포함된 문자 갯수 만큼의 배치 크기의 텐서를 생성하여 리턴한다.
+        :param  voca:  in/out vocabulary
+        :return:  문자 갯수만큼의 텐서
+        """
+        if self.label_tensors is not None and self.context_tensors is not None:
+            return self.label_tensors, self.context_tensors
+        self.to_num_arr(voca)
+        self.label_tensors = torch.LongTensor(self.label_nums)
+        self.context_tensors = torch.LongTensor(self.context_nums)
+        return self.label_tensors, self.context_tensors
 
     def get_word_count(self):
         """
@@ -188,8 +222,8 @@ class Sentence(object):
                 #print("%s\t%s %s %s" % (label, left, syl, right))
                 cnn_corpus.append((label, "%s %s %s" % (left, syl, right)))
                 cur_idx += 1
-
         return cnn_corpus
+
     @staticmethod
     def _get_train_entry(src_lab, src_str):
         """

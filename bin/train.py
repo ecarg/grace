@@ -40,13 +40,13 @@ EPOCH_NUM = 100
 #############
 # functions #
 #############
-def _accuracy(model_, labels, contexts):
+def _judge(model_, labels, contexts):
     """
     evaluate prediction accuracy
     :param  model_:  model
     :param  labels:  labels
     :param  contexts:  contexts
-    :return:  accuracy
+    :return:  (correct, total) numbers
     """
     if torch.cuda.is_available():
         labels = labels.cuda()
@@ -56,7 +56,7 @@ def _accuracy(model_, labels, contexts):
     _, predicts = F.softmax(outputs).max(1)
     total = labels.size(0)
     correct = (predicts.data == labels).sum()
-    return 100.0 * correct / total
+    return correct, total
 
 
 def run(args):    # pylint: disable=too-many-locals,too-many-statements
@@ -72,9 +72,7 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
         hidden_dim = ((2 + 3 + 3 + 4 + 1) * args.embed_dim * 4 + len(voca['out'])) // 2
         model_ = model.Cnn(args.window, voca, args.embed_dim, hidden_dim)
 
-    data_ = data.load_data('%s/%s' % (args.in_dir, args.in_pfx), voca)
-    train_data = torch.utils.data.DataLoader(dataset=data_['train'], batch_size=args.batch_size,
-                                             shuffle=True)
+    data_ = data.load_data(args.in_pfx, voca)
 
     os.environ['CUDA_VISIBLE_DEVICES'] = str(args.gpu_num)
     if torch.cuda.is_available():
@@ -84,41 +82,48 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
     optimizer = torch.optim.Adam(model_.parameters())
 
     if args.log:
-        print('loss\taccuracy', file=args.log)
+        print('iter\tloss\taccuracy', file=args.log)
     losses = []
     accuracies = []
 
     iter_ = 0
     for epoch in range(args.epoch_num):
-        for labels, contexts in train_data:
+        for train_sent in data_['train']:
+            train_labels, train_contexts = train_sent.to_tensor(voca)
             if torch.cuda.is_available():
-                labels = labels.cuda()
-                contexts = contexts.cuda()
+                train_labels = train_labels.cuda()
+                train_contexts = train_contexts.cuda()
             optimizer.zero_grad()
             model_.is_training = True
-            outputs = model_(autograd.Variable(contexts))
-            loss = criterion(outputs, autograd.Variable(labels))
+            outputs = model_(autograd.Variable(train_contexts))
+            loss = criterion(outputs, autograd.Variable(train_labels))
             loss.backward()
             optimizer.step()
             iter_ += 1
             if iter_ % 1000 == 0:
                 # loss and accuracy
                 losses.append(loss.data[0])
-                labels, contexts = data_['dev'].all()
-                if torch.cuda.is_available():
-                    labels = labels.cuda()
-                    contexts = contexts.cuda()
-                accuracy = _accuracy(model_, labels, contexts)
+                correct, total = 0, 0
+                for dev_sent in data_['dev']:
+                    dev_labels, dev_contexts = dev_sent.to_tensor(voca)
+                    if torch.cuda.is_available():
+                        dev_labels = dev_labels.cuda()
+                        dev_contexts = dev_contexts.cuda()
+                    subcorrect, subtotal = _judge(model_, dev_labels, dev_contexts)
+                    correct += subcorrect
+                    total += subtotal
+                accuracy = 100.0 * correct / total
                 accuracies.append(accuracy)
                 print(file=sys.stderr)
                 sys.stderr.flush()
-                logging.info('epoch: %d, iter: %d, loss: %f, accuracy: %f (max: %f)',
-                             epoch, iter_, losses[-1], accuracies[-1], max(accuracies))
+                logging.info('epoch: %d, iter: %dk, loss: %f, accuracy: %f (max: %f)',
+                             epoch, iter_ // 1000, losses[-1], accuracies[-1], max(accuracies))
                 if iter_ > 10000 and accuracy == max(accuracies):
                     logging.info('writing best model..')
                     torch.save(model_.state_dict(), args.output)
                 if args.log:
-                    print('{}\t{}'.format(losses[-1], accuracies[-1]), file=args.log)
+                    print('{}\t{}\t{}'.format(iter_ // 1000, losses[-1], accuracies[-1]),
+                          file=args.log)
                     args.log.flush()
             elif iter_ % 100 == 0:
                 print('.', end='', file=sys.stderr)
@@ -134,7 +139,6 @@ def main():
     """
     parser = argparse.ArgumentParser(description='train model from data')
     parser.add_argument('-r', '--rsc-dir', help='resource directory', metavar='DIR', required=True)
-    parser.add_argument('-i', '--in-dir', help='input directory', metavar='DIR', required=True)
     parser.add_argument('-p', '--in-pfx', help='input data prefix', metavar='NAME', required=True)
     parser.add_argument('-m', '--model-name', help='model name', metavar='NAME', required=True)
     parser.add_argument('-o', '--output', help='model output file', metavar='FILE', required=True)
