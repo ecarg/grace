@@ -13,6 +13,7 @@ __copyright__ = 'No copyright. Just copyleft!'
 # imports #
 ###########
 import argparse
+from collections import Counter
 import logging
 import os
 import sys
@@ -20,9 +21,9 @@ import sys
 import torch
 import torch.autograd as autograd
 import torch.nn as nn
-import torch.nn.functional as F
 import torch.utils.data
 
+import corpus_parser
 import data
 import model
 
@@ -40,23 +41,28 @@ EPOCH_NUM = 100
 #############
 # functions #
 #############
-def _judge(model_, labels, contexts):
+def _count_match(cnt, gold_sent, predicts, voca):
     """
-    evaluate prediction accuracy
-    :param  model_:  model
-    :param  labels:  labels
-    :param  contexts:  contexts
-    :return:  (correct, total) numbers
+    f-score(recall/precision) 측정을 위한 개체명 단위 카운팅을 수행
+    :param  cnt:  Counter 객체
+    :param  gold_sent:  정답 corpus_parser.Sentence 객체
+    :param  predicts:  예측 값 (문장 내 문자의 갯수 만큼의 출력 레이블의 숫자)
+    :param  voca:  in/out vocabulary
+    :return:
     """
-    if torch.cuda.is_available():
-        labels = labels.cuda()
-        contexts = contexts.cuda()
-    model_.is_training = False
-    outputs = model_(autograd.Variable(contexts))
-    _, predicts = F.softmax(outputs).max(1)
-    total = labels.size(0)
-    correct = (predicts.data == labels).sum()
-    return correct, total
+    pred_pairs = []
+    for pred, (_, context) in zip(predicts, gold_sent.translate_cnn_corpus(10)):
+        pred_pairs.append((voca['tuo'][pred.data[0]], context))
+
+    pred_sent = corpus_parser.Sentence.restore(pred_pairs)
+    gold_ne = set([x.get_ne_pos_tag() for x in gold_sent.named_entity \
+                   if x.get_ne_pos_tag() is not None])
+    pred_ne = set([x.get_ne_pos_tag() for x in pred_sent.named_entity \
+                   if x.get_ne_pos_tag() is not None])
+
+    cnt['total_gold_ne'] += len(gold_ne)
+    cnt['total_pred_ne'] += len(pred_ne)
+    cnt['match_ne'] += len(gold_ne & pred_ne)
 
 
 def run(args):    # pylint: disable=too-many-locals,too-many-statements
@@ -85,6 +91,7 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
         print('iter\tloss\taccuracy', file=args.log)
     losses = []
     accuracies = []
+    f_scores = []
 
     iter_ = 0
     for epoch in range(args.epoch_num):
@@ -103,26 +110,36 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
             if iter_ % 1000 == 0:
                 # loss and accuracy
                 losses.append(loss.data[0])
-                correct, total = 0, 0
+                cnt = Counter()
                 for dev_sent in data_['dev']:
                     dev_labels, dev_contexts = dev_sent.to_tensor(voca)
                     if torch.cuda.is_available():
                         dev_labels = dev_labels.cuda()
                         dev_contexts = dev_contexts.cuda()
-                    subcorrect, subtotal = _judge(model_, dev_labels, dev_contexts)
-                    correct += subcorrect
-                    total += subtotal
-                accuracy = 100.0 * correct / total
-                accuracies.append(accuracy)
+                    model_.is_training = False
+                    outputs = model_(autograd.Variable(dev_contexts))
+                    _, predicts = outputs.max(1)
+                    subtotal = dev_labels.size(0)
+                    subcorrect = (predicts.data == dev_labels).sum()
+                    cnt['correct_char'] += subcorrect
+                    cnt['total_char'] += subtotal
+                    _count_match(cnt, dev_sent, predicts, voca)
+                accuracy_char = 100.0 * cnt['correct_char'] / cnt['total_char']
+                recall = cnt['match_ne'] / cnt['total_gold_ne']
+                precision = cnt['match_ne'] / cnt['total_pred_ne']
+                f_score = 2.0 * recall * precision / (recall + precision)
                 print(file=sys.stderr)
                 sys.stderr.flush()
-                logging.info('epoch: %d, iter: %dk, loss: %f, accuracy: %f (max: %f)',
-                             epoch, iter_ // 1000, losses[-1], accuracies[-1], max(accuracies))
-                if iter_ > 10000 and accuracy == max(accuracies):
+                if not f_scores or f_score > max(f_scores):
                     logging.info('writing best model..')
                     torch.save(model_.state_dict(), args.output)
+                accuracies.append(accuracy_char)
+                f_scores.append(f_score)
+                logging.info('epoch: %d, iter: %dk, loss: %f, accuracy: %f, f-score: %f (max: %r)',
+                             epoch, iter_ // 1000, losses[-1], accuracy_char, f_score,
+                             max(f_scores))
                 if args.log:
-                    print('{}\t{}\t{}'.format(iter_ // 1000, losses[-1], accuracies[-1]),
+                    print('{}\t{}\t{}\t{}'.format(iter_ // 1000, loss, accuracy_char, f_score),
                           file=args.log)
                     args.log.flush()
             elif iter_ % 100 == 0:
