@@ -17,8 +17,6 @@ import sys
 import os
 import hashlib
 import collections
-import math
-
 import torch
 import torch.utils.data
 
@@ -37,15 +35,18 @@ CLOSE_PADDING = '</p>'
 OPEN_WORD = '<w>'
 CLOSE_WORD = '</w>'
 
-# 학습 코퍼스의, 아이템 하나를 표현하는 자료구조
-# DEBUG:root:Lable(bio='B', tag='PS', cur_syl='최', next_syl='희')
-TrainEntry = collections.namedtuple('TrainEntry', 'bio tag cur_syl nxt_syl')
+# 얘측한 아이템을 표현
+PredItem = collections.namedtuple('PredItem', 'beg end tag')
 
-
+# CLOSE_OPEN : prev 음절을 종료처리하고, curr음절을 새로 생성한다.
+# CHECK_TAG : prev와 curr의 태그가 동일한지 체크해서, 동일하지 않은 경우
+#             prev를 종료처리하고, curr을 새로 생성한다.
+# OPEN : curr음절을 대상으로 새로 생성한다.
+# CLOSE : prev 음절을 종료처리한다.
 ACTION_TABLE = {\
-    'B':{'B':'CLOSE_OPEN', 'I':'NOTHING', 'O':'CLOSE', 'EOS':'ONLY_CLOSE'},\
-    'I':{'B':'CLOSE_OPEN', 'I':'NOTHING', 'O':'CLOSE', 'EOS':'ONLY_CLOSE'},\
-    'O':{'B':'OPEN', 'I':'ERROR', 'O':'NOTHING', 'EOS':'QUIT'},\
+    'B':{'B':'CLOSE_OPEN', 'I':'CHECK_TAG', 'O':'CLOSE', 'EOS':'CLOSE'},\
+    'I':{'B':'CLOSE_OPEN', 'I':'CHECK_TAG', 'O':'CLOSE', 'EOS':'CLOSE'},\
+    'O':{'B':'OPEN', 'I':'OPEN', 'O':'NOTHING', 'EOS':'QUIT'},\
     'BOS':{'B':'OPEN', 'I':'ERROR', 'O':'NOTHING', 'EOS':'NOTHING'}\
 }
 
@@ -155,6 +156,12 @@ class Sentence(object):
         """
         return len(self.org.split(" "))
 
+    def get_syllable_count(self):
+        """
+        전체 음절 개수를 리턴합니다.
+        """
+        return sum([len(x.ne_str.replace(" ", "")) for x in self.named_entity])
+
     def get_original_sentence(self):
         """
         개체명 태깅이 없는 오리지날 원문 문장을 리턴합니다.
@@ -224,70 +231,99 @@ class Sentence(object):
                 cur_idx += 1
         return cnn_corpus
 
-    @staticmethod
-    def _get_train_entry(src_lab, src_str):
-        """
-        학습 코퍼스의 엔트리 하나를, namedtuple로 만들어서 리턴합니다.
-        :param src_lab: 학습코퍼스에서 label (ex, B-PS, O)
-        :param src_str: 학습코퍼스에서 음절 단위 컨텍스트("<p> <p> 이 대 호")
-        :return TrainEntry: 파싱된 결과를 namedtuple로 리턴
-        """
-        src_list = src_str.split(" ")
-        mid = math.ceil(len(src_list) / 2)
-        bio = tag = 'O'
-        try:
-            bio, tag = src_lab.split('-', 1)
-        except ValueError:
-            pass
-        return TrainEntry(bio, tag, src_list[mid-1], src_list[mid])
-
-    @staticmethod
-    def _do_action(prev_entry, entry, sent):
+    def _do_action(self, nes, pred, prev_idx, cur_idx, prev_wrd_idx, cur_wrd_idx):
         """
         현재 태그, 다음태그를 고려해서 액선을 수행한다.
+        :param nes:  발견된 NE를 담는 리스트
+        :param pred:  모델에 의해 예측된 bio-tag 리스트
+        :param prev_idx:  이전 음절 위치
+        :param cur_idx:  현재 음절 위치
+        :param prev_wrd_idx: 이전음절까지 발생한 단어의 개수
+        :param cur_wrd_idx: 현재 음절까지 발생한 단어의 개수
         """
-        action = ACTION_TABLE[prev_entry.bio][entry.bio]
-        if action == 'OPEN':
-            if prev_entry.nxt_syl == CLOSE_WORD:
-                sent.append(' <')
+        if isinstance(prev_idx, int):
+            if pred[prev_idx] == 'O':
+                prev_bio = prev_tag = pred[prev_idx]
             else:
-                sent.append('<')
-        elif action == 'CLOSE_OPEN':
-            if prev_entry.nxt_syl == CLOSE_WORD:
-                sent.append(':%s> <' % prev_entry.tag)
-            else:
-                sent.append(':%s><' % prev_entry.tag)
-        elif action == 'CLOSE':
-            if prev_entry.nxt_syl == CLOSE_WORD:
-                sent.append(':%s> ' % prev_entry.tag)
-            else:
-                sent.append(':%s>' % prev_entry.tag)
-        elif action == 'ONLY_CLOSE':
-            sent.append(':%s>' % prev_entry.tag)
-        elif action == 'NOTHING':
-            if prev_entry.nxt_syl == CLOSE_WORD:
-                sent.append(' ')
+                prev_bio, prev_tag = pred[prev_idx].split('-', 2)
+        else:
+            prev_bio = 'BOS'
 
-    @classmethod
-    def restore(cls, cnn_corpus):
+        if isinstance(cur_idx, int):
+            if pred[cur_idx] == 'O':
+                cur_bio = cur_tag = pred[cur_idx]
+            else:
+                cur_bio, cur_tag = pred[cur_idx].split('-', 2)
+        else:
+            cur_bio = 'EOS'
+
+        action = ACTION_TABLE[prev_bio][cur_bio]
+        if action == 'OPEN':
+            nes.append(NamedEntity('', cur_tag, cur_idx+cur_wrd_idx, -1))
+        elif action == 'CLOSE_OPEN':
+            if nes and nes[-1].ne_end == -1:
+                nes[-1].ne_tag = prev_tag
+                nes[-1].ne_end = prev_idx+prev_wrd_idx
+            nes.append(NamedEntity('', cur_tag, cur_idx+cur_wrd_idx, -1))
+        elif action == 'CLOSE':
+            if nes and nes[-1].ne_end == -1:
+                nes[-1].ne_end = prev_idx+prev_wrd_idx
+        elif action == 'CHECK_TAG':
+            # I - I 일때는 태그가 같아야만 의미가 있다.
+            # B-PS I-PS I-TI I TI
+            #      ~~~~ ~~~~
+            #      태그가 달라지면, I-PS에서 닫고, I-TI를 B-TI로 취급한다.
+            if prev_tag != cur_tag:
+                if nes and nes[-1].ne_end == -1:
+                    nes[-1].ne_tag = prev_tag
+                    nes[-1].ne_end = prev_idx+prev_wrd_idx
+                nes.append(NamedEntity('', cur_tag, cur_idx+cur_wrd_idx, -1))
+
+
+    def compare_label(self, predicts, voca=None):
         """
-        [(label, src_text)] 형식으로 된 학습 데이터를 raw corpus 형태로 복원합니다.
-        :param cnn_corpus: 학습 데이터
-        :return string: raw sentence
+        예측한 레이블과 현재 문장의 레이블을 비교해서 맞춘 카운트를 계산한다.
+        :param predicts:  모델에서 예측된 클래스 배열
+        :param voca:  예측된 클래스를 문자(B-PS)로 변경하기 위한 사전
         """
-        sent = []
-        end_of_sent = TrainEntry('EOS', '', '', '')
-        beg_of_sent = TrainEntry('BOS', '', '', '')
-        prev_entry = beg_of_sent
-        for item in cnn_corpus:
-            label, src_str = item
-            entry = cls._get_train_entry(label, src_str)
-            logging.debug("%s-%s\t%s %s", entry.bio, entry.tag, entry.cur_syl, entry.nxt_syl)
-            cls._do_action(prev_entry, entry, sent)
-            sent.append(entry.cur_syl)
-            prev_entry = entry
-        cls._do_action(prev_entry, end_of_sent, sent)
-        return cls(''.join(sent))
+        logging.debug(self.raw_str())
+        words = [list(word) for word in self.raw_str().split(" ")]
+        cur_idx = 0
+        prev_idx = 'BOS'
+        prev_wrd_idx = 0
+        nes = []
+        cnt = collections.Counter()
+
+        assert len(predicts) == self.get_syllable_count()
+        if voca:
+            pred = [voca['tuo'][x.data[0]] for x in  predicts]
+        else:
+            pred = predicts # voca가 없으면 ['O', 'B-PS', ...]
+
+        for wrd_idx, word in enumerate(words):
+            for syl in word:
+                bio, tag = self.syl2tag[cur_idx+wrd_idx]
+                label = ("%s-%s") % (bio, tag) if tag != OUTSIDE_TAG else 'O'
+                logging.debug("[%d] %s %s : %s", cur_idx+wrd_idx, label, syl, pred[cur_idx])
+                if label == pred[cur_idx]:
+                    cnt['correct_char'] += 1
+                self._do_action(nes, pred, prev_idx, cur_idx, prev_wrd_idx, wrd_idx)
+                prev_idx = cur_idx
+                prev_wrd_idx = wrd_idx
+                cur_idx += 1
+        self._do_action(nes, pred, prev_idx, 'EOS', prev_wrd_idx, len(words)-1)
+
+        gold_ne = set([x.get_ne_pos_tag() for x in self.named_entity\
+                    if x.get_ne_pos_tag() is not None])
+        pred_ne = set([x.get_ne_pos_tag() for x in nes\
+                    if x.get_ne_pos_tag() is not None])
+        cnt['total_gold_ne'] += len(gold_ne)
+        cnt['total_pred_ne'] += len(pred_ne)
+        cnt['match_ne'] += len(gold_ne & pred_ne)
+        cnt['total_char'] += len(predicts)
+
+        logging.debug("GOLD = %s\nPRED = %s\nMATCH = %s", gold_ne, pred_ne, cnt)
+        return cnt
 
 class NamedEntity(object): # pylint: disable=too-few-public-methods
     """

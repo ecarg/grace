@@ -23,7 +23,6 @@ import torch.autograd as autograd
 import torch.nn as nn
 import torch.utils.data
 
-import corpus_parser
 import data
 import model
 
@@ -41,30 +40,6 @@ EPOCH_NUM = 100
 #############
 # functions #
 #############
-def _count_match(cnt, gold_sent, predicts, voca):
-    """
-    f-score(recall/precision) 측정을 위한 개체명 단위 카운팅을 수행
-    :param  cnt:  Counter 객체
-    :param  gold_sent:  정답 corpus_parser.Sentence 객체
-    :param  predicts:  예측 값 (문장 내 문자의 갯수 만큼의 출력 레이블의 숫자)
-    :param  voca:  in/out vocabulary
-    :return:
-    """
-    pred_pairs = []
-    for pred, (_, context) in zip(predicts, gold_sent.translate_cnn_corpus(10)):
-        pred_pairs.append((voca['tuo'][pred.data[0]], context))
-
-    pred_sent = corpus_parser.Sentence.restore(pred_pairs)
-    gold_ne = set([x.get_ne_pos_tag() for x in gold_sent.named_entity \
-                   if x.get_ne_pos_tag() is not None])
-    pred_ne = set([x.get_ne_pos_tag() for x in pred_sent.named_entity \
-                   if x.get_ne_pos_tag() is not None])
-
-    cnt['total_gold_ne'] += len(gold_ne)
-    cnt['total_pred_ne'] += len(pred_ne)
-    cnt['match_ne'] += len(gold_ne & pred_ne)
-
-
 def _calc_f_score(gold_ne, pred_ne, match_ne):
     """
     calculate f-score
@@ -134,12 +109,8 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
                     model_.is_training = False
                     outputs = model_(autograd.Variable(dev_contexts))
                     _, predicts = outputs.max(1)
-                    subtotal = dev_labels.size(0)
-                    subcorrect = (predicts.data == dev_labels).sum()
-                    cnt['correct_char'] += subcorrect
-                    cnt['total_char'] += subtotal
-                    _count_match(cnt, dev_sent, predicts, voca)
-                accuracy_char = 100.0 * cnt['correct_char'] / cnt['total_char']
+                    cnt += dev_sent.compare_label(predicts, voca)
+                accuracy_char = cnt['correct_char'] / cnt['total_char']
                 f_score = _calc_f_score(cnt['total_gold_ne'], cnt['total_pred_ne'], cnt['match_ne'])
                 print(file=sys.stderr)
                 sys.stderr.flush()
