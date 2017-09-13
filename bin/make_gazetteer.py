@@ -36,7 +36,7 @@ def run():
             continue
         sent = corpus_parser.Sentence(line)
         for ne_ in sent.named_entity:
-            if ne_.ne_tag == corpus_parser.OUTSIDE_TAG:
+            if ne_.ne_tag == corpus_parser.OUTSIDE_TAG or len(ne_.ne_str) < 2:
                 continue
             ne_.ne_str = ne_.ne_str.lower()
             gazetteer[ne_.ne_str][ne_.ne_tag] += 1

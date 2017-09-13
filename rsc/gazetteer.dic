@@ -1798,7 +1798,6 @@
 9월중순	DT
 9일	DT
 9주간	DT
-a	PS
 aba	OG
 abc-tv	OG
 abc마트	OG
@@ -2008,7 +2007,6 @@ jva	OG
 jyp	OG
 jyp엔터테인먼트	OG
 j리그	OG
-k	PS
 k&g	OG
 k-1	OG
 k-두채	OG
@@ -2097,7 +2095,6 @@ ls네트웍스	OG
 ls엠트로	OG
 lucca	LC
 luther vandross	PS
-m	PS
 m.net	OG
 m3	PS
 mama guitar	PS
@@ -2300,17 +2297,14 @@ ze:a	PS
 ㈜혁신전공사	OG
 三星 전자	OG
 三煥기업	OG
-中	LC
 中共	LC
 中國	LC
 佛敎	OG
 元都	LC
 光武	PS
 光武帝	PS
-全	PS
 全斗煥	PS
 公州	LC
-北	LC
 北京	LC
 北韓	LC
 南北	LC
@@ -2331,11 +2325,9 @@ ze:a	PS
 子陵	PS
 孟子	PS
 安祿山	PS
-宋	LC
 宋나라	LC
 富春山	LC
 小澤一郞	PS
-崔	PS
 崔承老	PS
 左派	OG
 廣德山	LC
@@ -2349,12 +2341,10 @@ ze:a	PS
 文匯報	OG
 文昌洙	PS
 新民黨	OG
-日	LC
 日帝	LC
 日本	LC
 日本軍	OG
 日축구대표팀	OG
-明	LC
 智異山	LC
 會稽山	LC
 有田芳生	PS
@@ -2364,7 +2354,6 @@ ze:a	PS
 柳重敎	PS
 柳麟錫	PS
 橫田	PS
-檢	OG
 權溥	PS
 武漢 대학	OG
 民正黨	OG
@@ -2380,24 +2369,18 @@ ze:a	PS
 禮治	PS
 第 6공화국	OG
 羅陀	PS
-美	LC
 美協	OG
 美國	LC
 美예일 大	OG
 美의회	OG
-義	PS
 與野	OG
 英親	PS
 許由	PS
-軍	OG
-鄭	PS
 鄭夢周	PS
 鄭漢模	PS
 鄭薰姬	PS
 鄭逑	PS
 釋尊	PS
-野	OG
-金	PS
 金宏弼	PS
 金平默	PS
 金長生	PS
@@ -2407,7 +2390,6 @@ ze:a	PS
 雪嶽山	LC
 雲山	PS
 鞏悧	PS
-韓	LC
 韓國	LC
 韓寶철강	OG
 高宗	PS
@@ -2485,7 +2467,6 @@ ze:a	PS
 갑급팀	OG
 갑자일	DT
 갑천호수	LC
-강	PS
 강경남	PS
 강경대	PS
 강경여	OG
@@ -2709,7 +2690,6 @@ ze:a	PS
 경헌호	PS
 경희	OG
 경희대	OG
-계	PS
 계룡면	LC
 계룡중학교	OG
 계산	OG
@@ -2721,7 +2701,6 @@ ze:a	PS
 계양산 골프장	LC
 계양산공원	LC
 계양전기	OG
-고	PS
 고광순	PS
 고구려	LC
 고다르	PS
@@ -2798,8 +2777,6 @@ ze:a	PS
 골든스테이트 워리어스	OG
 골리앗	PS
 골프황제	PS
-곰	PS
-공	PS,OG
 공경엽	PS
 공공구매위반신고센터	OG
 공군	OG
@@ -2842,7 +2819,6 @@ ze:a	PS
 과학기술처	OG
 과학아카데미	OG
 과학혁명기	DT
-곽	PS
 곽윤기	PS
 곽정숙	PS
 곽정술	PS
@@ -2860,7 +2836,6 @@ ze:a	PS
 관음봉	LC
 관할지구대	OG
 관훈클럽	OG
-괌	LC
 괌 올림픽위원회	OG
 광나루역	LC
 광덕산	LC
@@ -2921,7 +2896,6 @@ ze:a	PS
 교황청	OG
 교회	OG
 교회당국	OG
-구	PS
 구 허리우드 극장	OG
 구겐하임 미술관	OG
 구곡폭포	LC
@@ -3038,7 +3012,6 @@ ze:a	PS
 국회예산결산위원회	OG
 국회운영위원회	OG
 국회특별위원회	OG
-군	OG
 군대	OG
 군부	OG
 군사분계선	LC
@@ -3054,7 +3027,6 @@ ze:a	PS
 궈안	LC
 궈징징	PS
 궈홍치	PS
-권	PS
 권경률	PS
 권경석	PS
 권근	PS
@@ -3177,7 +3149,6 @@ ze:a	PS
 금호연	PS
 금호타이어	OG
 금환신	PS
-기	PS
 기관장협의회	OG
 기노시타	PS
 기독교	OG
@@ -3220,7 +3191,6 @@ ze:a	PS
 길보아산	LC
 길손이	PS
 길은정	PS
-김	PS
 김 연아	PS
 김 제임스 우	PS
 김c	PS
@@ -3642,7 +3612,6 @@ ze:a	PS
 김희선	PS
 김희옥	PS
 까보레	PS
-깜	PS
 깡통	PS
 깨바즐낚	PS
 꽃피는 봄이 오면	OG
@@ -3696,7 +3665,6 @@ ze:a	PS
 낙하산	PS
 난센	PS
 난징대	OG
-남	PS,LC
 남경필	PS
 남구	LC
 남구청	OG
@@ -3769,7 +3737,6 @@ ze:a	PS
 남해동부먼바다	LC
 남해안	LC
 남현희	PS
-낮	TI
 낮 00시	TI0
 낮 00시00분	TI0
 낮 12시	TI
@@ -3839,7 +3806,6 @@ ze:a	PS
 넬슨 크루즈	PS
 넷째 주	DT
 넷째주 일요일	DT
-노	PS,OG
 노개위	OG
 노동부	OG
 노동자문학회	OG
@@ -3905,7 +3871,6 @@ ze:a	PS
 누멜라	PS
 누얼까이 초원	LC
 누트	PS
-눈	PS
 눈높이	OG
 뉴로테크	OG
 뉴사운드처치	OG
@@ -3946,10 +3911,8 @@ ze:a	PS
 니키 호프스	PS
 니트젠테크놀로지	OG
 니혼햄	OG
-닉	OG
 닌텐도	OG
 닐슨	OG
-님	LC
 닛산	OG
 닛칸스포츠	OG
 닝보은행	OG
@@ -4045,12 +4008,10 @@ ze:a	PS
 단성사	OG
 단양	LC
 단운협	LC
-달	LC,DT
 달라이 라마	PS
 달맞이	OG
 달성	LC
 닷새	DT
-당	LC
 당원자격심사위원회	OG
 당원협의회	OG
 당일	DT
@@ -4166,7 +4127,6 @@ ze:a	PS
 대호에이엘	OG
 대회 조직위원회	OG
 대흥동	LC
-댄	PS
 댄 웰던	PS
 댈러스	OG
 댈러스 매버릭스	OG
@@ -4510,7 +4470,6 @@ ze:a	PS
 램퍼드	PS
 랫소	PS
 량등	PS
-러	LC
 러브필름닷컴	OG
 러브홀릭	PS
 러블리	PS
@@ -4618,7 +4577,6 @@ ze:a	PS
 로하스대학	OG
 록히드 마틴	OG
 롤링홀	OG
-롯	PS
 롯데	OG
 롯데 마린스	OG
 롯데 원정응원단	OG
@@ -4673,7 +4631,6 @@ ze:a	PS
 룩셈부르구	PS
 룩셈부르크	LC
 뤼앤지지에	PS
-류	PS
 류가미	PS
 류각현	PS
 류마티스 퇴행성관절센터	OG
@@ -4697,7 +4654,6 @@ ze:a	PS
 르브론	PS
 르브론 제임스	PS
 르피가로	OG
-리	PS
 리가	OG
 리골드	OG
 리난	PS
@@ -4744,7 +4700,6 @@ ze:a	PS
 리폰	PS
 리플리	PS
 릭 구톰슨	PS
-린	PS
 린 파스코	PS
 린 파스코에	PS
 린쎄이	OG
@@ -4752,7 +4707,6 @@ ze:a	PS
 린지 라이트	PS
 릴랜드	PS
 릴리	OG
-링	PS
 링팡도너츠	OG
 마가렛 챈	PS
 마가리토	PS
@@ -5049,7 +5003,6 @@ ze:a	PS
 무현	PS
 묵호중	OG
 묵호초	OG
-문	PS
 문경	LC
 문경정토수련원	OG
 문공부	OG
@@ -5116,7 +5069,6 @@ ze:a	PS
 뮐러	PS
 뮤직랜드	OG
 뮤직온tv	OG
-미	LC
 미 상공회의소	OG
 미 해군	OG
 미겔 앙헬 알바라킨	PS
@@ -5194,7 +5146,6 @@ ze:a	PS
 미현	PS
 미현이	PS
 미화원협의회	OG
-민	PS
 민경	PS
 민기원	PS
 민나온	PS
@@ -5271,7 +5222,6 @@ ze:a	PS
 바티칸	LC
 바하마	LC
 바히아	PS
-박	PS
 박강조	PS
 박건하	PS
 박경낭	PS
@@ -5427,7 +5377,6 @@ ze:a	PS
 발리바	PS
 발칸	LC
 발트해	LC
-밤	TI
 밤 00시	TI0
 밤 00시 00분	TI0
 밤 00시00분	TI0
@@ -5461,7 +5410,6 @@ ze:a	PS
 방천	LC
 방콕	LC
 방파제	LC
-배	PS
 배경은	PS
 배구부	OG
 배구연맹	OG
@@ -5490,7 +5438,6 @@ ze:a	PS
 배한성	PS
 배화교	OG
 배효성	PS
-백	PS
 백경훤	PS
 백남준	PS
 백남준 미술관	OG
@@ -5598,20 +5545,17 @@ ze:a	PS
 벤큐	OG
 벤틀리	PS
 벤호건	PS
-벨	PS
 벨기에	LC
 벨라판	PS
 벨로루	OG
 벨로루시	LC
 벽산건설	OG
 벽제승화원	OG
-변	PS
 변병주	PS
 변석화	PS
 변연하	PS
 변진섭	PS
 변청운	PS
-별	LC
 병규	PS
 병무청	OG
 병철	PS
@@ -5678,7 +5622,6 @@ ze:a	PS
 볼트	PS
 볼티모어	OG,LC
 볼티모어 오리올스	OG
-봄	DT
 봄내초	OG
 봄철	DT
 봅 캐리	PS
@@ -5757,7 +5700,6 @@ ze:a	PS
 부흥	OG
 부흥 여인숙	OG
 부흥중학교	OG
-북	LC
 북(北)시리아	LC
 북경	LC
 북경대	OG
@@ -5790,7 +5732,6 @@ ze:a	PS
 북한산	LC
 북한축구협회	OG
 북한팀	OG
-분	PS
 분당	LC
 분당구	LC
 분데스리가 프리드리히샤펜	OG
@@ -5849,7 +5790,6 @@ ze:a	PS
 블룸버그뉴스	OG
 블룸버그통신	OG
 블리스	PS
-비	PS
 비 반칙 반원	LC
 비너스	PS
 비너스 윌리엄스	PS
@@ -5901,7 +5841,6 @@ ze:a	PS
 뻬뜨루 최	PS
 뽀뽀	PS
 뿌까	PS
-사	OG
 사 년전	DT
 사계절	DT
 사담 후세인	PS
@@ -6105,7 +6044,6 @@ ze:a	PS
 생명운동아카데미	OG
 생태학교	OG
 생활협동조합	OG
-샤	PS
 샤라포바	PS
 샤론 스톤	PS
 샤를 보들레르	PS
@@ -6116,7 +6054,6 @@ ze:a	PS
 샤피시	PS
 샬럿	OG
 섀넌	PS
-서	PS
 서강대	OG
 서경석	PS
 서교동	LC
@@ -6274,7 +6211,6 @@ ze:a	PS
 석진욱	PS
 석촌동	LC
 석해균	PS
-선	PS
 선거구	LC
 선거구획정위원회	OG
 선관위	OG
@@ -6296,7 +6232,6 @@ ze:a	PS
 선진당	OG
 선진지주	OG
 선희	PS
-설	DT
 설 명절 연휴까지	DT
 설 연휴	DT
 설 연휴 동안	DT
@@ -6313,7 +6248,6 @@ ze:a	PS
 설재문	PS
 설진연	PS
 설화	PS
-성	PS
 성결대학교 예술대학	OG
 성골주차장	LC
 성공회	OG
@@ -6409,12 +6343,9 @@ ze:a	PS
 셋째주	DT
 셔독	OG
 셔먼	PS
-션	PS
 션 루이니	PS
 션 오헤어	PS
 션 피긴스	PS
-셸	OG
-소	LC
 소공동	LC
 소그래스tpc 스타디움코스	LC
 소그룹 연구모임	OG
@@ -6455,7 +6386,6 @@ ze:a	PS
 속초시	LC
 속초중앙초	OG
 속초해경	OG
-손	PS
 손광모	PS
 손광민	PS
 손기철	PS
@@ -6476,7 +6406,6 @@ ze:a	PS
 솔리드	PS
 솔비	PS
 솔트레이크시티	LC
-송	PS,LC
 송가	PS
 송가스	PS
 송강카누학교	OG
@@ -6531,7 +6460,6 @@ ze:a	PS
 숀 루니	PS
 숀 매리언	PS
 숀 오헤어	PS
-수	DT
 수개월 전부터	DT
 수경	PS
 수공	OG
@@ -6596,7 +6524,6 @@ ze:a	PS
 쉬커	PS
 쉬하이펑	PS
 쉰들러	PS
-슈	PS
 슈라	OG
 슈메이커	PS
 슈세프스키	PS
@@ -6756,7 +6683,6 @@ ze:a	PS
 시흥	LC
 식사	LC
 식품의약품안전청	OG
-신	PS
 신갈	LC
 신갈고	OG
 신경현	PS
@@ -6855,7 +6781,6 @@ ze:a	PS
 실베스트르	PS
 실용음악과	OG
 실천불교전국승가회	OG
-심	PS
 심광호	PS
 심대평	PS
 심만순	PS
@@ -6875,7 +6800,6 @@ ze:a	PS
 십 년 전	DT
 십여 년 전	DT
 십여 분	TI
-싱	PS
 싱가포르	LC
 싱클레어	PS
 싸이	PS
@@ -7038,7 +6962,6 @@ ze:a	PS
 아후라 마즈다	PS
 악동	PS
 악셀 룬 스빈달	PS
-안	PS
 안경현	PS
 안기한	PS
 안나	PS
@@ -7194,7 +7117,6 @@ ze:a	PS
 앨버트 푸홀스	PS
 앳킨슨	PS
 앵내의웅	PS
-야	OG
 야간	TI
 야곱	PS
 야권	OG
@@ -7222,8 +7144,6 @@ ze:a	PS
 야훼	PS
 약 00년 동안	DT0
 약 35년 동안	DT
-얌	PS
-양	PS
 양경갑	PS
 양경민	PS
 양구	LC
@@ -7268,7 +7188,6 @@ ze:a	PS
 양희동프로바이크	OG
 양희성	PS
 양희영	PS
-어	PS
 어경준	PS
 어나더 썬데이	OG
 어느 날	DT
@@ -7287,7 +7206,6 @@ ze:a	PS
 억새밭	LC
 언론노조	OG
 언협	OG
-엄	PS
 엄기준	PS
 엄정화	PS
 엄지원	PS
@@ -7359,7 +7277,6 @@ ze:a	PS
 엔트리브 소프트	OG
 엔티피아	OG
 엔피아	OG
-엘	PS
 엘 문도 데포르티보	OG
 엘레나 데멘티에바	PS
 엘렌 노르데그렌	PS
@@ -7379,7 +7296,6 @@ ze:a	PS
 엠블랙	PS
 엠씨더맥스	PS
 엠케이테크놀로지	OG
-여	OG,PS
 여당	OG
 여대표팀	OG
 여덟시간	TI
@@ -7478,7 +7394,6 @@ ze:a	PS
 염동균	PS
 염동열	PS
 염혜선	PS
-영	LC
 영광군	LC
 영국	LC
 영국 이민국	OG
@@ -7554,7 +7469,6 @@ ze:a	PS
 예프게니 키신	PS
 옐레나 이신바예바	PS
 옐친	PS
-오	PS
 오(吳)나라	LC
 오가사와라	PS
 오가사와라 미츠오	PS
@@ -7935,7 +7849,6 @@ ze:a	PS
 온양여	OG
 온양한올	OG
 온타리오주	LC
-올	DT
 올 00월 이전까지	DT0
 올 0월	DT0
 올 0월 00일	DT0
@@ -8059,7 +7972,6 @@ ze:a	PS
 요한 산타나	PS
 욕지권	LC
 욕지도	LC
-욥	PS
 용강동	LC
 용덕한	PS
 용두동	LC
@@ -8082,7 +7994,6 @@ ze:a	PS
 용평면	LC
 용화산	LC
 용훈	PS
-우	PS
 우규민	PS
 우근민	PS
 우기	DT
@@ -8176,7 +8087,6 @@ ze:a	PS
 워윅힐스cc	OG
 워터해저드	LC
 워홀	PS
-원	PS
 원곡동	LC
 원광	OG
 원남면	LC
@@ -8212,7 +8122,6 @@ ze:a	PS
 원현임	PS
 원혜영	PS
 원호청	OG
-월	DT
 월(越)나라	LC
 월-목요일	DT
 월~금	DT
@@ -8258,7 +8167,6 @@ ze:a	PS
 윌리엄 로즈	PS
 윌리엄스	PS
 윔블던	LC
-유	PS
 유가증권시장	OG
 유경렬	PS
 유고	LC
@@ -8354,14 +8262,12 @@ ze:a	PS
 유한양행	OG
 유한킴벌리	OG
 유호철	PS
-육	OG
 육군본부	OG
 육민관고	OG
 육민관중	OG
 육성회	OG
 육심길	PS
 육십령	LC
-윤	PS
 윤국병	PS
 윤길	PS
 윤도현	PS
@@ -8407,7 +8313,6 @@ ze:a	PS
 율곡	PS,OG
 율동콩나물	OG
 율리아노	PS
-융	PS
 융미옌	PS
 융프라우요흐	LC
 은신	PS
@@ -8442,7 +8347,6 @@ ze:a	PS
 의총	OG
 의친	PS
 의회	OG
-이	PS
 이 년	DT
 이 준	PS
 이 준형	PS
@@ -8924,7 +8828,6 @@ ze:a	PS
 인토외식사업	OG
 인하대	OG
 인흥초등학교	OG
-일	LC
 일 년	DT
 일 주일	DT
 일간연예스포츠	OG
@@ -8964,7 +8867,6 @@ ze:a	PS
 일주일 전	DT
 일주일간	DT
 일초	TI
-임	PS
 임경수	PS
 임경식	PS
 임계	LC
@@ -9088,7 +8990,6 @@ ze:a	PS
 잠실체육관	LC
 잠진도	LC
 잡스	PS
-장	PS
 장 뤽 고다르	PS
 장 르누아르	PS
 장 보드리야르	PS
@@ -9212,7 +9113,6 @@ ze:a	PS
 적도	LC
 적십자 강서청소년복지교민회	OG
 적토마	PS
-전	PS
 전 분기	DT
 전 솔	PS
 전, 후반	TI
@@ -9331,7 +9231,6 @@ ze:a	PS
 전희철	PS
 절골	LC
 점심	TI
-정	PS
 정가	OG
 정가은	PS
 정경호	PS
@@ -9535,8 +9434,6 @@ ze:a	PS
 제피로스골프클럽	OG
 제협	OG
 젠슨	PS
-젬	PS
-조	PS
 조 네이선	PS
 조 메드윅	PS
 조 브라이언트	PS
@@ -9648,7 +9545,6 @@ ze:a	PS
 조혜정	PS
 조호루 바루 지역 축구협회	OG
 조홍희	PS
-존	PS
 존 갈랜드	PS
 존 고티	PS
 존 도노반	PS
@@ -9727,7 +9623,6 @@ ze:a	PS
 줄리아 로버츠	PS
 줄리아 크리스테바	PS
 줄리엣 루이스	PS
-중	LC
 중공	OG
 중구	LC
 중구청	OG
@@ -10199,7 +10094,6 @@ ze:a	PS
 지현정	PS
 지훈	PS
 지휘부	OG
-진	PS
 진 콘맨	PS
 진 해크먼	PS
 진갑용	PS
@@ -10239,10 +10133,8 @@ ze:a	PS
 집행위원회	OG
 징계위원회	OG
 쪽제비	PS
-쭌	OG
 쯔리겐	OG
 찢택연	PS
-차	PS
 차동민	PS
 차두리	PS
 차범근	PS
@@ -10259,7 +10151,6 @@ ze:a	PS
 찰리 위	PS
 찰리박	PS
 찰턴 헤스턴	PS
-참	PS
 참여당	OG
 참여연대	OG
 찻 타이	OG
@@ -10288,7 +10179,6 @@ ze:a	PS
 챈들러	PS
 챨스 2세	PS
 처용	PS
-천	PS
 천국의계단 촬영장	LC
 천년	DT
 천년만년	DT
@@ -10389,7 +10279,6 @@ ze:a	PS
 총영사관	OG
 총학생회	OG
 촬영감독협회	OG
-최	PS
 최강타	PS
 최강희	PS
 최경주	PS
@@ -10477,7 +10366,6 @@ ze:a	PS
 최희섭	PS
 최희암	PS
 최희정	PS
-추	PS
 추계초	OG
 추모공원	LC
 추상미	PS
@@ -10598,7 +10486,6 @@ ze:a	PS
 카펜터	PS
 카펠로	PS
 카프카	PS
-칸	PS
 칸토나	PS
 칼 윤	PS
 칼다스	OG
@@ -10711,8 +10598,6 @@ ze:a	PS
 코티스	PS
 코파카바나 해변	LC
 코페르니쿠스	PS
-콘	PS
-콜	PS
 콜 카스텔라노	PS
 콜로라도	OG
 콜로라도 로키스	OG
@@ -10729,7 +10614,6 @@ ze:a	PS
 쿠바산	LC
 쿠비얀	PS
 쿠웨이트	LC
-쿨	PS
 쿨링	OG
 쿼터빤쭈	OG
 퀘타	LC
@@ -10803,7 +10687,6 @@ ze:a	PS
 키작은남자	OG
 키코	OG
 키키 무삼파	PS
-킨	PS
 킨켈	PS
 타깃	OG
 타나메라cc	LC
@@ -10816,7 +10699,6 @@ ze:a	PS
 타이틀리스트	OG
 타임머신	OG
 타임스	OG
-탁	PS
 탁봉호	PS
 탁신 치나왓	PS
 탄샤오펑	PS
@@ -10824,7 +10706,6 @@ ze:a	PS
 탄천	LC
 탈레반	OG
 탐라자치연대	OG
-탕	PS
 탕빈옌	PS
 탕웨이	PS
 태광	OG
@@ -10896,7 +10777,6 @@ ze:a	PS
 텔레토비	PS
 텔아비브	LC
 템프테이션	OG
-토	DT
 토끼굴	LC
 토너 리 강	PS
 토니 자	PS
@@ -10937,7 +10817,6 @@ ze:a	PS
 토튼햄	OG
 토튼햄 핫스퍼	OG
 토티	PS
-톨	OG
 톰 리플리	PS
 톰 맥그래스	PS
 톰 존스	PS
@@ -10985,11 +10864,9 @@ ze:a	PS
 티코 브라헤	PS
 티테	PS
 티파니	PS
-틴	OG
 틴틴 파이브	PS
 틴틴파이브	PS
 틸렐리	PS
-팀	PS
 팀 던컨	PS
 팀 버튼	PS
 팀 하리칼라	PS
@@ -11128,7 +11005,6 @@ ze:a	PS
 평화협정	OG
 평화회담	OG
 폐경기	DT
-포	PS
 포그	PS
 포드	OG
 포드 자동차	OG
@@ -11165,7 +11041,6 @@ ze:a	PS
 폰세카	PS
 폰테 프레타	OG
 폰테베드라비치	LC
-폴	PS
 폴 고이도스	PS
 폴 매카트니	PS
 폴 비릴리오	PS
@@ -11175,11 +11050,9 @@ ze:a	PS
 폴라 크리머	PS
 폴란드	LC,OG
 폴크스바겐	OG
-표	PS
 표도르	PS
 표명일	PS
 표트르	PS
-푸	PS
 푸르넷	OG
 푸르덴셜 투자증권	OG
 푸르덴셜자산운용	OG
@@ -11287,7 +11160,6 @@ ze:a	PS
 피파닷컴	OG
 피플지	OG
 핀란드	LC
-필	OG
 필 미켈슨	PS
 필 잭슨	PS
 필라델피아	OG
@@ -11302,7 +11174,6 @@ ze:a	PS
 핌랫	PS
 핑골프	OG
 핑크공주	PS
-하	PS
 하경민	PS
 하계	DT
 하계동	LC
@@ -11387,7 +11258,6 @@ ze:a	PS
 학성중	OG
 학소대	LC
 학우	PS
-한	LC,PS
 한 달	DT
 한 달간	DT
 한 달전	DT
@@ -11657,7 +11527,6 @@ ze:a	PS
 합창부원	OG
 합천	LC
 항도중학교	OG
-해	LC,OG
 해강도자박물관	OG
 해군	OG
 해군부대	OG
@@ -11698,7 +11567,6 @@ ze:a	PS
 행크 아론	PS
 행크 헤니	PS
 향봉	LC
-허	PS
 허강	PS
 허드슨	PS
 허리우드 극장	OG
@@ -11739,7 +11607,6 @@ ze:a	PS
 헬리오 폴리스	LC
 헬싱키	LC
 혁명수비대	OG
-현	PS
 현경	PS
 현근이	PS
 현대	OG,DT
@@ -11845,7 +11712,6 @@ ze:a	PS
 혼마찌국민학교	OG
 홈즈	PS
 홈플러스	OG
-홍	PS
 홍건표	PS
 홍기	PS
 홍기옥	PS
@@ -11912,7 +11778,6 @@ ze:a	PS
 환기미술관	OG
 환절기	DT
 활동사진	OG
-황	PS
 황경신	PS
 황규봉	PS
 황금나비	OG
@@ -12006,7 +11871,6 @@ ze:a	PS
 후쿠하라	PS
 후쿠하라 아이	PS
 후크	PS
-훈	PS
 훌리오 바로소	PS
 훼이셜	OG
 훼인클럽	OG
@@ -12048,11 +11912,8 @@ ze:a	PS
 金山寺	LC
 金文烈	PS
 羅雄培	PS
-盧	PS
 盧武鉉	PS
 盧泰愚	PS
-沈	PS
-李	PS
 李垠	PS
 李堈	PS
 李彦迪	PS
