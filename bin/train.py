@@ -65,6 +65,21 @@ def _count_match(cnt, gold_sent, predicts, voca):
     cnt['match_ne'] += len(gold_ne & pred_ne)
 
 
+def _calc_f_score(gold_ne, pred_ne, match_ne):
+    """
+    calculate f-score
+    :param  gold_ne:  number of NEs in gold standard
+    :param  pred_ne:  number of NEs in predicted
+    :param  match_ne:  number of matching NEs
+    :return:  f_score
+    """
+    precision = (match_ne / pred_ne) if pred_ne > 0 else 0.0
+    recall = (match_ne / gold_ne) if gold_ne > 0 else 0.0
+    if (recall + precision) == 0.0:
+        return 0.0
+    return 2.0 * recall * precision / (recall + precision)
+
+
 def run(args):    # pylint: disable=too-many-locals,too-many-statements
     """
     run function which is the start point of program
@@ -125,9 +140,7 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
                     cnt['total_char'] += subtotal
                     _count_match(cnt, dev_sent, predicts, voca)
                 accuracy_char = 100.0 * cnt['correct_char'] / cnt['total_char']
-                recall = cnt['match_ne'] / cnt['total_gold_ne']
-                precision = cnt['match_ne'] / cnt['total_pred_ne']
-                f_score = 2.0 * recall * precision / (recall + precision)
+                f_score = _calc_f_score(cnt['total_gold_ne'], cnt['total_pred_ne'], cnt['match_ne'])
                 print(file=sys.stderr)
                 sys.stderr.flush()
                 if not f_scores or f_score > max(f_scores):
@@ -139,8 +152,8 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
                              epoch, iter_ // 1000, losses[-1], accuracy_char, f_score,
                              max(f_scores))
                 if args.log:
-                    print('{}\t{}\t{}\t{}'.format(iter_ // 1000, losses[-1], accuracy_char, f_score),
-                          file=args.log)
+                    print('{}\t{}\t{}\t{}'.format(iter_ // 1000, losses[-1], accuracy_char,
+                                                  f_score), file=args.log)
                     args.log.flush()
             elif iter_ % 100 == 0:
                 print('.', end='', file=sys.stderr)
