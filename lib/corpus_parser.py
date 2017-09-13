@@ -30,10 +30,37 @@ DIM = ':'
 OUTSIDE_TAG = "OUTSIDE"
 GUESS_TAG = "GUESS"
 SPACE = ' '
-OPEN_PADDING = '<p>'
-CLOSE_PADDING = '</p>'
-OPEN_WORD = '<w>'
-CLOSE_WORD = '</w>'
+PADDING = {
+    # 음절단위 학습셋에서 사용하는 패딩
+    'pre':'<p>',\
+    'suf':'</p>',\
+    'op_wrd':'<w>',\
+    'cl_wrd':'</w>',\
+    'unk':'<UNK/>',
+    # 자소단위 학습셋에서 사용하는 패딩
+    # 한글 초/중/종
+    'cho':'<c>',
+    'u_cho':'<uc>',
+    'jung':'<j>',
+    'u_jung':'<uj>',
+    'jong':'<o>',
+    'u_jong':'<uo>',
+    # dight, alphabet
+    'dig':'<d>',
+    'u_dig':'<ud>',
+    'eng':'<e>',
+    'u_eng':'<ue>',
+    # hanja
+    'hanja':'<h>',
+    'u_hanja':'<uh>',
+    # symbol
+    'symbol':'<y>',
+    'u_symbol':'<uy>',
+    # unknown
+    'etc':'<t>',
+    'u_etc':'<ut>',
+}
+
 
 # 얘측한 아이템을 표현
 PredItem = collections.namedtuple('PredItem', 'beg end tag')
@@ -202,8 +229,8 @@ class Sentence(object):
         # 오른쪽 컨텍스트의 끝위치 : '철'의 경우 2 + 10 + 2 / <w>, </w>의 개수만큼 2개 보정
         right_end = cur_idx+context_size+2
         right_context = marked_text[right_begin:right_end]
-        left_padding = [OPEN_PADDING] * (context_size - len(left_context))
-        right_padding = [CLOSE_PADDING] * (context_size - len(right_context))
+        left_padding = [PADDING['pre']] * (context_size - len(left_context))
+        right_padding = [PADDING['suf']] * (context_size - len(right_context))
         return ' '.join(left_padding+left_context), ' '.join(right_context+right_padding)
 
     def translate_cnn_corpus(self, context_size=10):
@@ -217,7 +244,7 @@ class Sentence(object):
         cur_idx = 0
         for idx_1, word in enumerate(words):
             marked_list = words[:]
-            marked_list[idx_1] = [OPEN_WORD] + word + [CLOSE_WORD]
+            marked_list[idx_1] = [PADDING['op_wrd']] + word + [PADDING['cl_wrd']]
             marked_text = [syl for word in marked_list for syl in word]
             for syl in word:
                 left, right = self._get_context(cur_idx, marked_text, context_size)
