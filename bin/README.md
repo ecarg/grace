@@ -73,9 +73,9 @@ O    이 상 <w> 경 성 대 ) 이 : w q </w> </p> </p> </p> </p> </p> </p> </p>
 * 학습을 수행합니다.
 * 사용법
 ```
-usage: train.py [-h] -r DIR -i DIR -p NAME -m NAME -o FILE [--log FILE]
-                [--window INT] [--embed-dim INT] [--gpu-num INT]
-                [--batch-size INT] [--epoch-num INT] [--debug]
+usage: train.py [-h] -r DIR -p NAME -m NAME -o FILE [--log FILE]
+[--window INT] [--embed-dim INT] [--gpu-num INT]
+[--batch-size INT] [--epoch-num INT] [--debug]
 
 train model from data
 
@@ -83,10 +83,9 @@ optional arguments:
   -h, --help            show this help message and exit
   -r DIR, --rsc-dir DIR
                         resource directory
-  -i DIR, --in-dir DIR  input directory
   -p NAME, --in-pfx NAME
                         input data prefix
-  -m NAME, --model NAME
+  -m NAME, --model-name NAME
                         model name
   -o FILE, --output FILE
                         model output file
@@ -99,7 +98,8 @@ optional arguments:
   --debug               enable debug
 ```
 
+
 * 사용예
 ```bash
-bin/train.py -r rsc -i data -p chr -m fnn -o fnn.pkl --log fnn.log
+bin/train.py -r rsc -p data/corpus -m fnn -o fnn.out  --log fnn.log
 ```

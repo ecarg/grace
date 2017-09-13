@@ -24,7 +24,7 @@ import corpus_parser
 def read_corpus():
     """
     [(label, src_test)] 형식의 파일을 읽어서
-    하나의 문장단위로 리스트를 구성해서 리턴합니다.
+    label만 리스트로 읽어서 리턴합니다.
     """
     corpus = []
     for line in sys.stdin:
@@ -33,8 +33,8 @@ def read_corpus():
             yield corpus
             corpus = []
             continue
-        label, src_txt = line.split('\t')
-        corpus.append((label, src_txt))
+        label, _ = line.split('\t')
+        corpus.append(label)
 
 def run(args): # pylint: disable=too-many-locals
     """
@@ -44,22 +44,11 @@ def run(args): # pylint: disable=too-many-locals
     cnt = Counter()
     for gold, pred in zip(open(args.gold), read_corpus()):
         gold_sent = corpus_parser.Sentence(gold.strip())
-        pred_sent = corpus_parser.Sentence.restore(pred)
+        cnt += gold_sent.compare_label(pred)
 
-        if args.boundary:
-            gold_ne = set([x.get_ne_pos() for x in gold_sent.named_entity\
-                if x.get_ne_pos() is not None])
-            pred_ne = set([x.get_ne_pos() for x in pred_sent.named_entity\
-                    if x.get_ne_pos() is not None])
-        else:
-            gold_ne = set([x.get_ne_pos_tag() for x in gold_sent.named_entity\
-                    if x.get_ne_pos_tag() is not None])
-            pred_ne = set([x.get_ne_pos_tag() for x in pred_sent.named_entity\
-                    if x.get_ne_pos_tag() is not None])
-
-        cnt['total_gold_ne'] += len(gold_ne)
-        cnt['total_pred_ne'] += len(pred_ne)
-        cnt['match_ne'] += len(gold_ne & pred_ne)
+    if cnt['total_gold_ne'] == 0 or cnt['total_pred_ne'] == 0:
+        print('f-score / (recall, precision): %.4f / (%.4f, %.4f)' % (0, 0, 0))
+        return
 
     recall = cnt['match_ne'] / cnt['total_gold_ne']
     precision = cnt['match_ne'] / cnt['total_pred_ne']
@@ -76,7 +65,6 @@ def main():
     """
     parser = argparse.ArgumentParser(description='make training set for sequence to sequence model')
     parser.add_argument('-g', '--gold', help='gold standard file', metavar='FILE', required=True)
-    parser.add_argument('--boundary', help='only named entity boundary', action='store_true')
     parser.add_argument('--input', help='input file <default: stdin>', metavar='FILE')
     parser.add_argument('--output', help='output file <default: stdout>', metavar='FILE')
     parser.add_argument('--debug', help='enable debug', action='store_true')
