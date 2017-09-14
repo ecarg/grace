@@ -157,7 +157,7 @@ def main():
                         type=int, default=EPOCH_NUM)
     parser.add_argument('--phoneme', help='expand phonemes context', action='store_true')
     parser.add_argument('--cutoff', help='cutoff', action='store',\
-            type=int, metavar="int", default=1)
+            type=int, metavar="int", default=5)
     parser.add_argument('--debug', help='enable debug', action='store_true')
     args = parser.parse_args()
 

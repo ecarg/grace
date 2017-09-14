@@ -52,9 +52,9 @@ class Fnn(Ner):
         """
         super().__init__(window, voca, is_phoneme)
         context_len = 2 * window + 1
-        if self.is_phoneme:
-            context_len *= 3
         self.embedding = nn.Embedding(len(voca['in']), embed_dim)
+        if self.is_phoneme:
+            self.pho2syl = nn.Conv2d(1, embed_dim, (3, embed_dim), 3)
         self.hidden = autograd.Variable(torch.zeros(1, 1, hidden_dim))
         self.relu = nn.ReLU()
         self.embeds2hidden = nn.Linear(context_len * embed_dim, hidden_dim)
@@ -67,7 +67,11 @@ class Fnn(Ner):
         :return:  output score
         """
         embeds = self.embedding(contexts)
-        hidden_out = self.embeds2hidden(embeds.view(len(contexts), -1))
+        if self.is_phoneme:
+            pho2syl_out = self.pho2syl(embeds.unsqueeze(1))
+            hidden_out = self.embeds2hidden(pho2syl_out.view(len(contexts), -1))
+        else:
+            hidden_out = self.embeds2hidden(embeds.view(len(contexts), -1))
         hidden_relu = self.relu(hidden_out)
         hidden_drop = F.dropout(hidden_relu, training=self.is_training)
         tag_out = self.hidden2tag(hidden_drop)
@@ -88,9 +92,9 @@ class Cnn(Ner):    # pylint: disable=too-many-instance-attributes
         super().__init__(window, voca, is_phoneme)
         self.is_training = True
         self.context_len = 2 * window + 1
-        if self.is_phoneme:
-            self.context_len *= 3
         self.embedding = nn.Embedding(len(voca['in']), embed_dim)
+        if self.is_phoneme:
+            self.pho2syl = nn.Conv2d(1, embed_dim, (3, embed_dim), 3)
         self.conv5_1 = nn.Conv1d(embed_dim, embed_dim * 2, 5)    # 21 - 4 => 17
         self.relu51 = nn.ReLU()
         self.pool5_1 = nn.MaxPool1d(2)    # 17 // 2 => 8
@@ -125,7 +129,11 @@ class Cnn(Ner):    # pylint: disable=too-many-instance-attributes
     def forward(self, contexts):    # pylint: disable=arguments-differ,too-many-locals
         embeds = self.embedding(contexts)
         # batch_size x context_len x embedding_dim => batch_size x embedding_dim x context_len
-        embeds_t = torch.transpose(embeds, 1, 2)
+        if self.is_phoneme:
+            pho2syl_out = self.pho2syl(embeds.unsqueeze(1))
+            embeds_t = pho2syl_out.squeeze()
+        else:
+            embeds_t = torch.transpose(embeds, 1, 2)
         conv5_1 = self.conv5_1(embeds_t)
         pool5_1 = self.pool5_1(self.relu51(conv5_1))
         conv5_2 = self.conv5_2(pool5_1)
