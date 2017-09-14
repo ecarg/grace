@@ -31,37 +31,35 @@ DIM = ':'
 OUTSIDE_TAG = "OUTSIDE"
 GUESS_TAG = "GUESS"
 SPACE = ' '
-PADDING = {
+PADDING = collections.OrderedDict([
+    ('unk', '<UNK/>'),
     # 음절단위 학습셋에서 사용하는 패딩
-    'pre':'<p>',\
-    'suf':'</p>',\
-    'op_wrd':'<w>',\
-    'cl_wrd':'</w>',\
-    'unk':'<UNK/>',
+    ('pre', '<p>'),
+    ('suf', '</p>'),
+    ('op_wrd', '<w>'),
+    ('cl_wrd', '</w>'),
     # 자소단위 학습셋에서 사용하는 패딩
     # 한글 초/중/종
-    'cho':'<c>',
-    'u_cho':'<uc>',
-    'jung':'<j>',
-    'u_jung':'<uj>',
-    'jong':'<o>',
-    'u_jong':'<uo>',
+    ('cho', '<c>'),
+    ('u_cho', '<uc>'),
+    ('jung', '<j>'),
+    ('u_jung', '<uj>'),
+    ('jong', '<o>'),
+    ('u_jong', '<uo>'),
     # dight, alphabet
-    'dig':'<d>',
-    'u_dig':'<ud>',
-    'eng':'<e>',
-    'u_eng':'<ue>',
+    ('dig', '<d>'),
+    ('u_dig', '<ud>'),
+    ('eng', '<e>'),
+    ('u_eng', '<ue>'),
     # hanja
-    'hanja':'<h>',
-    'u_hanja':'<uh>',
+    ('hanja', '<h>'),
+    ('u_hanja', '<uh>'),
     # symbol
-    'symbol':'<y>',
-    'u_symbol':'<uy>',
+    ('symbol', '<y>'),
+    ('u_symbol', '<uy>'),
     # unknown
-    'etc':'<t>',
-    'u_etc':'<ut>',
-}
-
+    ('etc', '<t>')
+])
 
 # 얘측한 아이템을 표현
 PredItem = collections.namedtuple('PredItem', 'beg end tag')
@@ -130,11 +128,10 @@ class TrainContext():
     """
     음절을 자소로 확장하는 기능을 담는 클래스 입니다.
     """
-    def __init__(self, voca, is_phonemes=False):
-        self.voca = voca
+    def __init__(self, is_phonemes=False):
         self.is_phonemes = is_phonemes
-
-    def ext_hangul(self, syl):
+    @classmethod
+    def ext_hangul(cls, syl):
         """
         한글 1음절을 3개의 자소로 확장합니다.
         :param syl:  확장할 음절
@@ -144,24 +141,45 @@ class TrainContext():
 
         char = unicodedata.normalize('NFKD', syl)
         if len(char) == 1: # 초성만 있는 경우
-            ch1 = char[0] if char[0] in self.voca['in'] else PADDING['u_cho']
-            ext += [ch1, PADDING['jung'], PADDING['jong']]
+            ext += [char, PADDING['jung'], PADDING['jong']]
             return ext
 
         if len(char) == 2: # 초/중성만 있는 경우
-            ch1 = char[0] if char[0] in self.voca['in'] else PADDING['u_cho']
-            ch2 = char[1] if char[1] in self.voca['in'] else PADDING['u_jung']
+            ch1 = char[0]
+            ch2 = char[1]
             ext += [ch1, ch2, PADDING['jong']]
             return ext
 
         if len(char) == 3: # 초/중성만 있는 경우
-            ch1 = char[0] if char[0] in self.voca['in'] else PADDING['u_cho']
-            ch2 = char[1] if char[1] in self.voca['in'] else PADDING['u_jung']
-            ch3 = char[2] if char[2] in self.voca['in'] else PADDING['u_jong']
+            ch1 = char[0]
+            ch2 = char[1]
+            ch3 = char[2]
             ext += [ch1, ch2, ch3]
             return ext
 
         return [PADDING['etc'], syl, PADDING['etc']]
+
+    @classmethod
+    def check_char_type(cls, char):
+        """
+        문자에 대한 타입을 리턴합니다.
+        """
+        if char.isdigit():
+            return PADDING['u_dig']
+        elif char.isalpha():
+            return PADDING['u_eng']
+        elif char in string.punctuation:
+            return PADDING['u_symbol']
+        name = unicodedata.name(char)
+        if 'HANGUL CHOSEONG' in name:
+            return PADDING['u_cho']
+        elif 'HANGUL JUNGSEONG' in name:
+            return PADDING['u_jung']
+        elif 'HANGUL JONGSEONG' in name:
+            return PADDING['u_jong']
+        elif 'CJK UNIFIED' in name:
+            return PADDING['u_hanja']
+        return PADDING['unk']
 
     def expand_context(self, context):
         """
@@ -181,17 +199,13 @@ class TrainContext():
                 if 'HANGUL SYLLABLE' in name:
                     ext += self.ext_hangul(syl)
                 elif 'CJK UNIFIED' in name:
-                    ch1 = syl if syl in self.voca['in'] else PADDING['u_hanja']
-                    ext += [PADDING['hanja'], ch1, PADDING['hanja']]
+                    ext += [PADDING['hanja'], syl, PADDING['hanja']]
                 elif syl in string.punctuation:
-                    ch1 = syl if syl in self.voca['in'] else PADDING['u_symbol']
-                    ext += [PADDING['symbol'], ch1, PADDING['symbol']]
+                    ext += [PADDING['symbol'], syl, PADDING['symbol']]
                 elif syl.isdigit():
-                    ch1 = syl if syl in self.voca['in'] else PADDING['u_dig']
-                    ext += [PADDING['dig'], ch1, PADDING['dig']]
+                    ext += [PADDING['dig'], syl, PADDING['dig']]
                 elif syl.isalpha():
-                    ch1 = syl if syl in self.voca['in'] else PADDING['u_eng']
-                    ext += [PADDING['eng'], ch1, PADDING['eng']]
+                    ext += [PADDING['eng'], syl, PADDING['eng']]
                 else:
                     ext += [PADDING['etc'], syl, PADDING['etc']]
 
@@ -229,13 +243,7 @@ class TrainContext():
             ext_left_context = self.expand_context(' '.join(left_padding+left_context))
             ext_right_context = self.expand_context(' '.join(right_context+right_padding))
             return "%s %s %s" % (ext_left_context, ext_syl, ext_right_context)
-
-        check_unk = []
-        for char in left_padding+left_context+[cur_syl]+right_context+right_padding:
-            chk = char if char in self.voca['in'] else PADDING['unk']
-            check_unk.append(chk)
-        return ' '.join(check_unk)
-        #return ' '.join(left_padding+left_context), cur_syl, ' '.join(right_context+right_padding)
+        return ' '.join(left_padding+left_context+[cur_syl]+right_context+right_padding)
 
 class Sentence(object):
     """
@@ -264,6 +272,18 @@ class Sentence(object):
     def __len__(self):
         return len(self.org)
 
+    @classmethod
+    def in_to_num(cls, voca, char):
+        """
+        음절 또는 자소 하나를 숫자로 바꿉니다.
+        :param voca: 사전
+        :param char: 대상 음절 또는 자소
+        """
+        num = voca['in'][char]
+        if num:
+            return num
+        return voca['in'][TrainContext.check_char_type(char)]
+
     def to_num_arr(self, voca, is_phonemes=False):
         """
         문장을 문장에 포함된 문자 갯수 만큼의 배치 크기의 숫자 배열을 생성하여 리턴한다.
@@ -273,9 +293,9 @@ class Sentence(object):
         """
         if self.label_nums and self.context_nums:
             return self.label_nums, self.context_nums
-        for label, context in self.translate_cnn_corpus(voca, 10, is_phonemes):
+        for label, context in self.translate_cnn_corpus(10, is_phonemes):
             self.label_nums.append(voca['out'][label])
-            self.context_nums.append([voca['in'][char] for char in context.split()])
+            self.context_nums.append([self.in_to_num(voca, char) for char in context.split()])
         return self.label_nums, self.context_nums
 
     def to_tensor(self, voca, is_phonemes=False):
@@ -322,14 +342,14 @@ class Sentence(object):
         """
         return "".join([x.ne_str for x in self.named_entity])
 
-    def translate_cnn_corpus(self, voca=None, context_size=10, is_phonemes=False):
+    def translate_cnn_corpus(self, context_size=10, is_phonemes=False):
         """
         context_size 크기를 갖는 ngram 형태로 학습 코퍼스를 생성합니다.
         :param context_size: context size
         """
         words = [list(word) for word in self.raw_str().split(" ")]
         cnn_corpus = []
-        context_tool = TrainContext(voca, is_phonemes)
+        context_tool = TrainContext(is_phonemes)
 
         cur_idx = 0
         for idx_1, word in enumerate(words):
