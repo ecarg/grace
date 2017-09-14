@@ -14,12 +14,10 @@ __copyright__ = 'No copyright. Just copyleft!'
 ###########
 import argparse
 import codecs
-from collections import Counter, defaultdict
 import logging
-import re
 import sys
 
-import corpus_parser
+import gazetteer
 
 
 #############
@@ -29,25 +27,7 @@ def run():
     """
     actual function which is doing some task
     """
-    gazetteer = defaultdict(Counter)
-    for line in sys.stdin:
-        line = line.rstrip('\r\n')
-        if not line:
-            continue
-        sent = corpus_parser.Sentence(line)
-        for ne_ in sent.named_entity:
-            if ne_.ne_tag == corpus_parser.OUTSIDE_TAG or len(ne_.ne_str) < 2:
-                continue
-            ne_.ne_str = ne_.ne_str.lower()
-            gazetteer[ne_.ne_str][ne_.ne_tag] += 1
-            if ne_.ne_tag in ['DT', 'TI'] and not re.match(r'^[0-9 ]+$', ne_.ne_str):
-                ne_str_norm = re.sub(r'[0-9]', '0', ne_.ne_str)
-                if ne_str_norm != ne_.ne_str:
-                    gazetteer[ne_str_norm]['%s0' % ne_.ne_tag] += 1
-                    logging.debug('%s => %s', ne_.ne_str, ne_str_norm)
-    for ne_str, cnt in sorted(gazetteer.items(), key=lambda x: x[0]):
-        cates = sorted(cnt.items(), key=lambda x: x[1], reverse=True)
-        print('%s\t%s' % (ne_str, ','.join([cate for cate, freq in cates])))
+    gazetteer.build(sys.stdin, sys.stdout)
 
 
 ########
