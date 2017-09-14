@@ -60,13 +60,13 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
     run function which is the start point of program
     :param  args:  arguments
     """
-    voca = data.load_voca(args.rsc_dir, args.phonemes, args.cutoff)
+    voca = data.load_voca(args.rsc_dir, args.phoneme, args.cutoff)
     if args.model_name.lower() == 'fnn':
         hidden_dim = (2 * args.window + 1) * args.embed_dim + len(voca['out'])
-        model_ = model.Fnn(args.window, voca, args.embed_dim, hidden_dim)
+        model_ = model.Fnn(args.window, voca, args.embed_dim, hidden_dim, args.phoneme)
     elif args.model_name.lower() == 'cnn':
         hidden_dim = ((2 + 3 + 3 + 4 + 1) * args.embed_dim * 4 + len(voca['out'])) // 2
-        model_ = model.Cnn(args.window, voca, args.embed_dim, hidden_dim)
+        model_ = model.Cnn(args.window, voca, args.embed_dim, hidden_dim, args.phoneme)
 
     data_ = data.load_data(args.in_pfx, voca)
 
@@ -86,7 +86,7 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
     iter_ = 0
     for epoch in range(args.epoch_num):
         for train_sent in data_['train']:
-            train_labels, train_contexts = train_sent.to_tensor(voca)
+            train_labels, train_contexts = train_sent.to_tensor(voca, args.phoneme)
             if torch.cuda.is_available():
                 train_labels = train_labels.cuda()
                 train_contexts = train_contexts.cuda()
@@ -102,7 +102,7 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
                 losses.append(loss.data[0])
                 cnt = Counter()
                 for dev_sent in data_['dev']:
-                    dev_labels, dev_contexts = dev_sent.to_tensor(voca)
+                    dev_labels, dev_contexts = dev_sent.to_tensor(voca, args.phoneme)
                     if torch.cuda.is_available():
                         dev_labels = dev_labels.cuda()
                         dev_contexts = dev_contexts.cuda()
@@ -155,9 +155,9 @@ def main():
                         type=int, default=BATCH_SIZE)
     parser.add_argument('--epoch-num', help='epoch number <default: %d>' % EPOCH_NUM, metavar='INT',
                         type=int, default=EPOCH_NUM)
-    parser.add_argument('--phonemes', help='expand phonemes context', action='store_true')
+    parser.add_argument('--phoneme', help='expand phonemes context', action='store_true')
     parser.add_argument('--cutoff', help='cutoff', action='store',\
-            type=int, metavar="int", default=1)
+            type=int, metavar="int", default=5)
     parser.add_argument('--debug', help='enable debug', action='store_true')
     args = parser.parse_args()
 

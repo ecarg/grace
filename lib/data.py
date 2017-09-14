@@ -13,6 +13,7 @@ __copyright__ = 'No copyright. Just copyleft!'
 ###########
 import codecs
 import random
+from collections import defaultdict
 import corpus_parser
 
 
@@ -74,16 +75,15 @@ def load_voca(dir_, is_phonemes=False, cutoff=1):
         :param  is_in: is input voa
         :return:  (vocabulary, inverted vocabulary) pair
         """
-        syl_meta = ['pre', 'suf', 'op_wrd', 'cl_wrd', 'unk']
-        pho_meta = ['cho', 'u_cho', 'jung', 'u_jung', 'jong', 'u_jong', 'dig', 'u_dig',
-                    'eng', 'u_eng', 'hanja', 'u_hanja', 'symbol', 'u_symbol', 'etc', 'u_etc']
-        voca = {}    # string to number
+        metas = ['unk', 'pre', 'suf', 'op_wrd', 'cl_wrd', 'cho', 'u_cho', 'jung', 
+                'u_jung', 'jong', 'u_jong', 'dig', 'u_dig', 'eng', 'u_eng', 'hanja', 
+                'u_hanja', 'symbol', 'u_symbol', 'etc']
+        voca = defaultdict(int)    # string to number
         acov = []    # number to string
         if is_in:
-            for meta in pho_meta if is_phonemes else syl_meta:
-                val = corpus_parser.PADDING[meta]
-                voca[val] = len(voca)
-                acov.append(val)
+            for special in corpus_parser.PADDING.values():
+                voca[special] = len(voca)
+                acov.append(special)
 
         for line in codecs.open(path, 'r', encoding='UTF-8'):
             line = line.rstrip('\r\n')
