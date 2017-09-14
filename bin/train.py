@@ -60,7 +60,7 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
     run function which is the start point of program
     :param  args:  arguments
     """
-    voca = data.load_voca(args.rsc_dir)
+    voca = data.load_voca(args.rsc_dir, args.phonemes, args.cutoff)
     if args.model_name.lower() == 'fnn':
         hidden_dim = (2 * args.window + 1) * args.embed_dim + len(voca['out'])
         model_ = model.Fnn(args.window, voca, args.embed_dim, hidden_dim)
@@ -155,6 +155,9 @@ def main():
                         type=int, default=BATCH_SIZE)
     parser.add_argument('--epoch-num', help='epoch number <default: %d>' % EPOCH_NUM, metavar='INT',
                         type=int, default=EPOCH_NUM)
+    parser.add_argument('--phonemes', help='expand phonemes context', action='store_true')
+    parser.add_argument('--cutoff', help='cutoff', action='store',\
+            type=int, metavar="int", default=1)
     parser.add_argument('--debug', help='enable debug', action='store_true')
     args = parser.parse_args()
 
