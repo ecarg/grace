@@ -67,15 +67,24 @@ def load_voca(dir_, is_phonemes=False, cutoff=1):
     :param  cutoff: cutoff
     :return:  (in, out) vocabulary pair
     """
-    def _load_voca_inner(path, is_in, cutoff):
+    def _load_voca_inner(path, is_in):
         """
         load vocabulary from file
         :param  path:  file path
-        :param  name: is input voa
+        :param  is_in: is input voa
         :return:  (vocabulary, inverted vocabulary) pair
         """
+        syl_meta = ['pre', 'suf', 'op_wrd', 'cl_wrd', 'unk']
+        pho_meta = ['cho', 'u_cho', 'jung', 'u_jung', 'jong', 'u_jong', 'dig', 'u_dig',
+                    'eng', 'u_eng', 'hanja', 'u_hanja', 'symbol', 'u_symbol', 'etc', 'u_etc']
         voca = {}    # string to number
         acov = []    # number to string
+        if is_in:
+            for meta in pho_meta if is_phonemes else syl_meta:
+                val = corpus_parser.PADDING[meta]
+                voca[val] = len(voca)
+                acov.append(val)
+
         for line in codecs.open(path, 'r', encoding='UTF-8'):
             line = line.rstrip('\r\n')
             if not line:
@@ -98,7 +107,7 @@ def load_voca(dir_, is_phonemes=False, cutoff=1):
             voca_path = '%s/voca.pho.%s' % (dir_, name)
         else:
             voca_path = '%s/voca.syl.%s' % (dir_, name)
-        voca, acov = _load_voca_inner(voca_path, name == 'in', cutoff)
+        voca, acov = _load_voca_inner(voca_path, name == 'in')
         voca_dic[name] = voca
         voca_dic[name[::-1]] = acov
     return voca_dic
