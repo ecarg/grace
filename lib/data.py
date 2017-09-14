@@ -12,9 +12,7 @@ __copyright__ = 'No copyright. Just copyleft!'
 # imports #
 ###########
 import codecs
-from collections import defaultdict
 import random
-
 import corpus_parser
 
 
@@ -61,28 +59,33 @@ class NerDataset(object):
 #############
 # functions #
 #############
-def load_voca(dir_):
+def load_voca(dir_, is_phonemes=False, cutoff=1):
     """
     load input/output vocabularies
     :param  dir_:  where vocabulary files are
+    :param  is_phonemes:  자소단위 사전인 경우
+    :param  cutoff: cutoff
     :return:  (in, out) vocabulary pair
     """
-    def _load_voca_inner(path, unk=False):
+    def _load_voca_inner(path, is_in, cutoff):
         """
         load vocabulary from file
         :param  path:  file path
-        :param  unk:  set unknown as 0 or not
+        :param  name: is input voa
         :return:  (vocabulary, inverted vocabulary) pair
         """
         voca = {}    # string to number
-        if unk:
-            voca = defaultdict(int)
-            voca['<unk/>'] = 0
         acov = []    # number to string
         for line in codecs.open(path, 'r', encoding='UTF-8'):
             line = line.rstrip('\r\n')
             if not line:
                 continue
+            # in voca인 경우, 빈도가 있고, cutoff를 적용한다.
+            if is_in:
+                key, freq = line.split("\t", 1)
+                if int(freq) <= cutoff:
+                    continue
+                line = key
             if line in voca:
                 continue
             voca[line] = len(voca)
@@ -91,7 +94,11 @@ def load_voca(dir_):
 
     voca_dic = {}
     for name in ['in', 'out']:
-        voca, acov = _load_voca_inner('%s/voca.%s' % (dir_, name), name == 'in')
+        if is_phonemes:
+            voca_path = '%s/voca.pho.%s' % (dir_, name)
+        else:
+            voca_path = '%s/voca.syl.%s' % (dir_, name)
+        voca, acov = _load_voca_inner(voca_path, name == 'in', cutoff)
         voca_dic[name] = voca
         voca_dic[name[::-1]] = acov
     return voca_dic

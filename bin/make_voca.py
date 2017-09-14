@@ -15,8 +15,12 @@ import argparse
 import logging
 import sys
 from collections import Counter
-import corpus_parser
+from operator import itemgetter
 import unicodedata
+import corpus_parser
+
+# 메타 태그(<p>)는 cutoff에서 잘리지 않도록 적당히 큰값으로 넣어준다.
+DEFAULT_MAX = 999999999
 
 #############
 # functions #
@@ -32,13 +36,16 @@ def build_syllable_voca_in(args):
             raw = item.ne_str.replace(" ", "")
             for syl in raw:
                 cnt[syl] += 1
-    print(corpus_parser.PADDING['pre'])
-    print(corpus_parser.PADDING['suf'])
-    print(corpus_parser.PADDING['op_wrd'])
-    print(corpus_parser.PADDING['cl_wrd'])
-    for syl, freq in cnt.items():
+    print("%s\t%d" % (corpus_parser.PADDING['pre'], DEFAULT_MAX))
+    print("%s\t%d" % (corpus_parser.PADDING['suf'], DEFAULT_MAX))
+    print("%s\t%d" % (corpus_parser.PADDING['op_wrd'], DEFAULT_MAX))
+    print("%s\t%d" % (corpus_parser.PADDING['cl_wrd'], DEFAULT_MAX))
+    print("%s\t%d" % (corpus_parser.PADDING['unk'], DEFAULT_MAX))
+
+    sorted_cnt = sorted(cnt.items(), key=itemgetter(1), reverse=True)
+    for syl, freq in sorted_cnt:
         if freq > args.cutoff:
-            print(syl)
+            print('%s\t%d' % (syl, freq))
 
 def build_voca_out(args):
     """
@@ -66,30 +73,31 @@ def build_phonemes_voca_in(args):
                 for pho in phonemes:
                     cnt[pho] += 1
 
-    print(corpus_parser.PADDING['cho'])
-    print(corpus_parser.PADDING['u_cho'])
-    print(corpus_parser.PADDING['jung'])
-    print(corpus_parser.PADDING['u_jung'])
-    print(corpus_parser.PADDING['jong'])
-    print(corpus_parser.PADDING['u_jong'])
-    print(corpus_parser.PADDING['dig'])
-    print(corpus_parser.PADDING['u_dig'])
-    print(corpus_parser.PADDING['eng'])
-    print(corpus_parser.PADDING['u_eng'])
-    print(corpus_parser.PADDING['hanja'])
-    print(corpus_parser.PADDING['u_hanja'])
-    print(corpus_parser.PADDING['symbol'])
-    print(corpus_parser.PADDING['u_symbol'])
-    print(corpus_parser.PADDING['etc'])
-    print(corpus_parser.PADDING['u_etc'])
+    print("%s\t%d" % (corpus_parser.PADDING['cho'], DEFAULT_MAX))
+    print("%s\t%d" % (corpus_parser.PADDING['u_cho'], DEFAULT_MAX))
+    print("%s\t%d" % (corpus_parser.PADDING['jung'], DEFAULT_MAX))
+    print("%s\t%d" % (corpus_parser.PADDING['u_jung'], DEFAULT_MAX))
+    print("%s\t%d" % (corpus_parser.PADDING['jong'], DEFAULT_MAX))
+    print("%s\t%d" % (corpus_parser.PADDING['u_jong'], DEFAULT_MAX))
+    print("%s\t%d" % (corpus_parser.PADDING['dig'], DEFAULT_MAX))
+    print("%s\t%d" % (corpus_parser.PADDING['u_dig'], DEFAULT_MAX))
+    print("%s\t%d" % (corpus_parser.PADDING['eng'], DEFAULT_MAX))
+    print("%s\t%d" % (corpus_parser.PADDING['u_eng'], DEFAULT_MAX))
+    print("%s\t%d" % (corpus_parser.PADDING['hanja'], DEFAULT_MAX))
+    print("%s\t%d" % (corpus_parser.PADDING['u_hanja'], DEFAULT_MAX))
+    print("%s\t%d" % (corpus_parser.PADDING['symbol'], DEFAULT_MAX))
+    print("%s\t%d" % (corpus_parser.PADDING['u_symbol'], DEFAULT_MAX))
+    print("%s\t%d" % (corpus_parser.PADDING['etc'], DEFAULT_MAX))
+    print("%s\t%d" % (corpus_parser.PADDING['u_etc'], DEFAULT_MAX))
 
-    for syl, freq in cnt.items():
+    sorted_cnt = sorted(cnt.items(), key=itemgetter(1), reverse=True)
+    for syl, freq in sorted_cnt:
         if freq > args.cutoff:
-            print(syl)
+            print('%s\t%d' % (syl, freq))
 
 def run(args): # pylint: disable=too-many-locals
     """
-    vocabulary를 생성합니다. 
+    vocabulary를 생성합니다.
     :param  args:  arguments
     """
     if args.unit == 'syllable':
@@ -120,7 +128,7 @@ def main():
     parser.add_argument('--type', help='label or source text <default: in>',\
             metavar='[in|out]', default='in')
     parser.add_argument('--cutoff', help='cutoff', action='store',\
-            type=int, metavar="int", default=5)
+            type=int, metavar="int", default=1)
     parser.add_argument('--debug', help='enable debug', action='store_true')
     args = parser.parse_args()
 

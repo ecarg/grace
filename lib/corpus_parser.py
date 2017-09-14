@@ -17,9 +17,10 @@ import sys
 import os
 import hashlib
 import collections
+import unicodedata
+import string
 import torch
 import torch.utils.data
-
 
 ##########
 # global #
@@ -124,6 +125,118 @@ class ParseError(Exception):
     """
     pass
 
+
+class TrainContext():
+    """
+    음절을 자소로 확장하는 기능을 담는 클래스 입니다.
+    """
+    def __init__(self, voca, is_phonemes=False):
+        self.voca = voca
+        self.is_phonemes = is_phonemes
+
+    def ext_hangul(self, syl):
+        """
+        한글 1음절을 3개의 자소로 확장합니다.
+        :param syl:  확장할 음절
+        :return list: 고정길이 3을 갖는 확장된 리스트
+        """
+        ext = []
+
+        char = unicodedata.normalize('NFKD', syl)
+        if len(char) == 1: # 초성만 있는 경우
+            ch1 = char[0] if char[0] in self.voca['in'] else PADDING['u_cho']
+            ext += [ch1, PADDING['jung'], PADDING['jong']]
+            return ext
+
+        if len(char) == 2: # 초/중성만 있는 경우
+            ch1 = char[0] if char[0] in self.voca['in'] else PADDING['u_cho']
+            ch2 = char[1] if char[1] in self.voca['in'] else PADDING['u_jung']
+            ext += [ch1, ch2, PADDING['jong']]
+            return ext
+
+        if len(char) == 3: # 초/중성만 있는 경우
+            ch1 = char[0] if char[0] in self.voca['in'] else PADDING['u_cho']
+            ch2 = char[1] if char[1] in self.voca['in'] else PADDING['u_jung']
+            ch3 = char[2] if char[2] in self.voca['in'] else PADDING['u_jong']
+            ext += [ch1, ch2, ch3]
+            return ext
+
+        return [PADDING['etc'], syl, PADDING['etc']]
+
+    def expand_context(self, context):
+        """
+        컨텍스트 문자열을 자소단위로 확장한다.
+        :param  context: 확장할 문자열
+        :param  is_right: 오른쪽 패딩인지 여부(open/close 구분용)
+        :return: 자소단위로 확장한 문자열
+        """
+        ext = []
+        for syl in context.split(' '):
+            try:
+                name = unicodedata.name(syl)
+            except TypeError:
+                # 1음절이 아닌 경우, 패딩이다.
+                ext += [syl] * 3
+            else:
+                if 'HANGUL SYLLABLE' in name:
+                    ext += self.ext_hangul(syl)
+                elif 'CJK UNIFIED' in name:
+                    ch1 = syl if syl in self.voca['in'] else PADDING['u_hanja']
+                    ext += [PADDING['hanja'], ch1, PADDING['hanja']]
+                elif syl in string.punctuation:
+                    ch1 = syl if syl in self.voca['in'] else PADDING['u_symbol']
+                    ext += [PADDING['symbol'], ch1, PADDING['symbol']]
+                elif syl.isdigit():
+                    ch1 = syl if syl in self.voca['in'] else PADDING['u_dig']
+                    ext += [PADDING['dig'], ch1, PADDING['dig']]
+                elif syl.isalpha():
+                    ch1 = syl if syl in self.voca['in'] else PADDING['u_eng']
+                    ext += [PADDING['eng'], ch1, PADDING['eng']]
+                else:
+                    ext += [PADDING['etc'], syl, PADDING['etc']]
+
+        # 3배로 확장되므로, 항상 3으로 나눈 나머지는 없어야 한다.
+        assert len(ext) % 3 == 0
+        return ' '.join(ext)
+
+    def get_context(self, cur_idx, marked_text, context_size):
+        """
+        현재 위치를 기준으로 좌우 컨텍스트를 가져옵니다.
+        :param cur_idx: '<w>,</w>'를 제외한 원래 현재 위치
+        :param marked_text: '<w>,</w>를 포함한 리스트
+        :param context_size: 추출할 컨텍스트 길이
+        """
+        # marked_text = ['어', '제', '<w>', '철', '수', '가', '</w>', '밥', '을', '먹', '고'
+        #                 0    1            2    3         <-- cur_idx('<w>,</w>' 제외된 인덱스)
+        #                 0    1      2     3    4     5   <-- ('<w>,</w>' 포함된 인덱스)
+        #
+        # 윈쪽 컨텍스트의 시작위치 : '철'의 경우 : 2 - 10 + 1 = -7 : 7개의 패딩 필요
+        cur_syl = marked_text[cur_idx+1]
+        left_begin = max(cur_idx-context_size+1, 0)
+        # 왼쪽 컨텍스트의 끝 위치 : '철'의 경우 : 2+1 = 3
+        left_end = cur_idx+1
+        left_context = marked_text[left_begin:left_end]
+        # 오른쪽 컨텍스트의 시작위치 : '철'의 경우 : 2 + 2 = 4 / 현재 다음+1, <w>건너뜀+1 = +2
+        right_begin = cur_idx+2
+        # 오른쪽 컨텍스트의 끝위치 : '철'의 경우 2 + 10 + 2 / <w>, </w>의 개수만큼 2개 보정
+        right_end = cur_idx+context_size+2
+        right_context = marked_text[right_begin:right_end]
+        left_padding = [PADDING['pre']] * (context_size - len(left_context))
+        right_padding = [PADDING['suf']] * (context_size - len(right_context))
+
+        if self.is_phonemes:
+            ext_syl = self.expand_context(cur_syl)
+            ext_left_context = self.expand_context(' '.join(left_padding+left_context))
+            ext_right_context = self.expand_context(' '.join(right_context+right_padding))
+            return "%s %s %s" % (ext_left_context, ext_syl, ext_right_context)
+
+        check_unk = []
+        for char in left_padding+left_context+[cur_syl]+right_context+right_padding:
+            chk = char if char in self.voca['in'] else PADDING['unk']
+            check_unk.append(chk)
+        return ' '.join(check_unk)
+        #return ' '.join(left_padding+left_context), cur_syl, ' '.join(right_context+right_padding)
+
 class Sentence(object):
     """
     sentence
@@ -151,28 +264,30 @@ class Sentence(object):
     def __len__(self):
         return len(self.org)
 
-    def to_num_arr(self, voca):
+    def to_num_arr(self, voca, is_phonemes=False):
         """
         문장을 문장에 포함된 문자 갯수 만큼의 배치 크기의 숫자 배열을 생성하여 리턴한다.
         :param  voca:  in/out vocabulary
+        :param  is_phonemes: 자소단위로 확장할 경우
         :return:  문자 갯수만큼의 숫자 배열
         """
         if self.label_nums and self.context_nums:
             return self.label_nums, self.context_nums
-        for label, context in self.translate_cnn_corpus(10):
+        for label, context in self.translate_cnn_corpus(voca, 10, is_phonemes):
             self.label_nums.append(voca['out'][label])
             self.context_nums.append([voca['in'][char] for char in context.split()])
         return self.label_nums, self.context_nums
 
-    def to_tensor(self, voca):
+    def to_tensor(self, voca, is_phonemes=False):
         """
         문장을 문장에 포함된 문자 갯수 만큼의 배치 크기의 텐서를 생성하여 리턴한다.
         :param  voca:  in/out vocabulary
+        :param  is_phonemes: 자소단위로 확장할 경우
         :return:  문자 갯수만큼의 텐서
         """
         if self.label_tensors is not None and self.context_tensors is not None:
             return self.label_tensors, self.context_tensors
-        self.to_num_arr(voca)
+        self.to_num_arr(voca, is_phonemes)
         self.label_tensors = torch.LongTensor(self.label_nums)
         self.context_tensors = torch.LongTensor(self.context_nums)
         return self.label_tensors, self.context_tensors
@@ -207,58 +322,34 @@ class Sentence(object):
         """
         return "".join([x.ne_str for x in self.named_entity])
 
-    @staticmethod
-    def _get_context(cur_idx, marked_text, context_size):
-        """
-        현재 위치를 기준으로 좌우 컨텍스트를 가져옵니다.
-        :param cur_idx: '<w>,</w>'를 제외한 원래 현재 위치
-        :param marked_text: '<w>,</w>를 포함한 리스트
-        :param context_size: 추출할 컨텍스트 길이
-        """
-        # marked_text = ['어', '제', '<w>', '철', '수', '가', '</w>', '밥', '을', '먹', '고'
-        #                 0    1            2    3         <-- cur_idx('<w>,</w>' 제외된 인덱스)
-        #                 0    1      2     3    4     5   <-- ('<w>,</w>' 포함된 인덱스)
-        #
-        # 윈쪽 컨텍스트의 시작위치 : '철'의 경우 : 2 - 10 + 1 = -7 : 7개의 패딩 필요
-        left_begin = max(cur_idx-context_size+1, 0)
-        # 왼쪽 컨텍스트의 끝 위치 : '철'의 경우 : 2+1 = 3
-        left_end = cur_idx+1
-        left_context = marked_text[left_begin:left_end]
-        # 오른쪽 컨텍스트의 시작위치 : '철'의 경우 : 2 + 2 = 4 / 현재 다음+1, <w>건너뜀+1 = +2
-        right_begin = cur_idx+2
-        # 오른쪽 컨텍스트의 끝위치 : '철'의 경우 2 + 10 + 2 / <w>, </w>의 개수만큼 2개 보정
-        right_end = cur_idx+context_size+2
-        right_context = marked_text[right_begin:right_end]
-        left_padding = [PADDING['pre']] * (context_size - len(left_context))
-        right_padding = [PADDING['suf']] * (context_size - len(right_context))
-        return ' '.join(left_padding+left_context), ' '.join(right_context+right_padding)
-
-    def translate_cnn_corpus(self, context_size=10):
+    def translate_cnn_corpus(self, voca=None, context_size=10, is_phonemes=False):
         """
         context_size 크기를 갖는 ngram 형태로 학습 코퍼스를 생성합니다.
         :param context_size: context size
         """
         words = [list(word) for word in self.raw_str().split(" ")]
         cnn_corpus = []
+        context_tool = TrainContext(voca, is_phonemes)
 
         cur_idx = 0
         for idx_1, word in enumerate(words):
             marked_list = words[:]
             marked_list[idx_1] = [PADDING['op_wrd']] + word + [PADDING['cl_wrd']]
             marked_text = [syl for word in marked_list for syl in word]
-            for syl in word:
-                left, right = self._get_context(cur_idx, marked_text, context_size)
+            for _ in word:
+                context = context_tool.get_context(cur_idx, marked_text, context_size)
                 bio, tag = self.syl2tag[cur_idx+idx_1]
                 if tag == OUTSIDE_TAG:
                     label = bio
                 else:
                     label = '%s-%s' % (bio, tag)
                 #print("%s\t%s %s %s" % (label, left, syl, right))
-                cnn_corpus.append((label, "%s %s %s" % (left, syl, right)))
+                cnn_corpus.append((label, context))
                 cur_idx += 1
         return cnn_corpus
 
-    def _do_action(self, nes, pred, prev_idx, cur_idx, prev_wrd_idx, cur_wrd_idx):
+    @staticmethod
+    def _do_action(nes, pred, prev_idx, cur_idx, prev_wrd_idx, cur_wrd_idx):
         """
         현재 태그, 다음태그를 고려해서 액선을 수행한다.
         :param nes:  발견된 NE를 담는 리스트
@@ -305,7 +396,6 @@ class Sentence(object):
                     nes[-1].ne_tag = prev_tag
                     nes[-1].ne_end = prev_idx+prev_wrd_idx
                 nes.append(NamedEntity('', cur_tag, cur_idx+cur_wrd_idx, -1))
-
 
     def compare_label(self, predicts, voca=None):
         """
