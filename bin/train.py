@@ -116,7 +116,7 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
                 sys.stderr.flush()
                 if not f_scores or f_score > max(f_scores):
                     logging.info('writing best model..')
-                    torch.save(model_.state_dict(), args.output)
+                    torch.save(model_, args.output)
                 accuracies.append(accuracy_char)
                 f_scores.append(f_score)
                 logging.info('epoch: %d, iter: %dk, loss: %f, accuracy: %f, f-score: %f (max: %r)',
