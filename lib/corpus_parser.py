@@ -21,6 +21,7 @@ import unicodedata
 import string
 import torch
 import torch.utils.data
+import gazetteer
 
 ##########
 # global #
@@ -249,6 +250,7 @@ class Sentence(object):
     """
     sentence
     """
+    gazet_voca = {}
     def __init__(self, sent):
         self.raw = sent
         self.named_entity = []
@@ -257,8 +259,10 @@ class Sentence(object):
         self.md5 = hashlib.sha224(sent.encode("UTF-8")).hexdigest()
         self.label_nums = []
         self.context_nums = []
+        self.gazet_matches = []
         self.label_tensors = None
         self.context_tensors = None
+        self.gazet_tensors = None
 
         for item in NamedEntity.parse(sent):
             self.named_entity.append(item)
@@ -284,33 +288,104 @@ class Sentence(object):
             return num
         return voca['in'][TrainContext.check_char_type(char)]
 
-    def to_num_arr(self, voca, is_phonemes=False):
+    def to_num_arr(self, voca, context_size, is_phonemes=False):
         """
         문장을 문장에 포함된 문자 갯수 만큼의 배치 크기의 숫자 배열을 생성하여 리턴한다.
         :param  voca:  in/out vocabulary
         :param  is_phonemes: 자소단위로 확장할 경우
+        :param  context_size: context size
         :return:  문자 갯수만큼의 숫자 배열
         """
         if self.label_nums and self.context_nums:
             return self.label_nums, self.context_nums
-        for label, context in self.translate_cnn_corpus(10, is_phonemes):
+        for label, context in self.translate_cnn_corpus(context_size, is_phonemes):
             self.label_nums.append(voca['out'][label])
             self.context_nums.append([self.in_to_num(voca, char) for char in context.split()])
         return self.label_nums, self.context_nums
 
-    def to_tensor(self, voca, is_phonemes=False):
+    def match_gazet(self, gazet, voca, context_size):
+        """
+        gazetteer에서 매핑된 태그를 바탕으로 1-hot 벡터를 만듭니다.
+        """
+
+        if not self.gazet_voca:
+            self.gazet_voca.update(voca['out'])
+            for tag in ['DT0', 'TI0']:
+                for bio in ['B', 'I']:
+                    self.gazet_voca['%s-%s' % (bio, tag)] = len(self.gazet_voca)
+
+        empty_gazet = [0] * len(self.gazet_voca)
+        for tags in gazetteer.match(gazet, self):
+            self.gazet_matches.append(empty_gazet)
+            for tag in tags:
+                self.gazet_matches[-1][self.gazet_voca[tag]] = 1
+
+        # BS * 15
+        # BS * 21 * 15 사이즈로 만들어야 한다.
+        raw_str = self.raw_str()
+        gazet_context = []
+        for idx, (char, tag) in enumerate(zip(raw_str, self.gazet_matches)):
+            if char == ' ':
+                continue
+            has_boe = False
+            left_context = []
+            for jdx in range(idx-1, idx-(context_size*2), -1):
+                if jdx < 0 or len(left_context) >= context_size:
+                    break
+                if raw_str[jdx] == ' ':
+                    if has_boe:
+                        continue
+                    else:
+                        left_context.append(self.gazet_matches[jdx])
+                        has_boe = True
+                else:
+                    left_context.append(self.gazet_matches[jdx])
+            if not has_boe and len(left_context) < context_size:
+                left_context.append(empty_gazet)
+            left_context.extend([empty_gazet] * (context_size - len(left_context)))
+            assert len(left_context) == context_size
+            has_eoe = False
+            right_context = []
+            for jdx in range(idx+1, idx+(context_size*2)+1):
+                if jdx >= len(raw_str) or len(right_context) >= context_size:
+                    break
+                if raw_str[jdx] == ' ':
+                    if has_eoe:
+                        continue
+                    else:
+                        right_context.append(self.gazet_matches[jdx])
+                        has_eoe = True
+                else:
+                    right_context.append(self.gazet_matches[jdx])
+            if not has_eoe and len(right_context) < context_size:
+                right_context.append(empty_gazet)
+            right_context.extend([empty_gazet] * (context_size - len(right_context)))
+            assert len(right_context) == context_size
+
+            gazet_context.append(\
+                    list(reversed(left_context))+[self.gazet_matches[idx]]+right_context)
+        assert len(gazet_context) == self.get_syllable_count()
+
+        self.gazet_tensors = torch.FloatTensor(gazet_context)
+
+    def to_tensor(self, voca, gazet, context_size, is_phonemes=False):
         """
         문장을 문장에 포함된 문자 갯수 만큼의 배치 크기의 텐서를 생성하여 리턴한다.
         :param  voca:  in/out vocabulary
+        :param  gazet: gazztter dictionary
         :param  is_phonemes: 자소단위로 확장할 경우
+        :param context_size: context size
         :return:  문자 갯수만큼의 텐서
         """
+        if not self.gazet_matches:
+            self.match_gazet(gazet, voca, context_size)
+
         if self.label_tensors is not None and self.context_tensors is not None:
-            return self.label_tensors, self.context_tensors
-        self.to_num_arr(voca, is_phonemes)
+            return self.label_tensors, self.context_tensors, self.gazet_tensors
+        self.to_num_arr(voca, context_size, is_phonemes)
         self.label_tensors = torch.LongTensor(self.label_nums)
         self.context_tensors = torch.LongTensor(self.context_nums)
-        return self.label_tensors, self.context_tensors
+        return self.label_tensors, self.context_tensors, self.gazet_tensors
 
     def get_word_count(self):
         """
@@ -419,7 +494,7 @@ class Sentence(object):
 
     def get_named_entity_list(self, predicts, voca=None, cnt=None):
         """
-        개체명 코퍼스에서 등장하는 NE에 대해서 (시작,끝,태그)의 리스트를 구합니다. 
+        개체명 코퍼스에서 등장하는 NE에 대해서 (시작,끝,태그)의 리스트를 구합니다.
         :param predicts:  모델에서 예측된 클래스 배열
         :param voca:  예측된 클래스를 문자(B-PS)로 변경하기 위한 사전
         :param cnt: Counter()이며, accuracy계산을 위해 필요한 경우 카운트한다.

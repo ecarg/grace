@@ -25,6 +25,7 @@ import torch.utils.data
 
 import data
 import model
+import gazetteer
 
 
 ###########
@@ -61,15 +62,19 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
     :param  args:  arguments
     """
     voca = data.load_voca(args.rsc_dir, args.phoneme, args.cutoff)
-    if args.model_name.lower() == 'fnn':
+    gazet = gazetteer.load(open("%s/gazetteer.dic" % args.rsc_dir))
+    if args.model_name.lower() == 'fnn3':
         hidden_dim = (2 * args.window + 1) * args.embed_dim + len(voca['out'])
-        model_ = model.Fnn(args.window, voca, args.embed_dim, hidden_dim, args.phoneme)
-    elif args.model_name.lower() == 'cnn':
-        hidden_dim = ((2 + 3 + 3 + 4 + 1) * args.embed_dim * 4 + len(voca['out'])) // 2
-        model_ = model.Cnn(args.window, voca, args.embed_dim, hidden_dim, args.phoneme)
+        model_ = model.Fnn3(args.window, voca, args.embed_dim, hidden_dim, args.phoneme)
+    elif args.model_name.lower() == 'fnn4':
+        hidden_dim = (2 * args.window + 1) * (args.embed_dim + len(voca['out'])+4)+ len(voca['out'])
+        model_ = model.Fnn4(args.window, voca, args.embed_dim, hidden_dim, args.phoneme)
     elif args.model_name.lower() == 'cnn3':
-        hidden_dim = 800
-        model_ = model.CnnV3(args.window, voca, args.embed_dim, hidden_dim, args.phoneme)
+        hidden_dim = 1000
+        model_ = model.Cnn3(args.window, voca, args.embed_dim, hidden_dim, args.phoneme)
+    elif args.model_name.lower() == 'cnn4':
+        hidden_dim = 2000
+        model_ = model.Cnn4(args.window, voca, args.embed_dim, hidden_dim, args.phoneme)
 
     data_ = data.load_data(args.in_pfx, voca)
 
@@ -89,13 +94,15 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
     iter_ = 0
     for epoch in range(args.epoch_num):
         for train_sent in data_['train']:
-            train_labels, train_contexts = train_sent.to_tensor(voca, args.phoneme)
+            train_labels, train_contexts, train_gazet = \
+                train_sent.to_tensor(voca, gazet, args.window, args.phoneme)
             if torch.cuda.is_available():
                 train_labels = train_labels.cuda()
                 train_contexts = train_contexts.cuda()
+                train_gazet = train_gazet.cuda()
             optimizer.zero_grad()
             model_.is_training = True
-            outputs = model_(autograd.Variable(train_contexts))
+            outputs = model_((autograd.Variable(train_contexts), autograd.Variable(train_gazet)))
             loss = criterion(outputs, autograd.Variable(train_labels))
             loss.backward()
             optimizer.step()
@@ -105,11 +112,14 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
                 losses.append(loss.data[0])
                 cnt = Counter()
                 for dev_sent in data_['dev']:
-                    _, dev_contexts = dev_sent.to_tensor(voca, args.phoneme)
+                    _, dev_contexts, dev_gazet =\
+                            dev_sent.to_tensor(voca, gazet, args.window, args.phoneme)
                     if torch.cuda.is_available():
                         dev_contexts = dev_contexts.cuda()
+                        dev_gazet = dev_gazet.cuda()
                     model_.is_training = False
-                    outputs = model_(autograd.Variable(dev_contexts))
+                    outputs = model_((autograd.Variable(dev_contexts),\
+                                      autograd.Variable(dev_gazet)))
                     _, predicts = outputs.max(1)
                     cnt += dev_sent.compare_label(predicts, voca)
                 accuracy_char = cnt['correct_char'] / cnt['total_char']
