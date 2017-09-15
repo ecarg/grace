@@ -67,6 +67,9 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
     elif args.model_name.lower() == 'cnn':
         hidden_dim = ((2 + 3 + 3 + 4 + 1) * args.embed_dim * 4 + len(voca['out'])) // 2
         model_ = model.Cnn(args.window, voca, args.embed_dim, hidden_dim, args.phoneme)
+    elif args.model_name.lower() == 'cnn3':
+        hidden_dim = 800
+        model_ = model.CnnV3(args.window, voca, args.embed_dim, hidden_dim, args.phoneme)
 
     data_ = data.load_data(args.in_pfx, voca)
 
@@ -102,9 +105,8 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
                 losses.append(loss.data[0])
                 cnt = Counter()
                 for dev_sent in data_['dev']:
-                    dev_labels, dev_contexts = dev_sent.to_tensor(voca, args.phoneme)
+                    _, dev_contexts = dev_sent.to_tensor(voca, args.phoneme)
                     if torch.cuda.is_available():
-                        dev_labels = dev_labels.cuda()
                         dev_contexts = dev_contexts.cuda()
                     model_.is_training = False
                     outputs = model_(autograd.Variable(dev_contexts))
