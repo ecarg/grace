@@ -154,7 +154,8 @@ def match(gazet, sent):
             logging.debug('[%d]', idx)
             continue
         logging.debug('[%d] %s: %s', idx, char, CATE_DELIM.join(sorted(list(sent_tags[idx]))))
-    return [sent_tags[idx] for idx, char in enumerate(sent.org) if char != ' ']    # remove spaces
+    return sent_tags
+    #return [sent_tags[idx] for idx, char in enumerate(sent.org) if char != ' ']    # remove spaces
 
 
 def run(args):
