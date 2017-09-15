@@ -8,6 +8,9 @@ __copyright__ = 'No copyright. Just copyleft!'
 """
 
 
+# pylint: disable=no-member
+
+
 ###########
 # imports #
 ###########
