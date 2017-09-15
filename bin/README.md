@@ -103,3 +103,21 @@ optional arguments:
 ```bash
 bin/train.py -r rsc -p data/corpus -m fnn -o fnn.out  --log fnn.log
 ```
+
+# tag.py
+* 입력된 텍스트에 개체명 태깅을 수행합니다.
+* 사용법1) 개체명 태깅을 수행하고 싶은 경우
+```
+$ cat ./sample.txt
+이날 에인절스 선발 존 래키를 상태로 최희섭이
+$ ./tag.py -i ./sample -m model_path
+이날에 <인절스:OG> 선발 <존 래키:PS>를 상대로 <최희섭:PS>이
+
+```
+* 사용법2 태깅된 코퍼스를 이용하여 정확률 / 재현률을 체크하고 싶은 경우
+$ cat ./tagged.txt
+이날에 <인절스:OG> 선발 <존 래키:PS>를 상대로 <최희섭:PS>은
+$ ./tag.py -i ./tagged.txt -m model_path --eval
+accuracy: 0.902757, f-score: 0.366470 (recall = 0.387546, precision = 0.347569
+```
+

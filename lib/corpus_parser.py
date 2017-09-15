@@ -417,19 +417,18 @@ class Sentence(object):
                     nes[-1].ne_end = prev_idx+prev_wrd_idx
                 nes.append(NamedEntity('', cur_tag, cur_idx+cur_wrd_idx, -1))
 
-    def compare_label(self, predicts, voca=None):
+    def get_named_entity_list(self, predicts, voca=None, cnt=None):
         """
-        예측한 레이블과 현재 문장의 레이블을 비교해서 맞춘 카운트를 계산한다.
+        개체명 코퍼스에서 등장하는 NE에 대해서 (시작,끝,태그)의 리스트를 구합니다. 
         :param predicts:  모델에서 예측된 클래스 배열
         :param voca:  예측된 클래스를 문자(B-PS)로 변경하기 위한 사전
+        :param cnt: Counter()이며, accuracy계산을 위해 필요한 경우 카운트한다.
         """
-        logging.debug(self.raw_str())
         words = [list(word) for word in self.raw_str().split(" ")]
         cur_idx = 0
         prev_idx = 'BOS'
         prev_wrd_idx = 0
         nes = []
-        cnt = collections.Counter()
 
         assert len(predicts) == self.get_syllable_count()
         if voca:
@@ -442,13 +441,25 @@ class Sentence(object):
                 bio, tag = self.syl2tag[cur_idx+wrd_idx]
                 label = ("%s-%s") % (bio, tag) if tag != OUTSIDE_TAG else 'O'
                 logging.debug("[%d] %s %s : %s", cur_idx+wrd_idx, label, syl, pred[cur_idx])
-                if label == pred[cur_idx]:
+                if cnt is not None and label == pred[cur_idx]:
                     cnt['correct_char'] += 1
                 self._do_action(nes, pred, prev_idx, cur_idx, prev_wrd_idx, wrd_idx)
                 prev_idx = cur_idx
                 prev_wrd_idx = wrd_idx
                 cur_idx += 1
         self._do_action(nes, pred, prev_idx, 'EOS', prev_wrd_idx, len(words)-1)
+        return nes
+
+    def compare_label(self, predicts, voca=None):
+        """
+        예측한 레이블과 현재 문장의 레이블을 비교해서 맞춘 카운트를 계산한다.
+        :param predicts:  모델에서 예측된 클래스 배열
+        :param voca:  예측된 클래스를 문자(B-PS)로 변경하기 위한 사전
+        """
+        logging.debug(self.raw_str())
+        cnt = collections.Counter()
+
+        nes = self.get_named_entity_list(predicts, voca, cnt)
 
         gold_ne = set([x.get_ne_pos_tag() for x in self.named_entity\
                     if x.get_ne_pos_tag() is not None])
