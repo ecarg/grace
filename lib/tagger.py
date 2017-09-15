@@ -27,11 +27,12 @@ class GraceTagger(object):
     학습된 모델을 이용하여 원문을 태깅하는 클리스입니다.
     """
     def __init__(self, model_path, gpu_num=None):
-        self.model = torch.load(model_path)
         if gpu_num:
             os.environ['CUDA_VISIBLE_DEVICES'] = str(gpu_num)
-            if torch.cuda.is_available():
-                self.model.cuda()
+
+        self.model = torch.load(model_path)
+        if torch.cuda.is_available():
+            self.model.cuda()
 
     def tagging(self, line):
         """
@@ -86,7 +87,7 @@ class GraceTagger(object):
         """
         입력문장이 개체명 tagged corpus인 경우 f-score를 계산하여 출력합니다.
         :param corpus_path:  개체명 코퍼스 파일 경로
-        :return: accuracy, precision, recall, f_score 
+        :return: accuracy, precision, recall, f_score
         """
         cnt = collections.Counter()
         for sent in cp.sents(corpus_path):
