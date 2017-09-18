@@ -118,6 +118,6 @@ class GraceTagger(object):
         accuracy_char = cnt['correct_char'] / cnt['total_char']
         precision, recall, f_score = self._calc_f_score(cnt['total_gold_ne'],\
                 cnt['total_pred_ne'], cnt['match_ne'])
-        logging.info('accuracy: %f, f-score: %f (recall = %f, precision = %f',\
+        logging.info('accuracy: %f, f-score: %f (recall = %f, precision = %f)',\
                 accuracy_char, f_score, recall, precision)
         return accuracy_char, precision, recall, f_score

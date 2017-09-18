@@ -13,6 +13,7 @@ __copyright__ = 'No copyright. Just copyleft!'
 # imports #
 ###########
 import argparse
+import codecs
 import logging
 import os
 import sys
@@ -65,9 +66,9 @@ def main():
     args = parser.parse_args()
 
     if args.input:
-        sys.stdin = open(args.input, 'rt')
+        sys.stdin = codecs.open(args.input, 'r', encoding='UTF-8')
     if args.output:
-        sys.stdout = open(args.output, 'wt')
+        sys.stdout = codecs.open(args.output, 'w', encoding='UTF-8')
     if args.debug:
         logging.basicConfig(level=logging.DEBUG)
     else:
