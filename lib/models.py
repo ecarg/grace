@@ -15,7 +15,6 @@ __copyright__ = 'No copyright. Just copyleft!'
 # imports #
 ###########
 import torch
-import torch.autograd as autograd
 import torch.nn as nn
 import torch.nn.functional as F
 
@@ -33,7 +32,6 @@ class Ner(nn.Module):
         :param  voca:  vocabulary
         """
         super().__init__()
-        self.is_training = True    # is training phase or not (use drop-out at training)
         self.window = window
         self.voca = voca
         self.gazet = gazet
@@ -82,7 +80,6 @@ class Fnn3(Ner):
         self.embedding = nn.Embedding(len(voca['in']), embed_dim)
         if self.is_phoneme:
             self.pho2syl = nn.Conv2d(1, embed_dim, (3, embed_dim), 3)
-        self.hidden = autograd.Variable(torch.zeros(1, 1, hidden_dim))
         self.relu = nn.ReLU()
         self.embeds2hidden = nn.Linear(context_len * embed_dim, hidden_dim)
         self.hidden2tag = nn.Linear(hidden_dim, len(voca['out']))
@@ -100,7 +97,7 @@ class Fnn3(Ner):
             embeds.contiguous()
         hidden_out = self.embeds2hidden(embeds.view(len(contexts), -1))
         hidden_relu = self.relu(hidden_out)
-        hidden_drop = F.dropout(hidden_relu, training=self.is_training)
+        hidden_drop = F.dropout(hidden_relu, training=self.training)
         tag_out = self.hidden2tag(hidden_drop)
         return tag_out
 
@@ -122,7 +119,6 @@ class Fnn4(Ner):
         if self.is_phoneme:
             self.pho2syl = nn.Conv2d(1, embed_dim, (3, embed_dim), 3)
 
-        self.hidden = autograd.Variable(torch.zeros(1, 1, hidden_dim))
         self.relu = nn.ReLU()
         self.embeds2hidden = nn.Linear(context_len * (embed_dim + len(voca['out'])+4), hidden_dim)
         self.hidden2tag = nn.Linear(hidden_dim, len(voca['out']))
@@ -141,7 +137,7 @@ class Fnn4(Ner):
         embeds = torch.cat([embeds, gazet], 2)
         hidden_out = self.embeds2hidden(embeds.view(len(contexts), -1))
         hidden_relu = self.relu(hidden_out)
-        hidden_drop = F.dropout(hidden_relu, training=self.is_training)
+        hidden_drop = F.dropout(hidden_relu, training=self.training)
         tag_out = self.hidden2tag(hidden_drop)
         return tag_out
 
@@ -158,7 +154,6 @@ class Cnn3(Ner):    # pylint: disable=too-many-instance-attributes
         :param  hidden_dim:  hidden layer dimension
         """
         super().__init__(window, voca, gazet, is_phoneme)
-        self.is_training = True
         self.context_len = 2 * window + 1
 
         self.embedding = nn.Embedding(len(voca['in']), embed_dim)
@@ -185,7 +180,6 @@ class Cnn3(Ner):    # pylint: disable=too-many-instance-attributes
         self.conv3_4 = nn.Conv2d(1, embed_dim * 16, kernel_size=(3, embed_dim * 8), stride=1)
 
         # conv => hidden
-        self.hidden = autograd.Variable(torch.zeros(1, 1, hidden_dim))
         self.conv2hidden = nn.Linear(800, hidden_dim)
 
         # hidden => tag
@@ -220,12 +214,12 @@ class Cnn3(Ner):    # pylint: disable=too-many-instance-attributes
 
         # conv => hidden
         features = conv3_4_relu.view(len(contexts), -1)
-        features_drop = F.dropout(features, training=self.is_training)
+        features_drop = F.dropout(features, training=self.training)
         hidden_out = self.conv2hidden(features_drop)
         hidden_out_relu = F.relu(hidden_out)
 
         # hidden => tag
-        hidden_out_drop = F.dropout(hidden_out_relu, training=self.is_training)
+        hidden_out_drop = F.dropout(hidden_out_relu, training=self.training)
         tag_out = self.hidden2tag(hidden_out_drop)
 
         return tag_out
@@ -243,7 +237,6 @@ class Cnn4(Ner):    # pylint: disable=too-many-instance-attributes
         :param  hidden_dim:  hidden layer dimension
         """
         super().__init__(window, voca, gazet, is_phoneme)
-        self.is_training = True
         self.context_len = 2 * window + 1
 
         self.embedding = nn.Embedding(len(voca['in']), embed_dim)
@@ -270,7 +263,6 @@ class Cnn4(Ner):    # pylint: disable=too-many-instance-attributes
         self.conv3_4 = nn.Conv2d(1, feature_dim * 16, kernel_size=(3, feature_dim * 8), stride=1)
 
         # conv => hidden
-        self.hidden = autograd.Variable(torch.zeros(1, 1, hidden_dim))
         self.conv2hidden = nn.Linear(feature_dim * 16, hidden_dim)
 
         # hidden => tag
@@ -306,12 +298,12 @@ class Cnn4(Ner):    # pylint: disable=too-many-instance-attributes
 
         # conv => hidden
         features = conv3_4_relu.view(len(contexts), -1)
-        features_drop = F.dropout(features, training=self.is_training)
+        features_drop = F.dropout(features, training=self.training)
         hidden_out = self.conv2hidden(features_drop)
         hidden_out_relu = F.relu(hidden_out)
 
         # hidden => tag
-        hidden_out_drop = F.dropout(hidden_out_relu, training=self.is_training)
+        hidden_out_drop = F.dropout(hidden_out_relu, training=self.training)
         tag_out = self.hidden2tag(hidden_out_drop)
 
         return tag_out
