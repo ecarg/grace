@@ -13,6 +13,7 @@ __copyright__ = 'No copyright. Just copyleft!'
 # imports #
 ###########
 import argparse
+import codecs
 from collections import Counter
 import logging
 import os
@@ -62,7 +63,7 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
     :param  args:  arguments
     """
     voca = data.load_voca(args.rsc_dir, args.phoneme, args.cutoff)
-    gazet = gazetteer.load(open("%s/gazetteer.dic" % args.rsc_dir))
+    gazet = gazetteer.load(codecs.open("%s/gazetteer.dic" % args.rsc_dir, 'r', encoding='UTF-8'))
     
     # Build Model
     if args.model_name.lower() == 'fnn3':
@@ -151,7 +152,7 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
                 sys.stderr.flush()
                 if not f_scores or f_score > max(f_scores):
                     logging.info('writing best model..')
-                    torch.save(model, args.output)
+                    model.save(args.output)
                 accuracies.append(accuracy_char)
                 f_scores.append(f_score)
                 logging.info('epoch: %d, iter: %dk, loss: %f, accuracy: %f, f-score: %f (max: %r)',

@@ -29,6 +29,7 @@ class GraceTagger(object):
     """
     def __init__(self, model_path):
         self.model = models.Ner.load(model_path)
+        self.model.eval()
         self.voca = self.model.voca
         self.gazet = self.model.gazet
         self.window = self.model.window
