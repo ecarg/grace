@@ -42,6 +42,29 @@ class Ner(nn.Module):
     def forward(self, *inputs):
         raise NotImplementedError
 
+    def save(self, path):
+        """
+        모델을 저장하는 메소드
+        :param  path:  경로
+        """
+        if torch.cuda.is_available():
+            self.cpu()
+        torch.save(self, path)
+        if torch.cuda.is_available():
+            self.cuda()
+
+    @classmethod
+    def load(cls, path):
+        """
+        저장된 모델을 로드하는 메소드
+        :param  path:  경로
+        :return:  모델 클래스 객체
+        """
+        model = torch.load(path)
+        if torch.cuda.is_available():
+            model.cuda()
+        return model
+
 
 class Fnn3(Ner):
     """
