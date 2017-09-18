@@ -14,7 +14,9 @@ __copyright__ = 'No copyright. Just copyleft!'
 ###########
 import argparse
 import logging
+import os
 import sys
+
 import tagger
 
 GPU_NUM = 5
@@ -27,7 +29,10 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
     run function which is the start point of program
     :param  args:  arguments
     """
-    grace = tagger.GraceTagger(args.model, args.gpu_num)
+    if args.gpu_num:
+        os.environ['CUDA_VISIBLE_DEVICES'] = str(args.gpu_num)
+
+    grace = tagger.GraceTagger(args.model)
     logging.info("model loading complete...")
     if args.eval:
         grace.evaluate(sys.stdin)

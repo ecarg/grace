@@ -10,12 +10,13 @@ __copyright__ = 'No copyright. Just copyleft!'
 ###########
 # imports #
 ###########
-import os
 import collections
 import logging
 import torch
 import torch.autograd as autograd
+
 import corpus_parser as cp
+import models
 
 #########
 # types #
@@ -26,13 +27,8 @@ class GraceTagger(object):
     """
     학습된 모델을 이용하여 원문을 태깅하는 클리스입니다.
     """
-    def __init__(self, model_path, gpu_num=None):
-        if gpu_num:
-            os.environ['CUDA_VISIBLE_DEVICES'] = str(gpu_num)
-
-        self.model = torch.load(model_path)
-        if torch.cuda.is_available():
-            self.model.cuda()
+    def __init__(self, model_path):
+        self.model = models.Ner.load(model_path)
         self.voca = self.model.voca
         self.gazet = self.model.gazet
         self.window = self.model.window

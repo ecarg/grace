@@ -24,7 +24,7 @@ import torch.nn as nn
 import torch.utils.data
 
 import data
-import model
+import models
 import gazetteer
 
 
@@ -65,25 +65,25 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
     gazet = gazetteer.load(open("%s/gazetteer.dic" % args.rsc_dir))
     if args.model_name.lower() == 'fnn3':
         hidden_dim = (2 * args.window + 1) * args.embed_dim + len(voca['out'])
-        model_ = model.Fnn3(args.window, voca, gazet, args.embed_dim, hidden_dim, args.phoneme)
+        model = models.Fnn3(args.window, voca, gazet, args.embed_dim, hidden_dim, args.phoneme)
     elif args.model_name.lower() == 'fnn4':
         hidden_dim = (2 * args.window + 1) * (args.embed_dim + len(voca['out'])+4)+ len(voca['out'])
-        model_ = model.Fnn4(args.window, voca, gazet, args.embed_dim, hidden_dim, args.phoneme)
+        model = models.Fnn4(args.window, voca, gazet, args.embed_dim, hidden_dim, args.phoneme)
     elif args.model_name.lower() == 'cnn3':
         hidden_dim = 1000
-        model_ = model.Cnn3(args.window, voca, gazet, args.embed_dim, hidden_dim, args.phoneme)
+        model = models.Cnn3(args.window, voca, gazet, args.embed_dim, hidden_dim, args.phoneme)
     elif args.model_name.lower() == 'cnn4':
         hidden_dim = 2000
-        model_ = model.Cnn4(args.window, voca, gazet, args.embed_dim, hidden_dim, args.phoneme)
+        model = models.Cnn4(args.window, voca, gazet, args.embed_dim, hidden_dim, args.phoneme)
 
     data_ = data.load_data(args.in_pfx, voca)
 
     os.environ['CUDA_VISIBLE_DEVICES'] = str(args.gpu_num)
     if torch.cuda.is_available():
-        model_.cuda()
+        model.cuda()
 
     criterion = nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adam(model_.parameters())
+    optimizer = torch.optim.Adam(model.parameters())
 
     if args.log:
         print('iter\tloss\taccuracy\tf-score', file=args.log)
@@ -101,8 +101,8 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
                 train_contexts = train_contexts.cuda()
                 train_gazet = train_gazet.cuda()
             optimizer.zero_grad()
-            model_.is_training = True
-            outputs = model_((autograd.Variable(train_contexts), autograd.Variable(train_gazet)))
+            model.is_training = True
+            outputs = model((autograd.Variable(train_contexts), autograd.Variable(train_gazet)))
             loss = criterion(outputs, autograd.Variable(train_labels))
             loss.backward()
             optimizer.step()
@@ -117,9 +117,9 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
                     if torch.cuda.is_available():
                         dev_contexts = dev_contexts.cuda()
                         dev_gazet = dev_gazet.cuda()
-                    model_.is_training = False
-                    outputs = model_((autograd.Variable(dev_contexts),\
-                                      autograd.Variable(dev_gazet)))
+                    model.is_training = False
+                    outputs = model((autograd.Variable(dev_contexts),\
+                                     autograd.Variable(dev_gazet)))
                     _, predicts = outputs.max(1)
                     cnt += dev_sent.compare_label(predicts, voca)
                 accuracy_char = cnt['correct_char'] / cnt['total_char']
@@ -128,7 +128,7 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
                 sys.stderr.flush()
                 if not f_scores or f_score > max(f_scores):
                     logging.info('writing best model..')
-                    torch.save(model_, args.output)
+                    model.save(args.output)
                 accuracies.append(accuracy_char)
                 f_scores.append(f_score)
                 logging.info('epoch: %d, iter: %dk, loss: %f, accuracy: %f, f-score: %f (max: %r)',
