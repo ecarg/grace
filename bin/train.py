@@ -19,12 +19,12 @@ import os
 import sys
 
 import torch
-import torch.autograd as autograd
+from torch.autograd import Variable
 import torch.nn as nn
 import torch.utils.data
 
 import data
-import model
+import models
 import gazetteer
 
 
@@ -63,27 +63,32 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
     """
     voca = data.load_voca(args.rsc_dir, args.phoneme, args.cutoff)
     gazet = gazetteer.load(open("%s/gazetteer.dic" % args.rsc_dir))
+    
+    # Build Model
     if args.model_name.lower() == 'fnn3':
         hidden_dim = (2 * args.window + 1) * args.embed_dim + len(voca['out'])
-        model_ = model.Fnn3(args.window, voca, args.embed_dim, hidden_dim, args.phoneme)
+        model = models.Fnn3(args.window, voca, gazet, args.embed_dim, hidden_dim, args.phoneme)
     elif args.model_name.lower() == 'fnn4':
         hidden_dim = (2 * args.window + 1) * (args.embed_dim + len(voca['out'])+4)+ len(voca['out'])
-        model_ = model.Fnn4(args.window, voca, args.embed_dim, hidden_dim, args.phoneme)
+        model = models.Fnn4(args.window, voca, gazet, args.embed_dim, hidden_dim, args.phoneme)
     elif args.model_name.lower() == 'cnn3':
         hidden_dim = 1000
-        model_ = model.Cnn3(args.window, voca, args.embed_dim, hidden_dim, args.phoneme)
+        model = models.Cnn3(args.window, voca, gazet, args.embed_dim, hidden_dim, args.phoneme)
     elif args.model_name.lower() == 'cnn4':
         hidden_dim = 2000
-        model_ = model.Cnn4(args.window, voca, args.embed_dim, hidden_dim, args.phoneme)
+        model = models.Cnn4(args.window, voca, gazet, args.embed_dim, hidden_dim, args.phoneme)
 
+    # Load Data
     data_ = data.load_data(args.in_pfx, voca)
 
+    # Load GPU
     os.environ['CUDA_VISIBLE_DEVICES'] = str(args.gpu_num)
     if torch.cuda.is_available():
-        model_.cuda()
+        model.cuda()
 
+    # Loss / Optimizer
     criterion = nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adam(model_.parameters())
+    optimizer = torch.optim.Adam(model.parameters())
 
     if args.log:
         print('iter\tloss\taccuracy\tf-score', file=args.log)
@@ -94,41 +99,59 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
     iter_ = 0
     for epoch in range(args.epoch_num):
         for train_sent in data_['train']:
+            # Convert to CUDA Variable
             train_labels, train_contexts, train_gazet = \
                 train_sent.to_tensor(voca, gazet, args.window, args.phoneme)
+            train_labels = Variable(train_labels)
+            train_contexts = Variable(train_contexts)
+            train_gazet = Variable(train_gazet)
             if torch.cuda.is_available():
                 train_labels = train_labels.cuda()
                 train_contexts = train_contexts.cuda()
                 train_gazet = train_gazet.cuda()
+
+            # Reset Gradient
             optimizer.zero_grad()
-            model_.is_training = True
-            outputs = model_((autograd.Variable(train_contexts), autograd.Variable(train_gazet)))
-            loss = criterion(outputs, autograd.Variable(train_labels))
+
+            # Forwardprop / Backprop
+            model.train()
+            outputs = model((train_contexts, train_gazet))
+            loss = criterion(outputs, train_labels)
             loss.backward()
             optimizer.step()
             iter_ += 1
+
+            # Validation
             if iter_ % 1000 == 0:
-                # loss and accuracy
+                # Freeze parameters
+                model.eval()
+
+                # Calculate loss
                 losses.append(loss.data[0])
                 cnt = Counter()
                 for dev_sent in data_['dev']:
+                    # Convert to CUDA Variable
                     _, dev_contexts, dev_gazet =\
                             dev_sent.to_tensor(voca, gazet, args.window, args.phoneme)
+                    dev_contexts = Variable(dev_contexts, volatile=True)
+                    dev_gazet = Variable(dev_gazet, volatile=True)
+
                     if torch.cuda.is_available():
                         dev_contexts = dev_contexts.cuda()
                         dev_gazet = dev_gazet.cuda()
-                    model_.is_training = False
-                    outputs = model_((autograd.Variable(dev_contexts),\
-                                      autograd.Variable(dev_gazet)))
+
+                    outputs = model((dev_contexts, dev_gazet))
                     _, predicts = outputs.max(1)
                     cnt += dev_sent.compare_label(predicts, voca)
+
+                # Calculate accuracy / f-score
                 accuracy_char = cnt['correct_char'] / cnt['total_char']
                 f_score = _calc_f_score(cnt['total_gold_ne'], cnt['total_pred_ne'], cnt['match_ne'])
                 print(file=sys.stderr)
                 sys.stderr.flush()
                 if not f_scores or f_score > max(f_scores):
                     logging.info('writing best model..')
-                    torch.save(model_, args.output)
+                    torch.save(model, args.output)
                 accuracies.append(accuracy_char)
                 f_scores.append(f_score)
                 logging.info('epoch: %d, iter: %dk, loss: %f, accuracy: %f, f-score: %f (max: %r)',

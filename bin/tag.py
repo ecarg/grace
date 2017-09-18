@@ -13,8 +13,11 @@ __copyright__ = 'No copyright. Just copyleft!'
 # imports #
 ###########
 import argparse
+import codecs
 import logging
+import os
 import sys
+
 import tagger
 
 GPU_NUM = 5
@@ -27,8 +30,11 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
     run function which is the start point of program
     :param  args:  arguments
     """
-    grace = tagger.GraceTagger(args.model, args.gpu_num)
+    if args.gpu_num:
+        os.environ['CUDA_VISIBLE_DEVICES'] = str(args.gpu_num)
 
+    grace = tagger.GraceTagger(args.model)
+    logging.info("model loading complete...")
     if args.eval:
         grace.evaluate(sys.stdin)
         return
@@ -49,7 +55,7 @@ def main():
     """
     parser = argparse.ArgumentParser(description='train model from data')
     parser.add_argument('-m', '--model', help='model path', metavar='FILE', required=True)
-    parser.add_argument('-i', '--input', help='corpus to tagging', metavar='FILE', required=True)
+    parser.add_argument('-i', '--input', help='corpus to tagging', metavar='FILE')
     parser.add_argument('-o', '--output', help='named entity tagged corpus', metavar='FILE')
     parser.add_argument('--gpu-num', help='GPU number to use <default: %d>' % GPU_NUM,\
             metavar='INT', type=int, default=GPU_NUM)
@@ -60,9 +66,9 @@ def main():
     args = parser.parse_args()
 
     if args.input:
-        sys.stdin = open(args.input, 'rt')
+        sys.stdin = codecs.open(args.input, 'r', encoding='UTF-8')
     if args.output:
-        sys.stdout = open(args.output, 'wt')
+        sys.stdout = codecs.open(args.output, 'w', encoding='UTF-8')
     if args.debug:
         logging.basicConfig(level=logging.DEBUG)
     else:
