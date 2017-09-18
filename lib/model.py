@@ -27,7 +27,7 @@ class Ner(nn.Module):
     """
     part-of-speech tagger pytorch model
     """
-    def __init__(self, window, voca, is_phoneme):
+    def __init__(self, window, voca, gazet, is_phoneme):
         """
         :param  window:  left/right window size from current character
         :param  voca:  vocabulary
@@ -36,6 +36,7 @@ class Ner(nn.Module):
         self.is_training = True    # is training phase or not (use drop-out at training)
         self.window = window
         self.voca = voca
+        self.gazet = gazet
         self.is_phoneme = is_phoneme
 
     def forward(self, *inputs):
@@ -46,14 +47,14 @@ class Fnn3(Ner):
     """
     feed-forward neural network based part-of-speech tagger
     """
-    def __init__(self, window, voca, embed_dim, hidden_dim, is_phoneme):
+    def __init__(self, window, voca, gazet, embed_dim, hidden_dim, is_phoneme):
         """
         :param  window:  left/right window size from current character
         :param  voca:  vocabulary
         :param  embed_dim:  character embedding dimension
         :param  hidden_dim:  hidden layer dimension
         """
-        super().__init__(window, voca, is_phoneme)
+        super().__init__(window, voca, gazet, is_phoneme)
         context_len = 2 * window + 1
         self.embedding = nn.Embedding(len(voca['in']), embed_dim)
         if self.is_phoneme:
@@ -85,14 +86,14 @@ class Fnn4(Ner):
     """
     feed-forward neural network based part-of-speech tagger
     """
-    def __init__(self, window, voca, embed_dim, hidden_dim, is_phoneme):
+    def __init__(self, window, voca, gazet, embed_dim, hidden_dim, is_phoneme):
         """
         :param  window:  left/right window size from current character
         :param  voca:  vocabulary
         :param  embed_dim:  character embedding dimension
         :param  hidden_dim:  hidden layer dimension
         """
-        super().__init__(window, voca, is_phoneme)
+        super().__init__(window, voca, gazet, is_phoneme)
         context_len = 2 * window + 1
         self.embedding = nn.Embedding(len(voca['in']), embed_dim)
         if self.is_phoneme:
@@ -126,14 +127,14 @@ class Cnn3(Ner):    # pylint: disable=too-many-instance-attributes
     """
     convolutional neural network based part-of-speech tagger
     """
-    def __init__(self, window, voca, embed_dim, hidden_dim, is_phoneme):
+    def __init__(self, window, voca, gazet, embed_dim, hidden_dim, is_phoneme):
         """
         :param  window:  left/right window size from current character
         :param  voca:  vocabulary
         :param  embed_dim:  character embedding dimension
         :param  hidden_dim:  hidden layer dimension
         """
-        super().__init__(window, voca, is_phoneme)
+        super().__init__(window, voca, gazet, is_phoneme)
         self.is_training = True
         self.context_len = 2 * window + 1
 
@@ -211,14 +212,14 @@ class Cnn4(Ner):    # pylint: disable=too-many-instance-attributes
     """
     convolutional neural network based part-of-speech tagger
     """
-    def __init__(self, window, voca, embed_dim, hidden_dim, is_phoneme):
+    def __init__(self, window, voca, gazet, embed_dim, hidden_dim, is_phoneme):
         """
         :param  window:  left/right window size from current character
         :param  voca:  vocabulary
         :param  embed_dim:  character embedding dimension
         :param  hidden_dim:  hidden layer dimension
         """
-        super().__init__(window, voca, is_phoneme)
+        super().__init__(window, voca, gazet, is_phoneme)
         self.is_training = True
         self.context_len = 2 * window + 1
 
