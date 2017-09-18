@@ -65,16 +65,16 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
     gazet = gazetteer.load(open("%s/gazetteer.dic" % args.rsc_dir))
     if args.model_name.lower() == 'fnn3':
         hidden_dim = (2 * args.window + 1) * args.embed_dim + len(voca['out'])
-        model_ = model.Fnn3(args.window, voca, args.embed_dim, hidden_dim, args.phoneme)
+        model_ = model.Fnn3(args.window, voca, gazet, args.embed_dim, hidden_dim, args.phoneme)
     elif args.model_name.lower() == 'fnn4':
         hidden_dim = (2 * args.window + 1) * (args.embed_dim + len(voca['out'])+4)+ len(voca['out'])
-        model_ = model.Fnn4(args.window, voca, args.embed_dim, hidden_dim, args.phoneme)
+        model_ = model.Fnn4(args.window, voca, gazet, args.embed_dim, hidden_dim, args.phoneme)
     elif args.model_name.lower() == 'cnn3':
         hidden_dim = 1000
-        model_ = model.Cnn3(args.window, voca, args.embed_dim, hidden_dim, args.phoneme)
+        model_ = model.Cnn3(args.window, voca, gazet, args.embed_dim, hidden_dim, args.phoneme)
     elif args.model_name.lower() == 'cnn4':
         hidden_dim = 2000
-        model_ = model.Cnn4(args.window, voca, args.embed_dim, hidden_dim, args.phoneme)
+        model_ = model.Cnn4(args.window, voca, gazet, args.embed_dim, hidden_dim, args.phoneme)
 
     data_ = data.load_data(args.in_pfx, voca)
 
