@@ -15,6 +15,7 @@ import argparse
 import logging
 import sys
 import os
+import copy
 import hashlib
 import collections
 import unicodedata
@@ -316,7 +317,7 @@ class Sentence(object):
 
         empty_gazet = [0] * len(self.gazet_voca)
         for tags in gazetteer.match(gazet, self):
-            self.gazet_matches.append(empty_gazet)
+            self.gazet_matches.append(copy.deepcopy(empty_gazet))
             for tag in tags:
                 self.gazet_matches[-1][self.gazet_voca[tag]] = 1
 
@@ -341,8 +342,8 @@ class Sentence(object):
                 else:
                     left_context.append(self.gazet_matches[jdx])
             if not has_boe and len(left_context) < context_size:
-                left_context.append(empty_gazet)
-            left_context.extend([empty_gazet] * (context_size - len(left_context)))
+                left_context.append(copy.deepcopy(empty_gazet))
+            left_context.extend(copy.deepcopy([empty_gazet] * (context_size - len(left_context))))
             assert len(left_context) == context_size
             has_eoe = False
             right_context = []
@@ -358,14 +359,13 @@ class Sentence(object):
                 else:
                     right_context.append(self.gazet_matches[jdx])
             if not has_eoe and len(right_context) < context_size:
-                right_context.append(empty_gazet)
-            right_context.extend([empty_gazet] * (context_size - len(right_context)))
+                right_context.append(copy.deepcopy(empty_gazet))
+            right_context.extend(copy.deepcopy([empty_gazet] * (context_size - len(right_context))))
             assert len(right_context) == context_size
 
             gazet_context.append(\
                     list(reversed(left_context))+[self.gazet_matches[idx]]+right_context)
         assert len(gazet_context) == self.get_syllable_count()
-
         self.gazet_tensors = torch.FloatTensor(gazet_context)
 
     def to_tensor(self, voca, gazet, context_size, is_phonemes=False):
@@ -531,6 +531,7 @@ class Sentence(object):
         :param predicts:  모델에서 예측된 클래스 배열
         :param voca:  예측된 클래스를 문자(B-PS)로 변경하기 위한 사전
         """
+        logging.debug("====== compare label ======")
         logging.debug(self.raw_str())
         cnt = collections.Counter()
 
