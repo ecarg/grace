@@ -66,41 +66,16 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
     gazet = gazetteer.load(codecs.open("%s/gazetteer.dic" % args.rsc_dir, 'r', encoding='UTF-8'))
 
     # Build Model
-    if args.model_name.lower() == 'fnn3':
-        hidden_dim = (2 * args.window + 1) * args.embed_dim + len(voca['out'])
-        model = models.Fnn3(args.window, voca, gazet,
-                            args.embed_dim, hidden_dim, args.phoneme, args.gazet_1hot)
-    elif args.model_name.lower() == 'fnn4':
-        hidden_dim = (2 * args.window + 1) *\
-                (args.embed_dim + len(voca['out'])+4)+ len(voca['out'])
-        model = models.Fnn4(args.window, voca, gazet,
-                            args.embed_dim, hidden_dim, args.phoneme, args.gazet_1hot)
-    elif args.model_name.lower() == 'fnn5':
+    if args.model_name.lower() == 'fnn5':
         hidden_dim = (2 * args.window + 1) *\
                 (args.embed_dim + (args.embed_dim//2))+ len(voca['out'])
         model = models.Fnn5(args.window, voca, gazet,
-                            args.embed_dim, hidden_dim, args.phoneme, args.gazet_1hot)
-    elif args.model_name.lower() == 'cnn3':
-        hidden_dim = 1000
-        model = models.Cnn6(args.window, voca, gazet,
-                            args.embed_dim, hidden_dim, args.phoneme, args.gazet_1hot)
-    elif args.model_name.lower() == 'cnn4':
-        hidden_dim = 2000
-        model = models.Cnn4(args.window, voca, gazet,
-                            args.embed_dim, hidden_dim, args.phoneme, args.gazet_1hot)
-    elif args.model_name.lower() == 'cnn5':
-        hidden_dim = (args.embed_dim + len(voca['out'])) // 2
-        model = models.Cnn5(args.window, voca, gazet,
-                            args.embed_dim, hidden_dim, args.phoneme, args.gazet_1hot)
-    elif args.model_name.lower() == 'cnn6':
-        hidden_dim = (args.embed_dim * 4 + len(voca['out'])) // 2
-        model = models.Cnn6(args.window, voca, gazet,
-                            args.embed_dim, hidden_dim, args.phoneme, args.gazet_1hot)
+                            args.embed_dim, hidden_dim, args.phoneme, args.gazet_1hot, args.positional_encoding)
     elif args.model_name.lower() == 'cnn7':
         concat_dim = args.embed_dim + len(voca['out']) + 4
         hidden_dim = (concat_dim * 4 + len(voca['out'])) // 2
         model = models.Cnn7(args.window, voca, gazet,
-                            args.embed_dim, hidden_dim, args.phoneme, args.gazet_1hot)
+                            args.embed_dim, hidden_dim, args.phoneme, args.gazet_1hot, args.positional_encoding)
 
     # Load Data
     data_ = data.load_data(args.in_pfx, voca)
@@ -218,6 +193,7 @@ def main():
     parser.add_argument('--phoneme', help='expand phonemes context', action='store_true')
     parser.add_argument('--gazet_1hot', help='gazetteer type', action='store_true',
                         default=True)
+    parser.add_argument('--positional_encoding', help='add positional encoding', action='store_true', default=False)
     parser.add_argument('--cutoff', help='cutoff', action='store',\
             type=int, metavar="int", default=5)
     parser.add_argument('--debug', help='enable debug', action='store_true')
