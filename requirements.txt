@@ -1,2 +1,6 @@
 pyahocorasick==1.1.4
+tensorboard-pytorch==0.7.1
+tensorboardX==0.6.9
+tensorflow==1.3.0
+tensorflow-tensorboard==0.1.6
 torch==0.2.0.post3

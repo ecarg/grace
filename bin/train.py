@@ -17,8 +17,11 @@ import codecs
 from collections import Counter
 import logging
 import os
+import shutil
 import sys
+import time
 
+from tensorboardX import SummaryWriter
 import torch
 from torch.autograd import Variable
 import torch.nn as nn
@@ -57,6 +60,21 @@ def _calc_f_score(gold_ne, pred_ne, match_ne):
     return 2.0 * recall * precision / (recall + precision)
 
 
+def _make_model_id(args):
+    """
+    make model ID string
+    :return:  model ID
+    """
+    model_ids = [args.model_name, ]
+    model_ids.append('w%d' % args.window)
+    model_ids.append('e%d' % args.embed_dim)
+    model_ids.append('pho' if args.phoneme else 'chr')
+    model_ids.append('gzte' if args.gazet_embed else 'gzt1')
+    model_ids.append('pe%d' % (1 if args.pos_enc else 0))
+    model_ids.append('cut%d' % args.cutoff)
+    return '.'.join(model_ids)
+
+
 def run(args):    # pylint: disable=too-many-locals,too-many-statements
     """
     run function which is the start point of program
@@ -89,8 +107,17 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters())
 
-    if args.log:
-        print('iter\tloss\taccuracy\tf-score', file=args.log)
+    model_id = _make_model_id(args)
+    logf = None
+    if args.logdir:
+        model_dir = '%s/%s' % (args.logdir, model_id)
+        if os.path.exists(model_dir):
+            logging.info('removing log: %s' % model_dir)
+            shutil.rmtree(model_dir)
+            time.sleep(3)
+        sum_wrt = SummaryWriter(model_dir)
+        logf = open('%s/%s.tsv' % (args.logdir, model_id), 'wt')
+        print('iter\tloss\taccuracy\tf-score', file=logf)
     losses = []
     accuracies = []
     f_scores = []
@@ -157,10 +184,13 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
                 logging.info('epoch: %d, iter: %dk, loss: %f, accuracy: %f, f-score: %f (max: %r)',
                              epoch, iter_ // 1000, losses[-1], accuracy_char, f_score,
                              max(f_scores))
-                if args.log:
+                if args.logdir:
+                    sum_wrt.add_scalar('loss', losses[-1], iter_ // 1000)
+                    sum_wrt.add_scalar('accuracy', accuracy_char, iter_ // 1000)
+                    sum_wrt.add_scalar('f-score', f_score, iter_ // 1000)
                     print('{}\t{}\t{}\t{}'.format(iter_ // 1000, losses[-1], accuracy_char,
-                                                  f_score), file=args.log)
-                    args.log.flush()
+                                                  f_score), file=logf)
+                    logf.flush()
             elif iter_ % 100 == 0:
                 print('.', end='', file=sys.stderr)
                 sys.stderr.flush()
@@ -178,8 +208,7 @@ def main():
     parser.add_argument('-p', '--in-pfx', help='input data prefix', metavar='NAME', required=True)
     parser.add_argument('-m', '--model-name', help='model name', metavar='NAME', required=True)
     parser.add_argument('-o', '--output', help='model output file', metavar='FILE', required=True)
-    parser.add_argument('--log', help='loss and accuracy log file', metavar='FILE',
-                        type=argparse.FileType('wt'))
+    parser.add_argument('--logdir', help='tensorboard log dir', metavar='DIR')
     parser.add_argument('--window', help='left/right character window length <default: %d>' % \
                                           WINDOW, metavar='INT', type=int, default=WINDOW)
     parser.add_argument('--embed-dim', help='embedding dimension <default: %d>' % EMBED_DIM,
@@ -191,10 +220,7 @@ def main():
     parser.add_argument('--epoch-num', help='epoch number <default: %d>' % EPOCH_NUM, metavar='INT',
                         type=int, default=EPOCH_NUM)
     parser.add_argument('--phoneme', help='expand phonemes context', action='store_true')
-<<<<<<< HEAD
     parser.add_argument('--pos-enc', help='add positional encoding', action='store_true', default=False)
-=======
->>>>>>> cnn7에 --gazet-embed 옵션 적용 #49
     parser.add_argument('--gazet-embed', help='gazetteer type', action='store_true',
                         default=False)
     parser.add_argument('--cutoff', help='cutoff', action='store',\
