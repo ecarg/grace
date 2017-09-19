@@ -27,7 +27,7 @@ class Ner(nn.Module):
     """
     named entity recognizer pytorch model
     """
-    def __init__(self, window, voca, gazet, is_phoneme, is_gazet_1hot, is_positional_encoding):
+    def __init__(self, window, voca, gazet, phoneme, gazet_embed, pos_enc):
         """
         :param  window:  left/right window size from current character
         :param  voca:  vocabulary
@@ -36,9 +36,9 @@ class Ner(nn.Module):
         self.window = window
         self.voca = voca
         self.gazet = gazet
-        self.is_phoneme = is_phoneme
-        self.is_gazet_1hot = is_gazet_1hot
-        self.is_positional_encoding = is_positional_encoding
+        self.phoneme = phoneme
+        self.gazet_embed = gazet_embed
+        self.pos_enc = pos_enc
 
     def forward(self, *inputs):
         raise NotImplementedError
@@ -73,7 +73,6 @@ class Ner(nn.Module):
         :return: pe [context_len, embed_dim]
         """
         pe = torch.zeros([context_len, embed_dim])
-
         for j in range(context_len):
             j += 1 # 1-based indexing
             for k in range(embed_dim):
@@ -83,7 +82,6 @@ class Ner(nn.Module):
         pe = Variable(pe)
         if torch.cuda.is_available():
             pe = pe.cuda()
-
         return pe
 
 
@@ -91,27 +89,27 @@ class Fnn5(Ner):
     """
     feed-forward neural network based named entity recognizer
     """
-    def __init__(self, window, voca, gazet, embed_dim, hidden_dim, is_phoneme, is_gazet_1hot, is_positional_encoding):
+    def __init__(self, window, voca, gazet, embed_dim, hidden_dim, phoneme, gazet_embed, pos_enc):
         """
         :param  window:  left/right window size from current character
         :param  voca:  vocabulary
         :param  embed_dim:  character embedding dimension
         :param  hidden_dim:  hidden layer dimension
         """
-        super().__init__(window, voca, gazet, is_phoneme, is_gazet_1hot, is_positional_encoding)
+        super().__init__(window, voca, gazet, phoneme, gazet_embed, pos_enc)
         context_len = 2 * window + 1
         self.embedding = nn.Embedding(len(voca['in']), embed_dim)
         gazet_dim = len(voca['out'])+4
 
-        if not self.is_gazet_1hot:
-            gazet_dim = embed_dim//2
+        if self.gazet_embed:
+            gazet_dim = 20
             self.gazet_embedding = nn.Embedding(int(math.pow(2, len(voca['out'])+4)), gazet_dim)
 
-        if self.is_phoneme:
+        if self.phoneme:
             self.pho2syl = nn.Conv2d(1, embed_dim, (3, embed_dim), 3)
 
         # Add Positional Encoding
-        if self.is_positional_encoding:
+        if self.pos_enc:
             self.pe = self.positional_encoding(context_len, embed_dim)
 
         self.relu = nn.ReLU()
@@ -126,17 +124,17 @@ class Fnn5(Ner):
         """
         contexts, gazet = contexts_gazet
         embeds = self.embedding(contexts)
-        if self.is_phoneme:
+        if self.phoneme:
             embeds = F.relu(self.pho2syl(embeds.unsqueeze(1)).squeeze().transpose(1, 2))
 
-        if self.is_positional_encoding:
+        if self.pos_enc:
             embeds += self.pe 
 
-        if self.is_gazet_1hot:
-            embeds = torch.cat([embeds, gazet], 2)
-        else:
+        if self.gazet_embed:
             gazet_embeds = self.gazet_embedding(gazet)
             embeds = torch.cat([embeds, gazet_embeds], 2)
+        else:
+            embeds = torch.cat([embeds, gazet], 2)
 
         hidden_out = self.embeds2hidden(embeds.view(len(contexts), -1))
         hidden_relu = self.relu(hidden_out)
@@ -149,25 +147,30 @@ class Cnn7(Ner):    # pylint: disable=too-many-instance-attributes
     """
     convolutional neural network based named entity recognizer
     """
-    def __init__(self, window, voca, gazet, embed_dim, hidden_dim, is_phoneme, is_gazet_1hot, is_positional_encoding):
+    def __init__(self, window, voca, gazet, embed_dim, hidden_dim, phoneme, gazet_embed, pos_enc):
         """
         :param  window:  left/right window size from current character
         :param  voca:  vocabulary
         :param  embed_dim:  character embedding dimension
         :param  hidden_dim:  hidden layer dimension
         """
-        super().__init__(window, voca, gazet, is_phoneme, is_gazet_1hot, is_positional_encoding)
+        super().__init__(window, voca, gazet, phoneme, gazet_embed, pos_enc)
         self.context_len = 2 * window + 1
-
         self.embedding = nn.Embedding(len(voca['in']), embed_dim)
-        if self.is_phoneme:
+
+        gazet_dim = len(voca['out'])+4
+        if self.gazet_embed:
+            gazet_dim = 20
+            self.gazet_embedding = nn.Embedding(int(math.pow(2, len(voca['out'])+4)), gazet_dim)
+
+        if self.phoneme:
             self.pho2syl = nn.Conv1d(embed_dim, embed_dim, 3, 3)
 
         # Add Positional Encoding
-        if self.is_positional_encoding:
+        if self.pos_enc:
             self.pe = self.positional_encoding(self.context_len, embed_dim)
 
-        concat_dim = embed_dim + len(voca['out']) + 4
+        concat_dim = embed_dim + gazet_dim
         # conv2_1
         self.conv2_1 = nn.Conv1d(concat_dim, concat_dim, kernel_size=2)    # 20
         self.pool2_1 = nn.MaxPool1d(kernel_size=2, ceil_mode=True)    # 10
@@ -225,16 +228,21 @@ class Cnn7(Ner):    # pylint: disable=too-many-instance-attributes
         contexts, gazet = contexts_gazet
         embeds = self.embedding(contexts)
         # batch_size x context_len x embedding_dim => batch_size x embedding_dim x context_len
-        if self.is_phoneme:
+        if self.phoneme:
             embeds_t = F.relu(self.pho2syl(embeds.transpose(1, 2)))
             embeds = embeds_t.transpose(1, 2)
 
         # Add Positional Encoding
-        if self.is_positional_encoding:
+        if self.pos_enc:
             embeds = embeds + self.pe 
 
+        if self.gazet_embed:
+            gazet_embeds = self.gazet_embedding(gazet)
+            embeds = torch.cat([embeds, gazet_embeds], 2)
+        else:
+            embeds = torch.cat([embeds, gazet], 2)
+
         # concat gazet feature
-        embeds = torch.cat([embeds, gazet], 2)
         embeds_t = embeds.transpose(1, 2)
 
         # conv2_1

@@ -323,7 +323,7 @@ class Sentence(object):
         return gazet_list
 
 
-    def match_gazet(self, gazet, voca, context_size, is_gazet_1hot=True):
+    def match_gazet(self, gazet, voca, context_size, gazet_embed=False):
         """
         gazetteer에서 매핑된 태그를 바탕으로 1-hot 벡터를 만듭니다.
         """
@@ -385,13 +385,13 @@ class Sentence(object):
             gazet_context.append(\
                     list(reversed(left_context))+[self.gazet_matches[idx]]+right_context)
         assert len(gazet_context) == self.get_syllable_count()
-        if is_gazet_1hot:
-            self.gazet_tensors = torch.FloatTensor(gazet_context)
-        else:
+        if gazet_embed:
             self.gazet_tensors = torch.LongTensor(self.onehot2number(gazet_context))
+        else:
+            self.gazet_tensors = torch.FloatTensor(gazet_context)
 
 
-    def to_tensor(self, voca, gazet, context_size, is_phonemes=False, is_gazet_1hot=True):
+    def to_tensor(self, voca, gazet, context_size, is_phonemes=False, gazet_embed=False):
         """
         문장을 문장에 포함된 문자 갯수 만큼의 배치 크기의 텐서를 생성하여 리턴한다.
         :param  voca:  in/out vocabulary
@@ -401,7 +401,7 @@ class Sentence(object):
         :return:  문자 갯수만큼의 텐서
         """
         if not self.gazet_matches:
-            self.match_gazet(gazet, voca, context_size, is_gazet_1hot)
+            self.match_gazet(gazet, voca, context_size, gazet_embed)
 
         if self.label_tensors is not None and self.context_tensors is not None:
             return self.label_tensors, self.context_tensors, self.gazet_tensors
