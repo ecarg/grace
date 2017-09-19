@@ -84,6 +84,10 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
     elif args.model_name.lower() == 'cnn6':
         hidden_dim = (args.embed_dim * 4 + len(voca['out'])) // 2
         model = models.Cnn6(args.window, voca, gazet, args.embed_dim, hidden_dim, args.phoneme)
+    elif args.model_name.lower() == 'cnn7':
+        concat_dim = args.embed_dim + len(voca['out']) + 4
+        hidden_dim = (concat_dim * 4 + len(voca['out'])) // 2
+        model = models.Cnn7(args.window, voca, gazet, args.embed_dim, hidden_dim, args.phoneme)
 
     # Load Data
     data_ = data.load_data(args.in_pfx, voca)
