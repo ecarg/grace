@@ -191,7 +191,10 @@ def main():
     parser.add_argument('--epoch-num', help='epoch number <default: %d>' % EPOCH_NUM, metavar='INT',
                         type=int, default=EPOCH_NUM)
     parser.add_argument('--phoneme', help='expand phonemes context', action='store_true')
+<<<<<<< HEAD
     parser.add_argument('--pos-enc', help='add positional encoding', action='store_true', default=False)
+=======
+>>>>>>> cnn7에 --gazet-embed 옵션 적용 #49
     parser.add_argument('--gazet-embed', help='gazetteer type', action='store_true',
                         default=False)
     parser.add_argument('--cutoff', help='cutoff', action='store',\
