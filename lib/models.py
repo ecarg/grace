@@ -14,10 +14,10 @@ __copyright__ = 'No copyright. Just copyleft!'
 ###########
 # imports #
 ###########
+import math
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
 
 #########
 # types #
@@ -26,7 +26,7 @@ class Ner(nn.Module):
     """
     named entity recognizer pytorch model
     """
-    def __init__(self, window, voca, gazet, is_phoneme):
+    def __init__(self, window, voca, gazet, is_phoneme, is_gazet_1hot):
         """
         :param  window:  left/right window size from current character
         :param  voca:  vocabulary
@@ -36,6 +36,7 @@ class Ner(nn.Module):
         self.voca = voca
         self.gazet = gazet
         self.is_phoneme = is_phoneme
+        self.is_gazet_1hot = is_gazet_1hot
 
     def forward(self, *inputs):
         raise NotImplementedError
@@ -68,14 +69,14 @@ class Fnn3(Ner):
     """
     feed-forward neural network based named entity recognizer
     """
-    def __init__(self, window, voca, gazet, embed_dim, hidden_dim, is_phoneme):
+    def __init__(self, window, voca, gazet, embed_dim, hidden_dim, is_phoneme, is_gazet_1hot):
         """
         :param  window:  left/right window size from current character
         :param  voca:  vocabulary
         :param  embed_dim:  character embedding dimension
         :param  hidden_dim:  hidden layer dimension
         """
-        super().__init__(window, voca, gazet, is_phoneme)
+        super().__init__(window, voca, gazet, is_phoneme, is_gazet_1hot)
         context_len = 2 * window + 1
         self.embedding = nn.Embedding(len(voca['in']), embed_dim)
         if self.is_phoneme:
@@ -106,14 +107,14 @@ class Fnn4(Ner):
     """
     feed-forward neural network based named entity recognizer
     """
-    def __init__(self, window, voca, gazet, embed_dim, hidden_dim, is_phoneme):
+    def __init__(self, window, voca, gazet, embed_dim, hidden_dim, is_phoneme, is_gazet_1hot):
         """
         :param  window:  left/right window size from current character
         :param  voca:  vocabulary
         :param  embed_dim:  character embedding dimension
         :param  hidden_dim:  hidden layer dimension
         """
-        super().__init__(window, voca, gazet, is_phoneme)
+        super().__init__(window, voca, gazet, is_phoneme, is_gazet_1hot)
         context_len = 2 * window + 1
         self.embedding = nn.Embedding(len(voca['in']), embed_dim)
         if self.is_phoneme:
@@ -142,18 +143,70 @@ class Fnn4(Ner):
         return tag_out
 
 
-class Cnn3(Ner):    # pylint: disable=too-many-instance-attributes
+class Fnn5(Ner):
     """
-    convolutional neural network based named entity recognizer
+    feed-forward neural network based named entity recognizer
     """
-    def __init__(self, window, voca, gazet, embed_dim, hidden_dim, is_phoneme):
+    def __init__(self, window, voca, gazet, embed_dim, hidden_dim, is_phoneme, is_gazet_1hot):
         """
         :param  window:  left/right window size from current character
         :param  voca:  vocabulary
         :param  embed_dim:  character embedding dimension
         :param  hidden_dim:  hidden layer dimension
         """
-        super().__init__(window, voca, gazet, is_phoneme)
+        super().__init__(window, voca, gazet, is_phoneme, is_gazet_1hot)
+        context_len = 2 * window + 1
+        self.embedding = nn.Embedding(len(voca['in']), embed_dim)
+        gazet_dim = len(voca['out'])+4
+
+        if not self.is_gazet_1hot:
+            gazet_dim = embed_dim//2
+            self.gazet_embedding = nn.Embedding(int(math.pow(2, len(voca['out'])+4)), gazet_dim)
+
+        if self.is_phoneme:
+            self.pho2syl = nn.Conv2d(1, embed_dim, (3, embed_dim), 3)
+
+        self.relu = nn.ReLU()
+        self.embeds2hidden = nn.Linear(context_len * (embed_dim + gazet_dim), hidden_dim)
+        self.hidden2tag = nn.Linear(hidden_dim, len(voca['out']))
+
+    def forward(self, contexts_gazet):    # pylint: disable=arguments-differ
+        """
+        forward path
+        :param  contexts:  batch size list of character and context
+        :return:  output score
+        """
+        contexts, gazet = contexts_gazet
+        embeds = self.embedding(contexts)
+        if self.is_phoneme:
+            embeds = F.relu(self.pho2syl(embeds.unsqueeze(1)).squeeze().transpose(1, 2))
+
+        if self.is_gazet_1hot:
+            embeds = torch.cat([embeds, gazet], 2)
+        else:
+            gazet_embeds = self.gazet_embedding(gazet)
+            embeds = torch.cat([embeds, gazet_embeds], 2)
+
+        hidden_out = self.embeds2hidden(embeds.view(len(contexts), -1))
+        hidden_relu = self.relu(hidden_out)
+        hidden_drop = F.dropout(hidden_relu, training=self.training)
+        tag_out = self.hidden2tag(hidden_drop)
+        return tag_out
+
+
+
+class Cnn3(Ner):    # pylint: disable=too-many-instance-attributes
+    """
+    convolutional neural network based named entity recognizer
+    """
+    def __init__(self, window, voca, gazet, embed_dim, hidden_dim, is_phoneme, is_gazet_1hot):
+        """
+        :param  window:  left/right window size from current character
+        :param  voca:  vocabulary
+        :param  embed_dim:  character embedding dimension
+        :param  hidden_dim:  hidden layer dimension
+        """
+        super().__init__(window, voca, gazet, is_phoneme, is_gazet_1hot)
         self.context_len = 2 * window + 1
 
         self.embedding = nn.Embedding(len(voca['in']), embed_dim)
@@ -228,14 +281,14 @@ class Cnn4(Ner):    # pylint: disable=too-many-instance-attributes
     """
     convolutional neural network based named entity recognizer
     """
-    def __init__(self, window, voca, gazet, embed_dim, hidden_dim, is_phoneme):
+    def __init__(self, window, voca, gazet, embed_dim, hidden_dim, is_phoneme, is_gazet_1hot):
         """
         :param  window:  left/right window size from current character
         :param  voca:  vocabulary
         :param  embed_dim:  character embedding dimension
         :param  hidden_dim:  hidden layer dimension
         """
-        super().__init__(window, voca, gazet, is_phoneme)
+        super().__init__(window, voca, gazet, is_phoneme, is_gazet_1hot)
         self.context_len = 2 * window + 1
 
         self.embedding = nn.Embedding(len(voca['in']), embed_dim)
@@ -311,14 +364,14 @@ class Cnn5(Ner):    # pylint: disable=too-many-instance-attributes
     """
     convolutional neural network based named entity recognizer
     """
-    def __init__(self, window, voca, gazet, embed_dim, hidden_dim, is_phoneme):
+    def __init__(self, window, voca, gazet, embed_dim, hidden_dim, is_phoneme, is_gazet_1hot):
         """
         :param  window:  left/right window size from current character
         :param  voca:  vocabulary
         :param  embed_dim:  character embedding dimension
         :param  hidden_dim:  hidden layer dimension
         """
-        super().__init__(window, voca, gazet, is_phoneme)
+        super().__init__(window, voca, gazet, is_phoneme, is_gazet_1hot)
         self.context_len = 2 * window + 1
 
         self.embedding = nn.Embedding(len(voca['in']), embed_dim)
@@ -379,14 +432,14 @@ class Cnn6(Ner):    # pylint: disable=too-many-instance-attributes
     """
     convolutional neural network based named entity recognizer
     """
-    def __init__(self, window, voca, gazet, embed_dim, hidden_dim, is_phoneme):
+    def __init__(self, window, voca, gazet, embed_dim, hidden_dim, is_phoneme, is_gazet_1hot):
         """
         :param  window:  left/right window size from current character
         :param  voca:  vocabulary
         :param  embed_dim:  character embedding dimension
         :param  hidden_dim:  hidden layer dimension
         """
-        super().__init__(window, voca, gazet, is_phoneme)
+        super().__init__(window, voca, gazet, is_phoneme, is_gazet_1hot)
         self.context_len = 2 * window + 1
 
         self.embedding = nn.Embedding(len(voca['in']), embed_dim)
@@ -520,14 +573,14 @@ class Cnn7(Ner):    # pylint: disable=too-many-instance-attributes
     """
     convolutional neural network based named entity recognizer
     """
-    def __init__(self, window, voca, gazet, embed_dim, hidden_dim, is_phoneme):
+    def __init__(self, window, voca, gazet, embed_dim, hidden_dim, is_phoneme, is_gazet_1hot):
         """
         :param  window:  left/right window size from current character
         :param  voca:  vocabulary
         :param  embed_dim:  character embedding dimension
         :param  hidden_dim:  hidden layer dimension
         """
-        super().__init__(window, voca, gazet, is_phoneme)
+        super().__init__(window, voca, gazet, is_phoneme, is_gazet_1hot)
         self.context_len = 2 * window + 1
 
         self.embedding = nn.Embedding(len(voca['in']), embed_dim)
