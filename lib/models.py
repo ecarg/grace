@@ -24,7 +24,7 @@ import torch.nn.functional as F
 #########
 class Ner(nn.Module):
     """
-    part-of-speech tagger pytorch model
+    named entity recognizer pytorch model
     """
     def __init__(self, window, voca, gazet, is_phoneme):
         """
@@ -66,7 +66,7 @@ class Ner(nn.Module):
 
 class Fnn3(Ner):
     """
-    feed-forward neural network based part-of-speech tagger
+    feed-forward neural network based named entity recognizer
     """
     def __init__(self, window, voca, gazet, embed_dim, hidden_dim, is_phoneme):
         """
@@ -104,7 +104,7 @@ class Fnn3(Ner):
 
 class Fnn4(Ner):
     """
-    feed-forward neural network based part-of-speech tagger
+    feed-forward neural network based named entity recognizer
     """
     def __init__(self, window, voca, gazet, embed_dim, hidden_dim, is_phoneme):
         """
@@ -144,7 +144,7 @@ class Fnn4(Ner):
 
 class Cnn3(Ner):    # pylint: disable=too-many-instance-attributes
     """
-    convolutional neural network based part-of-speech tagger
+    convolutional neural network based named entity recognizer
     """
     def __init__(self, window, voca, gazet, embed_dim, hidden_dim, is_phoneme):
         """
@@ -227,7 +227,7 @@ class Cnn3(Ner):    # pylint: disable=too-many-instance-attributes
 
 class Cnn4(Ner):    # pylint: disable=too-many-instance-attributes
     """
-    convolutional neural network based part-of-speech tagger
+    convolutional neural network based named entity recognizer
     """
     def __init__(self, window, voca, gazet, embed_dim, hidden_dim, is_phoneme):
         """
@@ -306,4 +306,213 @@ class Cnn4(Ner):    # pylint: disable=too-many-instance-attributes
         hidden_out_drop = F.dropout(hidden_out_relu, training=self.training)
         tag_out = self.hidden2tag(hidden_out_drop)
 
+        return tag_out
+
+
+class Cnn5(Ner):    # pylint: disable=too-many-instance-attributes
+    """
+    convolutional neural network based named entity recognizer
+    """
+    def __init__(self, window, voca, gazet, embed_dim, hidden_dim, is_phoneme):
+        """
+        :param  window:  left/right window size from current character
+        :param  voca:  vocabulary
+        :param  embed_dim:  character embedding dimension
+        :param  hidden_dim:  hidden layer dimension
+        """
+        super().__init__(window, voca, gazet, is_phoneme)
+        self.context_len = 2 * window + 1
+
+        self.embedding = nn.Embedding(len(voca['in']), embed_dim)
+        if self.is_phoneme:
+            self.pho2syl = nn.Conv1d(embed_dim, embed_dim, 3, 3)
+
+        # conv3_1
+        self.conv3_1 = nn.Conv1d(embed_dim, embed_dim, kernel_size=3, padding=1)    # 21
+        self.pool3_1 = nn.MaxPool1d(kernel_size=2, ceil_mode=True)    # 11
+        # conv3_2
+        self.conv3_2 = nn.Conv1d(embed_dim, embed_dim, kernel_size=3, padding=1)    # 11
+        self.pool3_2 = nn.MaxPool1d(kernel_size=2, ceil_mode=True)    # 6
+        # conv3_3
+        self.conv3_3 = nn.Conv1d(embed_dim, embed_dim, kernel_size=3, padding=1)    # 6
+        self.pool3_3 = nn.MaxPool1d(kernel_size=2, ceil_mode=True)    # 3
+        # conv3_4
+        self.conv3_4 = nn.Conv1d(embed_dim, embed_dim, kernel_size=3)    # 1
+
+        # conv => hidden
+        self.conv2hidden = nn.Linear(embed_dim, hidden_dim)
+
+        # hidden => tag
+        self.hidden2tag = nn.Linear(hidden_dim, len(voca['out']))
+
+    def forward(self, contexts_gazet):    # pylint: disable=arguments-differ,too-many-locals
+        contexts, _ = contexts_gazet
+        embeds = self.embedding(contexts)
+        # batch_size x context_len x embedding_dim => batch_size x embedding_dim x context_len
+        if self.is_phoneme:
+            embeds_t = F.relu(self.pho2syl(embeds.transpose(1, 2)))
+        else:
+            embeds_t = embeds.transpose(1, 2)
+
+        # conv3_1
+        conv3_1 = F.relu(self.conv3_1(embeds_t))
+        pool3_1 = self.pool3_1(conv3_1)
+        # conv3_2
+        conv3_2 = F.relu(self.conv3_2(pool3_1))
+        pool3_2 = self.pool3_2(conv3_2)
+        # conv3_3
+        conv3_3 = F.relu(self.conv3_3(pool3_2))
+        pool3_3 = self.pool3_3(conv3_3)
+        # conv3_4
+        conv3_4 = F.relu(self.conv3_4(pool3_3))
+
+        # conv => hidden
+        features = conv3_4.view(len(contexts), -1)
+        features_drop = F.dropout(features, training=self.training)
+        hidden_out = F.relu(self.conv2hidden(features_drop))
+
+        # hidden => tag
+        hidden_out_drop = F.dropout(hidden_out, training=self.training)
+        tag_out = self.hidden2tag(hidden_out_drop)
+        return tag_out
+
+
+class Cnn6(Ner):    # pylint: disable=too-many-instance-attributes
+    """
+    convolutional neural network based named entity recognizer
+    """
+    def __init__(self, window, voca, gazet, embed_dim, hidden_dim, is_phoneme):
+        """
+        :param  window:  left/right window size from current character
+        :param  voca:  vocabulary
+        :param  embed_dim:  character embedding dimension
+        :param  hidden_dim:  hidden layer dimension
+        """
+        super().__init__(window, voca, gazet, is_phoneme)
+        self.context_len = 2 * window + 1
+
+        self.embedding = nn.Embedding(len(voca['in']), embed_dim)
+        if self.is_phoneme:
+            self.pho2syl = nn.Conv1d(embed_dim, embed_dim, 3, 3)
+
+        # conv2_1
+        self.conv2_1 = nn.Conv1d(embed_dim, embed_dim, kernel_size=2)    # 20
+        self.pool2_1 = nn.MaxPool1d(kernel_size=2, ceil_mode=True)    # 10
+        # conv2_2
+        self.conv2_2 = nn.Conv1d(embed_dim, embed_dim, kernel_size=2)    # 9
+        self.pool2_2 = nn.MaxPool1d(kernel_size=2, ceil_mode=True)    # 5
+        # conv2_3
+        self.conv2_3 = nn.Conv1d(embed_dim, embed_dim, kernel_size=2)    # 4
+        self.pool2_3 = nn.MaxPool1d(kernel_size=2, ceil_mode=True)    # 2
+        # conv2_4
+        self.conv2_4 = nn.Conv1d(embed_dim, embed_dim, kernel_size=2)    # 1
+
+        # conv3_1
+        self.conv3_1 = nn.Conv1d(embed_dim, embed_dim, kernel_size=3, padding=1)    # 21
+        self.pool3_1 = nn.MaxPool1d(kernel_size=2, ceil_mode=True)    # 11
+        # conv3_2
+        self.conv3_2 = nn.Conv1d(embed_dim, embed_dim, kernel_size=3, padding=1)    # 11
+        self.pool3_2 = nn.MaxPool1d(kernel_size=2, ceil_mode=True)    # 6
+        # conv3_3
+        self.conv3_3 = nn.Conv1d(embed_dim, embed_dim, kernel_size=3, padding=1)    # 6
+        self.pool3_3 = nn.MaxPool1d(kernel_size=2, ceil_mode=True)    # 3
+        # conv3_4
+        self.conv3_4 = nn.Conv1d(embed_dim, embed_dim, kernel_size=3)    # 1
+
+        # conv4_1
+        self.conv4_1 = nn.Conv1d(embed_dim, embed_dim, kernel_size=4, padding=1)    # 20
+        self.pool4_1 = nn.MaxPool1d(kernel_size=2, ceil_mode=True)    # 10
+        # conv4_2
+        self.conv4_2 = nn.Conv1d(embed_dim, embed_dim, kernel_size=4, padding=1)    # 9
+        self.pool4_2 = nn.MaxPool1d(kernel_size=2, ceil_mode=True)    # 5
+        # conv4_3
+        self.conv4_3 = nn.Conv1d(embed_dim, embed_dim, kernel_size=4, padding=1)    # 4
+        # conv4_4
+        self.conv4_4 = nn.Conv1d(embed_dim, embed_dim, kernel_size=4)    # 1
+
+        # conv5_1
+        self.conv5_1 = nn.Conv1d(embed_dim, embed_dim, kernel_size=5, padding=2)    # 21
+        self.pool5_1 = nn.MaxPool1d(kernel_size=2, ceil_mode=True)    # 11
+        # conv5_2
+        self.conv5_2 = nn.Conv1d(embed_dim, embed_dim, kernel_size=5, padding=2)    # 11
+        self.pool5_2 = nn.MaxPool1d(kernel_size=2, ceil_mode=True)    # 6
+        # conv5_3
+        self.conv5_3 = nn.Conv1d(embed_dim, embed_dim, kernel_size=5, padding=2)    # 6
+        self.pool5_3 = nn.MaxPool1d(kernel_size=2, ceil_mode=True)    # 3
+        # conv5_4
+        self.conv5_4 = nn.Conv1d(embed_dim, embed_dim, kernel_size=5, padding=1)    # 1
+
+        # conv => hidden
+        self.conv2hidden = nn.Linear(embed_dim * 4, hidden_dim)
+
+        # hidden => tag
+        self.hidden2tag = nn.Linear(hidden_dim, len(voca['out']))
+
+    def forward(self, contexts_gazet):    # pylint: disable=arguments-differ,too-many-locals
+        contexts, _ = contexts_gazet
+        embeds = self.embedding(contexts)
+        # batch_size x context_len x embedding_dim => batch_size x embedding_dim x context_len
+        if self.is_phoneme:
+            embeds_t = F.relu(self.pho2syl(embeds.transpose(1, 2)))
+        else:
+            embeds_t = embeds.transpose(1, 2)
+
+        # conv2_1
+        conv2_1 = F.relu(self.conv2_1(embeds_t))
+        pool2_1 = self.pool2_1(conv2_1)
+        # conv2_2
+        conv2_2 = F.relu(self.conv2_2(pool2_1))
+        pool2_2 = self.pool2_2(conv2_2)
+        # conv2_3
+        conv2_3 = F.relu(self.conv2_3(pool2_2))
+        pool2_3 = self.pool2_3(conv2_3)
+        # conv2_4
+        conv2_4 = F.relu(self.conv2_4(pool2_3))
+
+        # conv3_1
+        conv3_1 = F.relu(self.conv3_1(embeds_t))
+        pool3_1 = self.pool3_1(conv3_1)
+        # conv3_2
+        conv3_2 = F.relu(self.conv3_2(pool3_1))
+        pool3_2 = self.pool3_2(conv3_2)
+        # conv3_3
+        conv3_3 = F.relu(self.conv3_3(pool3_2))
+        pool3_3 = self.pool3_3(conv3_3)
+        # conv3_4
+        conv3_4 = F.relu(self.conv3_4(pool3_3))
+
+        # conv4_1
+        conv4_1 = F.relu(self.conv4_1(embeds_t))
+        pool4_1 = self.pool4_1(conv4_1)
+        # conv4_2
+        conv4_2 = F.relu(self.conv4_2(pool4_1))
+        pool4_2 = self.pool4_2(conv4_2)
+        # conv4_3
+        conv4_3 = F.relu(self.conv4_3(pool4_2))
+        # conv4_4
+        conv4_4 = F.relu(self.conv4_4(F.relu(conv4_3)))
+
+        # conv5_1
+        conv5_1 = F.relu(self.conv5_1(embeds_t))
+        pool5_1 = self.pool5_1(conv5_1)
+        # conv5_2
+        conv5_2 = F.relu(self.conv5_2(pool5_1))
+        pool5_2 = self.pool5_2(conv5_2)
+        # conv5_3
+        conv5_3 = F.relu(self.conv5_3(pool5_2))
+        pool5_3 = self.pool5_3(conv5_3)
+        # conv5_4
+        conv5_4 = F.relu(self.conv5_4(pool5_3))
+
+        # conv => hidden
+        features = torch.cat([conv2_4.view(len(contexts), -1),
+                              conv3_4.view(len(contexts), -1),
+                              conv4_4.view(len(contexts), -1),
+                              conv5_4.view(len(contexts), -1)], dim=1)
+        features_drop = F.dropout(features, training=self.training)
+        hidden_out = F.relu(self.conv2hidden(features_drop))
+
+        # hidden => tag
+        hidden_out_drop = F.dropout(hidden_out, training=self.training)
+        tag_out = self.hidden2tag(hidden_out_drop)
         return tag_out
