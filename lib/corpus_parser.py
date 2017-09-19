@@ -304,7 +304,26 @@ class Sentence(object):
             self.context_nums.append([self.in_to_num(voca, char) for char in context.split()])
         return self.label_nums, self.context_nums
 
-    def match_gazet(self, gazet, voca, context_size):
+    @classmethod
+    def onehot2number(cls, gazet):
+        """
+        onehot으로 인코딩된 gazet을 1차원 LongTensor로 변경
+        :param gazet: gazet matrix
+        """
+        gazet_list = []
+        for batch in gazet:
+            scala = []
+            for row in batch:
+                val = 0
+                for idx, col in enumerate(row):
+                    if int(col) == 1:
+                        val += (1 << idx)
+                scala.append(val)
+            gazet_list.append(scala)
+        return gazet_list
+
+
+    def match_gazet(self, gazet, voca, context_size, is_gazet_1hot=True):
         """
         gazetteer에서 매핑된 태그를 바탕으로 1-hot 벡터를 만듭니다.
         """
@@ -366,9 +385,13 @@ class Sentence(object):
             gazet_context.append(\
                     list(reversed(left_context))+[self.gazet_matches[idx]]+right_context)
         assert len(gazet_context) == self.get_syllable_count()
-        self.gazet_tensors = torch.FloatTensor(gazet_context)
+        if is_gazet_1hot:
+            self.gazet_tensors = torch.FloatTensor(gazet_context)
+        else:
+            self.gazet_tensors = torch.LongTensor(self.onehot2number(gazet_context))
 
-    def to_tensor(self, voca, gazet, context_size, is_phonemes=False):
+
+    def to_tensor(self, voca, gazet, context_size, is_phonemes=False, is_gazet_1hot=True):
         """
         문장을 문장에 포함된 문자 갯수 만큼의 배치 크기의 텐서를 생성하여 리턴한다.
         :param  voca:  in/out vocabulary
@@ -378,7 +401,7 @@ class Sentence(object):
         :return:  문자 갯수만큼의 텐서
         """
         if not self.gazet_matches:
-            self.match_gazet(gazet, voca, context_size)
+            self.match_gazet(gazet, voca, context_size, is_gazet_1hot)
 
         if self.label_tensors is not None and self.context_tensors is not None:
             return self.label_tensors, self.context_tensors, self.gazet_tensors

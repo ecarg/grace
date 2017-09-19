@@ -34,6 +34,7 @@ class GraceTagger(object):
         self.gazet = self.model.gazet
         self.window = self.model.window
         self.is_phoneme = self.model.is_phoneme
+        self.is_gazet_1hot = self.model.is_gazet_1hot
 
     def get_predicts(self, sent):
         """
@@ -41,7 +42,8 @@ class GraceTagger(object):
         :param sent: Sentnece class
         :return predicts: 태깅된 레이블 시퀀스
         """
-        _, contexts, gazet = sent.to_tensor(self.voca, self.gazet, self.window, self.is_phoneme)
+        _, contexts, gazet = sent.to_tensor(self.voca, self.gazet, self.window,
+                                            self.is_phoneme, self.is_gazet_1hot)
         if torch.cuda.is_available():
             contexts = contexts.cuda()
             gazet = gazet.cuda()
