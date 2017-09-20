@@ -1,7 +1,6 @@
 # project specific settings
 data/
-logdir/
-tags
+events.out.tfevents.*
 
 
 # Byte-compiled / optimized / DLL files

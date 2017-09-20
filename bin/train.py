@@ -52,12 +52,12 @@ def _make_model_id(args):
     :return:  model ID
     """
     model_ids = [args.model_name, ]
+    model_ids.append('cut%d' % args.cutoff)
+    model_ids.append('pho' if args.phoneme else 'chr')
     model_ids.append('w%d' % args.window)
     model_ids.append('e%d' % args.embed_dim)
-    model_ids.append('pho' if args.phoneme else 'chr')
     model_ids.append('gzte' if args.gazet_embed else 'gzt1')
     model_ids.append('pe%d' % (1 if args.pos_enc else 0))
-    model_ids.append('cut%d' % args.cutoff)
     return '.'.join(model_ids)
 
 
@@ -194,7 +194,8 @@ def main():
     parser.add_argument('-p', '--in-pfx', help='input data prefix', metavar='NAME', required=True)
     parser.add_argument('-m', '--model-name', help='model name', metavar='NAME', required=True)
     parser.add_argument('-o', '--output', help='model output file', metavar='FILE', required=True)
-    parser.add_argument('--logdir', help='tensorboard log dir', metavar='DIR')
+    parser.add_argument('--logdir', help='tensorboard log dir <default: ./logdir>',
+                        metavar='DIR', default='./logdir')
     parser.add_argument('--window', help='left/right character window length <default: %d>' % \
                                           WINDOW, metavar='INT', type=int, default=WINDOW)
     parser.add_argument('--embed-dim', help='embedding dimension <default: %d>' % EMBED_DIM,
