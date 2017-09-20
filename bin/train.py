@@ -208,7 +208,8 @@ def main():
     parser.add_argument('-p', '--in-pfx', help='input data prefix', metavar='NAME', required=True)
     parser.add_argument('-m', '--model-name', help='model name', metavar='NAME', required=True)
     parser.add_argument('-o', '--output', help='model output file', metavar='FILE', required=True)
-    parser.add_argument('--logdir', help='tensorboard log dir', metavar='DIR')
+    parser.add_argument('--logdir', help='tensorboard log dir <default: ./logdir>',
+                        metavar='DIR', default='./logdir')
     parser.add_argument('--window', help='left/right character window length <default: %d>' % \
                                           WINDOW, metavar='INT', type=int, default=WINDOW)
     parser.add_argument('--embed-dim', help='embedding dimension <default: %d>' % EMBED_DIM,
