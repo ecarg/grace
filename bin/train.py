@@ -30,6 +30,7 @@ import torch.utils.data
 import data
 import models
 import gazetteer
+import tagger
 
 
 ###########
@@ -45,21 +46,6 @@ EPOCH_NUM = 100
 #############
 # functions #
 #############
-def _calc_f_score(gold_ne, pred_ne, match_ne):
-    """
-    calculate f-score
-    :param  gold_ne:  number of NEs in gold standard
-    :param  pred_ne:  number of NEs in predicted
-    :param  match_ne:  number of matching NEs
-    :return:  f_score
-    """
-    precision = (match_ne / pred_ne) if pred_ne > 0 else 0.0
-    recall = (match_ne / gold_ne) if gold_ne > 0 else 0.0
-    if (recall + precision) == 0.0:
-        return 0.0
-    return 2.0 * recall * precision / (recall + precision)
-
-
 def _make_model_id(args):
     """
     make model ID string
@@ -88,12 +74,14 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
         hidden_dim = (2 * args.window + 1) *\
                 (args.embed_dim + (args.embed_dim//2))+ len(voca['out'])
         model = models.Fnn5(args.window, voca, gazet,
-                            args.embed_dim, hidden_dim, args.phoneme, args.gazet_embed, args.pos_enc)
+                            args.embed_dim, hidden_dim,
+                            args.phoneme, args.gazet_embed, args.pos_enc)
     elif args.model_name.lower() == 'cnn7':
         concat_dim = args.embed_dim + len(voca['out']) + 4
         hidden_dim = (concat_dim * 4 + len(voca['out'])) // 2
         model = models.Cnn7(args.window, voca, gazet,
-                            args.embed_dim, hidden_dim, args.phoneme, args.gazet_embed, args.pos_enc)
+                            args.embed_dim, hidden_dim,
+                            args.phoneme, args.gazet_embed, args.pos_enc)
 
     # Load Data
     data_ = data.load_data(args.in_pfx, voca)
@@ -149,12 +137,12 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
 
             # Validation
             if iter_ % 1000 == 0:
+                measure = tagger.PerformanceMeasure()
                 # Freeze parameters
                 model.eval()
 
                 # Calculate loss
                 losses.append(loss.data[0])
-                cnt = Counter()
                 for dev_sent in data_['dev']:
                     # Convert to CUDA Variable
                     _, dev_contexts, dev_gazet =\
@@ -169,11 +157,9 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
 
                     outputs = model((dev_contexts, dev_gazet))
                     _, predicts = outputs.max(1)
-                    cnt += dev_sent.compare_label(predicts, voca)
+                    dev_sent.compare_label(predicts, voca, measure)
 
-                # Calculate accuracy / f-score
-                accuracy_char = cnt['correct_char'] / cnt['total_char']
-                f_score = _calc_f_score(cnt['total_gold_ne'], cnt['total_pred_ne'], cnt['match_ne'])
+                accuracy_char, f_score = measure.get_score()
                 print(file=sys.stderr)
                 sys.stderr.flush()
                 if not f_scores or f_score > max(f_scores):
@@ -220,7 +206,8 @@ def main():
     parser.add_argument('--epoch-num', help='epoch number <default: %d>' % EPOCH_NUM, metavar='INT',
                         type=int, default=EPOCH_NUM)
     parser.add_argument('--phoneme', help='expand phonemes context', action='store_true')
-    parser.add_argument('--pos-enc', help='add positional encoding', action='store_true', default=False)
+    parser.add_argument('--pos-enc', help='add positional encoding',
+                        action='store_true', default=False)
     parser.add_argument('--gazet-embed', help='gazetteer type', action='store_true',
                         default=False)
     parser.add_argument('--cutoff', help='cutoff', action='store',\
