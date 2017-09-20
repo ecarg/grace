@@ -515,7 +515,7 @@ class Sentence(object):
                     nes[-1].ne_end = prev_idx+prev_wrd_idx
                 nes.append(NamedEntity('', cur_tag, cur_idx+cur_wrd_idx, -1))
 
-    def get_named_entity_list(self, predicts, voca=None, cnt=None):
+    def get_named_entity_list(self, predicts, voca=None, measure=None):
         """
         개체명 코퍼스에서 등장하는 NE에 대해서 (시작,끝,태그)의 리스트를 구합니다.
         :param predicts:  모델에서 예측된 클래스 배열
@@ -539,8 +539,8 @@ class Sentence(object):
                 bio, tag = self.syl2tag[cur_idx+wrd_idx]
                 label = ("%s-%s") % (bio, tag) if tag != OUTSIDE_TAG else 'O'
                 logging.debug("[%d] %s %s : %s", cur_idx+wrd_idx, label, syl, pred[cur_idx])
-                if cnt is not None and label == pred[cur_idx]:
-                    cnt['correct_char'] += 1
+                if measure:
+                    measure.update_accuracy(label, pred[cur_idx])
                 self._do_action(nes, pred, prev_idx, cur_idx, prev_wrd_idx, wrd_idx)
                 prev_idx = cur_idx
                 prev_wrd_idx = wrd_idx
@@ -548,29 +548,20 @@ class Sentence(object):
         self._do_action(nes, pred, prev_idx, 'EOS', prev_wrd_idx, len(words)-1)
         return nes
 
-    def compare_label(self, predicts, voca=None):
+    def compare_label(self, predicts, voca=None, measure=None):
         """
         예측한 레이블과 현재 문장의 레이블을 비교해서 맞춘 카운트를 계산한다.
         :param predicts:  모델에서 예측된 클래스 배열
         :param voca:  예측된 클래스를 문자(B-PS)로 변경하기 위한 사전
+        :param measure:  성능평가를 위한 PerformanceMeasure 클래스
         """
         logging.debug("====== compare label ======")
         logging.debug(self.raw_str())
-        cnt = collections.Counter()
+        if not measure:
+            return
+        nes = self.get_named_entity_list(predicts, voca, measure)
+        measure.update_fscore(self.named_entity, nes)
 
-        nes = self.get_named_entity_list(predicts, voca, cnt)
-
-        gold_ne = set([x.get_ne_pos_tag() for x in self.named_entity\
-                    if x.get_ne_pos_tag() is not None])
-        pred_ne = set([x.get_ne_pos_tag() for x in nes\
-                    if x.get_ne_pos_tag() is not None])
-        cnt['total_gold_ne'] += len(gold_ne)
-        cnt['total_pred_ne'] += len(pred_ne)
-        cnt['match_ne'] += len(gold_ne & pred_ne)
-        cnt['total_char'] += len(predicts)
-
-        logging.debug("GOLD = %s\nPRED = %s\nMATCH = %s", gold_ne, pred_ne, cnt)
-        return cnt
 
 class NamedEntity(object): # pylint: disable=too-few-public-methods
     """
