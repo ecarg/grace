@@ -207,7 +207,7 @@ iter	loss	accuracy	f-score
 939	0.5146646499633789	0.944217125267465	0.6196297589940621
 ```
 
-### cnn5.cut5.pho.w10.e50.gzt1.tsv
+### cnn5.cut5.pho.w10.e50.gzt1
 
 ```
 iter	loss	accuracy	f-score
@@ -218,7 +218,7 @@ iter	loss	accuracy	f-score
 745	0.290861576795578	0.9206426667667705	0.484981684981685
 ```
 
-### cnn6.cut5.chr.w10.e200.gzt1.tsv
+### cnn6.cut5.chr.w10.e200.gzt1
 
 ```
 iter	loss	accuracy	f-score
@@ -296,4 +296,37 @@ iter	loss	accuracy	f-score
 253	0.0007301405421458185	0.9460940726003229	0.7303326810176125
 293	4.875659942626953e-05	0.945193137880551	0.7302452316076296
 284	0.1991797834634781	0.944930365253951	0.7299726455646738
+```
+
+
+Version 0.8
+----
+
+* Learnig Rate 조절 정책
+* 하이퍼 파라미터
+  - ri24: revert iteration = 24. 이전 최대 f-score를 넘지 못하면 이전 최대치로 revert하고 learning rate를 10% 감소하는 반복 회수
+  - rt10: revert termination = 10. 이전 최대 f-score로 revert할 최대 회수 => 최대 회수가 넘으면 종료
+
+### fnn5.cut5.chr.w10.e50.gzt1.pe0.ri24.rt10
+
+```
+iter	loss	accuracy	f-score
+```
+
+### fnn5.cut5.chr.w10.e50.gzt1.pe1.ri24.rt10
+
+```
+iter	loss	accuracy	f-score
+```
+
+### cnn7.cut5.chr.w10.e50.gzt1.pe0.ri24.rt10
+
+```
+iter	loss	accuracy	f-score
+```
+
+### cnn7.cut5.chr.w10.e50.gzt1.pe1.ri24.rt10
+
+```
+iter	loss	accuracy	f-score
 ```
