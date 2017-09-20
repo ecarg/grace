@@ -1,23 +1,25 @@
+(사)한국도시철도협회	OG
 (주) 금복주	OG
 (주)구성산업	OG
 (주)구성산업개발	OG
 (주)기흥성	OG
 (주)다이소아성산업	OG
+(주)두산전자	OG
 (주)리서치 앤 리서치	OG
 (주)만나어	OG
 (주)볼보자동차코리아	OG
 (주)영태전자	OG
 (주)인아정밀	OG
-(주)한조	OG
 (주)화인코리아	OG
+0 0일간	DT0
 0 0절 연휴	DT0
 0 ~ 0년	DT0
+0 ~00년	DT0
 0 · 0분기	DT0
 0 개월	DT0
 0 개월 전	DT0
 0 개월 전부터	DT0
 0 년 0 개월 전	DT0
-0 월 0 일	DT0
 0, 00일	DT0
 0, 0일	DT0
 0,000년	DT0
@@ -34,16 +36,13 @@
 0.0~0	DT0
 0.0~0.00	DT0
 0.0일	DT0
-0.0절	DT0
 0.0초	TI0
-0.0초전	TI0
 0.3초	TI
 0/00	DT0
 00 ~ 00년	DT0
 00 ㆍ 00	DT0
 00 개월	DT0
 00 개월 동안	DT0
-00 년	DT0
 00 세기	DT0
 00 시간	TI0
 00 월 00 일	DT0
@@ -52,13 +51,13 @@
 00, 00세기	DT0
 00, 00일	DT0
 00, 0년 전	DT0
+00,00세기	DT0
 00- 00년	DT0
 00-00	DT0
 00-00 시즌	DT0
 00-00시즌	DT0
 00-00시즌부터	DT0
 00-00일	DT0
-00.0~0	DT0
 00.0분	TI0
 00.0초	TI0
 00.0초전	TI0
@@ -66,20 +65,23 @@
 00/00-00	DT0
 00/00시즌	DT0
 00/0~00/00	DT0
+000 일동안	DT0
 0000 년 0 월 0 일	DT0
 0000 년 00 월 00 일	DT0
 0000 정월대보름	DT0
+0000, 0000년	DT0
 0000, 0년까지	DT0
 0000-00	DT0
 0000-00 정규시즌	DT0
 0000-00-00	DT0
 0000-000	DT0
 0000-0000	DT0
-0000-0000년	DT0
 0000-0000년도	DT0
+0000-00년대까지	DT0
 0000-00시즌	DT0
 0000-00시즌 부터	DT0
 0000. 00. 00일자	DT0
+0000.0. 0	DT0
 0000.0.0~0000.0.00	DT0
 0000~00	DT0
 0000~0000	DT0
@@ -90,9 +92,9 @@
 0000∼0000	DT0
 0000∼0000 시즌	DT0
 0000년	DT0
+0000년 0/00-00일~0000년 00/00일	DT0
 0000년 00월	DT0
 0000년 00월 00일	DT0
-0000년 00월 00일(토)	DT0
 0000년 00월 00일까지	DT0
 0000년 00월 00일부터	DT0
 0000년 00월 0일	DT0
@@ -116,21 +118,19 @@
 0000년 0월부터 0000년 0월까지	DT0
 0000년 말	DT0
 0000년 부터 0000년	DT0
-0000년 시즌	DT0
 0000년 이후	DT0
 0000년00월00일	DT0
+0000년0월00일	DT0
 0000년경	DT0
 0000년까지	DT0
 0000년대	DT0
 0000년대 이후	DT0
 0000년대 중반	DT0
 0000년대경	DT0
-0000년대부터	DT0
 0000년도	DT0
 0000년도 0분기	DT0
 0000년부터	DT0
 0000년부터 0000년까지	DT0
-0000년부터 올해	DT0
 0000년부터 지난 시즌까지	DT0
 0000년부터 지난해까지	DT0
 0000년에서 0000년까지	DT0
@@ -162,6 +162,7 @@
 00·00세기	DT0
 00·00일	DT0
 00∼0000년까지	DT0
+00∼00년	DT0
 00∼00년대	DT0
 00∼00분	TI0
 00개월	DT0
@@ -207,6 +208,7 @@
 00년쯤 전까지	DT0
 00분	TI0
 00분 00초	TI0
+00분 간	TI0
 00분 내외	TI0
 00분 이상	TI0
 00분 전	TI0
@@ -225,7 +227,7 @@
 00세기경	DT0
 00세기말	DT0
 00시	TI0
-00시 00분	TI0,DT0
+00시 00분	TI0
 00시 00분까지	TI0
 00시 0분	TI0
 00시00분	TI0
@@ -259,7 +261,6 @@
 00월0-00일	DT0
 00월0-0일	DT0
 00월00,00일	DT0
-00월00-00일	DT0
 00월00~00일	DT0
 00월00일	DT0
 00월0일	DT0
@@ -267,14 +268,15 @@
 00월말	DT0
 00월초	DT0
 00월초부터 0월말까지	DT0
-00월초순	DT0
 00일	DT0
 00일 동안	DT0
 00일 오전 0시	DT0
 00일 이전까지	DT0
 00일 전	DT0
+00일(목)	DT0
 00일(수)	DT0
 00일간	DT0
+00일과	DT0
 00일까지	DT0
 00일동안	DT0
 00일부터	DT0
@@ -301,7 +303,6 @@
 03/14	DT
 03/18	DT
 03:35:38	TI
-03일	DT
 04/05	DT
 04년도 7월	DT
 05/11	DT
@@ -311,8 +312,6 @@
 06/07	DT
 06:40	TI
 06~07	DT
-06시 30분	TI
-06시 35분	TI
 06시30분	TI
 06시35분	TI
 07-08	DT
@@ -323,16 +322,11 @@
 07:45~08:00	TI
 07~08	DT
 07시	TI
-07시 20분	DT
-07시 40분	TI
-07시 45분	TI
 07시20분	TI
 07시40분	TI
 07시45분	TI
-08 년	DT
 08:35~09:10	TI
 08시즌	DT
-09/10	DT
 0910	DT
 0910시즌	DT
 09:00	TI
@@ -340,13 +334,15 @@
 09년10월24일	DT
 09시 30분	TI
 0~00	DT0
+0~0년	DT0
 0~0년 후	DT0
 0~0년간	DT0
+0~0월	DT0
 0~0일	DT0
 0·0	DT0
 0·00	DT0
-0·00로 환국 후	DT0
 0·00전쟁 때	DT0
+0∼00년	DT0
 0∼0년	DT0
 0∼0년 반	DT0
 0∼0년전	DT0
@@ -356,7 +352,6 @@
 0개년	DT0
 0개월	DT0
 0개월 동안	DT0
-0개월 이상	DT0
 0개월간	DT0
 0년	DT0
 0년 0개월	DT0
@@ -368,7 +363,6 @@
 0년 이상	DT0
 0년 이하	DT0
 0년 전	DT0
-0년 전까지	DT0
 0년 전부터	DT0
 0년 후	DT0
 0년 후인	DT0
@@ -394,6 +388,7 @@
 0백 00년	DT0
 0백 00일간	DT0
 0백년	DT0
+0백년 동안	DT0
 0백여년	DT0
 0번째 시즌	DT0
 0분	TI0
@@ -408,8 +403,6 @@
 0분00초000	TI0
 0분00초전	TI0
 0분기	DT0
-0분기부터	DT0
-0분뒤	TI0
 0분여 전	TI0
 0분여부터	TI0
 0분여전	TI0
@@ -424,6 +417,7 @@
 0시간	TI0,DT0
 0시간 00분	TI0
 0시간 동안	TI0
+0시간 반 이상	DT0
 0시간 이상	TI0
 0시간 전까지	TI0
 0시간 전부터	TI0
@@ -448,13 +442,14 @@
 0월 00일까지	DT0
 0월 00일부터	DT0
 0월 00일부터 00일까지	DT0
-0월 0~0일	DT0
 0월 0일	DT0
 0월 0일 이후부터	DT0
 0월 0일 일요일 0000년	DT0
+0월 0일까지	DT0
 0월 0일부	DT0
 0월 0일부터	DT0
 0월 0일부터 00일까지	DT0
+0월 0일자	DT0
 0월 넷째주	DT0
 0월 둘째주	DT0
 0월 둘째주말	DT0
@@ -463,7 +458,6 @@
 0월 말부터	DT0
 0월 전까지	DT0
 0월 중	DT0
-0월 첫째 주	DT0
 0월 첫째주	DT0
 0월 초	DT0
 0월 초순	DT0
@@ -475,7 +469,6 @@
 0월00일~00일	DT0
 0월00일부터	DT0
 0월00일부터 00일까지	DT0
-0월0~00일	DT0
 0월0~0일	DT0
 0월0일	DT0
 0월0일 이후	DT0
@@ -500,16 +493,16 @@
 0월초까지	DT0
 0일	DT0
 0일 전	DT0
-0일(목)	DT0
-0일(수)	DT0
 0일00일부터	DT0
 0일간	DT0
 0일까지	DT0
 0일부터	DT0
 0일부터 00일까지	DT0
+0일부터 입춘 전 0일까지	DT0
 0일전	DT0
 0일째	DT0
 0주	DT0
+0주 간	DT0
 0주 동안	DT0
 0주 이상	DT0
 0주 전	DT0
@@ -527,10 +520,10 @@
 0차 대전이 끝난 후	DT0
 0차대전 기간 동안	DT0
 0차대전 때	DT0
-0천	DT0
 0천년	DT0
 0초	TI0
 0쿼터 중반	TI0
+0학기째	DT0
 0해	DT0
 1 · 4분기	DT
 1 개월 전	DT
@@ -539,6 +532,7 @@
 10 시간	TI
 10 일	DT
 10/3~11/20	DT
+100 일동안	DT
 1000년	DT
 100년	DT
 100년 동안	DT
@@ -549,6 +543,8 @@
 10:00	TI
 10:10~10:20	TI
 10:26	TI
+10:30	TI
+10:50~11:10	TI
 10개월	DT
 10개월간	DT
 10년	DT
@@ -560,14 +556,13 @@
 10년전	DT
 10년째	DT
 10년쯤 전까지	DT
-10대 가수그룹	OG
 10분	TI
 10분 내외	TI
 10분전	TI
 10시	TI
 10시 30분	TI
 10시 5분	TI
-10시간	DT
+10시간	TI,DT
 10시간 이상	TI
 10시부터	TI
 10여 년	DT
@@ -595,7 +590,6 @@
 10월2일	DT
 10월6-13일	DT
 10월초	DT
-10월초순	DT
 10일	DT
 10일간	DT
 10일까지	DT
@@ -615,12 +609,12 @@
 11개월	DT
 11년	DT
 11년 8개월	DT
+11년간	DT
 11년전	DT
 11분	TI
 11시 30분까지	TI
 11월	DT
 11월 7일	DT
-11월14-15일	DT
 11월1일	DT
 11월2-7일	DT
 11월3일까지	DT
@@ -630,22 +624,23 @@
 11일간	DT
 12	DT
 12 월 12 일	DT
-12.2~5	DT
 1200득점	DT
 12:00	TI
 12~13년	DT
+12~13일	DT
 12개월	DT
 12년	DT
 12년 전	DT
-12분	TI
 12월	DT
 12월 15일	DT
 12월10일	DT
+12월16일	DT
 12월24일	DT
 12월31일	DT
 12월9일	DT
 12월초부터 3월말까지	DT
 12일	DT
+12일(목)	DT
 12일까지	DT
 13.6분	TI
 13:00	TI
@@ -658,15 +653,14 @@
 13일부터 사흘간	DT
 14:00	TI
 14개월	DT
-14년	DT
 14년간	DT
 14분37초06	TI
 14세기	DT
-14시즌	DT
 14일	DT
 14일까지	DT
 14일부터	DT
 15, 16세기	DT
+15,16세기	DT
 1500년대	DT
 150분	TI
 1581년	DT
@@ -674,6 +668,7 @@
 1597년	DT
 15:52	TI
 15년	DT
+15분	TI
 15세기	DT
 15세기 중엽	DT
 15시간	TI
@@ -694,6 +689,7 @@
 1628년	DT
 1632년	DT
 1646년	DT
+1660년	DT
 1664년	DT
 1680년대	DT
 1680년대경	DT
@@ -714,6 +710,7 @@
 17~25일	DT
 17년	DT
 17년 전	DT
+17분	TI
 17세기	DT
 17세기 말	DT
 17세기 이후	DT
@@ -733,10 +730,10 @@
 1840년대	DT
 1842년	DT
 1873년	DT
-1877-1955년	DT
+1876년	DT
+1879년	DT
 1892년	DT
 1893년	DT
-1897-1970	DT
 1898년	DT
 18·19세기	DT
 18개월	DT
@@ -746,7 +743,6 @@
 18세기 말	DT
 18세기 후반	DT
 18시	TI
-18시즌	DT
 18일	DT
 18일째	DT
 18주	DT
@@ -759,7 +755,6 @@
 1928년	DT
 1929년 11월 3일	DT
 1936년	DT
-1937년	DT
 1938년	DT
 1942년	DT
 1944년	DT
@@ -773,7 +768,7 @@
 1949~1950년	DT
 1950~60년대	DT
 1950년	DT
-1950년대부터	DT
+1950년대	DT
 1951년	DT
 1952년	DT
 1955년	DT
@@ -790,7 +785,7 @@
 1966년	DT
 1968년	DT
 1968년 5월	DT
-1970년	DT
+1970-90년대까지	DT
 1970년대	DT
 1970년대 중반	DT
 1971년	DT
@@ -800,6 +795,7 @@
 1974년	DT
 1974년 8월6일	DT
 1975년	DT
+1976년부터	DT
 1977년	DT
 1979년	DT
 1979년 5월	DT
@@ -820,13 +816,13 @@
 1989년	DT
 1990년	DT
 1990년대	DT
+1990년대 이후	DT
 1990년부터 1992년까지	DT
 1991년	DT
 1992	DT
 1992년	DT
 1992년부터	DT
 1993년	DT
-1993년부터 올해	DT
 1994년	DT
 1995	DT
 1995년	DT
@@ -845,6 +841,7 @@
 1999년 12월31일	DT
 1999년 2월	DT
 1999년부터	DT
+19:32:50	TI
 19분	TI
 19세기	DT
 19세기 중반	DT
@@ -855,6 +852,8 @@
 19시30분	TI
 19시간	TI
 19일	DT
+19일부터	DT
+1~3년	DT
 1∼1년 반	DT
 1∼2년	DT
 1∼9월중	DT
@@ -879,6 +878,7 @@
 1박2일간	DT
 1백 50년	DT
 1백 59일간	DT
+1백년 동안	DT
 1백여년	DT
 1분	TI
 1분28초전	TI
@@ -887,7 +887,6 @@
 1분53초80	TI
 1분53초전	TI
 1분기	DT
-1분뒤	TI
 1분여전	TI
 1분전	TI
 1분전까지	TI
@@ -895,23 +894,23 @@
 1세기 이후	DT
 1시간	TI
 1시간 30분	TI
-1시간 58분	TI
+1시간 반 이상	DT
 1시간 전부터	TI
 1시간43분18초	TI
 1시간46분3초	TI
 1시간이상	TI
 1월	DT
 1월 1일	DT
-1월 22일	DT
 1월 31일	DT
 1월 5일부터	DT
 1월 말	DT
 1월17일	DT
 1월1일	DT
+1월21일	DT
+1월8일까지	DT
 1일	DT
 1일부터	DT
 1일째	DT
-1주	DT
 1주기	DT
 1주년	DT
 1주일	DT
@@ -929,7 +928,7 @@
 2-3일	DT
 2. 15 (월)	DT
 2.5일	DT
-2.5초전	TI
+20-21일	DT
 20.5초	TI
 2000	DT
 2000년	DT
@@ -940,6 +939,7 @@
 2001년	DT
 2002-03시즌 부터	DT
 2002년	DT
+2002년 3월 12일	DT
 2002년 4분기 이후	DT
 2002년 9월	DT
 2002년 9월 27일	DT
@@ -957,8 +957,6 @@
 2003년 6월 14일	DT
 2003년 8월부터	DT
 2003년 이후	DT
-2003년까지	DT
-2003년부터	DT
 2004	DT
 2004-05	DT
 2004-2005년도	DT
@@ -970,6 +968,7 @@
 2004시즌	DT
 2004시즌부터	DT
 2005	DT
+2005, 2006년	DT
 2005-04-27	DT
 2005-2006	DT
 2005∼2006 시즌	DT
@@ -1005,20 +1004,22 @@
 2007-08 정규시즌	DT
 2007-08시즌	DT
 2007-2008	DT
+2007.2. 5	DT
 2007~08	DT
 2007~2008	DT
 2007~2008 시즌	DT
 2007~2008시즌	DT
 2007∼2008	DT
 2007년	DT
-2007년 06월 24일	DT
 2007년 12월 12일	DT
 2007년 12월 4일	DT
 2007년 8월	DT
+2007년 이후	DT
 2007시즌	DT
 2007학년도부터	DT
 2008	DT
 2008-009	DT
+2008-09	DT
 2008-09시즌	DT
 2008-2009	DT
 2008. 12. 30일자	DT
@@ -1027,20 +1028,19 @@
 2008~2009년	DT
 2008~2009시즌	DT
 2008년	DT
-2008년 10월 18일(토)	DT
 2008년 11월	DT
 2008년 12월	DT
-2008년 2월	DT
 2008년 3월	DT
 2008년 3월 17일	DT
 2008년 4월	DT
 2008년 5월	DT
-2008년 5월 21일	DT
 2008년 6월말	DT
 2008년 7월	DT
 2008년 8월	DT
 2008년 말	DT
+2008년1월19일	DT
 2008년까지	DT
+2008년도	DT
 2008년도 4분기	DT
 2008년부터	DT
 2008시즌	DT
@@ -1054,8 +1054,8 @@
 2009년 3월 28~31일	DT
 2009년 4월 26일	DT
 2009년 6월 말	DT
+2009년 9/26-27일~2009년 12/27일	DT
 2009년 9월	DT
-2009년 시즌	DT
 2009년10월10일	DT
 2009년12월31일	DT
 2009년까지	DT
@@ -1063,9 +1063,10 @@
 2010 정월대보름	DT
 2010-02-23	DT
 2010-02-24	DT
+2010-02-25	DT
+2010-2012	DT
 2010년	DT
 2010년 2월 16일	DT
-2010년 4월 23일	DT
 2010년 9월	DT
 2010년 말	DT
 2010년까지	DT
@@ -1085,7 +1086,6 @@
 2012년 12월 31일까지	DT
 2012년 1월	DT
 2012년까지	DT
-2013	DT
 2013년	DT
 2013년까지	DT
 2013학년도	DT
@@ -1103,6 +1103,7 @@
 20:20:59	TI
 20:21:47	TI
 20:47:55	TI
+20:48:43	TI
 20:49:26	TI
 20∼50분	TI
 20년	DT
@@ -1120,6 +1121,7 @@
 20여년	DT
 20여년 전	DT
 20여년째	DT
+20여일	DT
 20일	DT
 20일 동안	DT
 20일까지	DT
@@ -1134,6 +1136,7 @@
 21세기	DT
 21일	DT
 21일 이전까지	DT
+21일과	DT
 21일까지	DT
 21초	TI
 22:00	TI
@@ -1161,6 +1164,7 @@
 250주년	DT
 25:23	TI
 25時산악회	OG
+25년간	DT
 25년째	DT
 25시간 동안	TI
 25일	DT
@@ -1179,7 +1183,6 @@
 28일	DT
 28일까지	DT
 28일부터	DT
-29:46	TI
 29분	TI
 29일	DT
 29일부터	DT
@@ -1199,12 +1202,15 @@
 2년 이상	DT
 2년 전	DT
 2년6개월간	DT
+2년7개월	DT
 2년간	DT
 2년전	DT
 2년째	DT
 2년차	DT
+2박 3일	DT
 2박 3일간	DT
 2박3일	DT
+2박3일간	DT
 2백년	DT
 2분	TI
 2분13초	TI
@@ -1214,6 +1220,7 @@
 2분기	DT
 2분여부터	TI
 2세트 중반	DT
+2시	TI
 2시10분	TI
 2시간	TI
 2시간 30분	TI
@@ -1236,9 +1243,9 @@
 2월말	DT
 2월초	DT
 2일	DT
-2일(수)	DT
 2일부터	DT
 2주	DT
+2주 간	DT
 2주 이상	DT
 2주 전	DT
 2주간	DT
@@ -1247,18 +1254,19 @@
 2주후	DT
 2차대전 기간 동안	DT
 2차대전 때	DT
-2천	DT
 2해	DT
 3 1절 연휴	DT
 3 ~ 5년	DT
-3.1절	DT
+3 개월	DT
 30·31일	DT
 30개월령	DT
 30년	DT
 30년 동안	DT
 30년 이상	DT
 30년 전	DT
+30년간	DT
 30분	TI
+30분 간	TI
 30분 이상	TI
 30분 전	TI
 30분간	TI
@@ -1267,7 +1275,6 @@
 30일(수)	DT
 30일부터	DT
 30주년	DT
-30초	TI
 30초 뒤	TI
 31분	TI
 31일	DT
@@ -1275,21 +1282,18 @@
 32 개월	DT
 33년간	DT
 33분	TI
-33일	DT
 35:43	TI
 35년 간	DT
 36, 7년 전	DT
 36년간	DT
 37년	DT
 38 이북 땅	LC
-381일	DT
 39분	TI
 39일	DT
 3dtv 방송진흥센터	OG
 3~5년 후	DT
 3∼4일	DT
 3개월	DT
-3군	OG
 3그룹	OG
 3년	DT
 3년 6개월	DT
@@ -1299,7 +1303,6 @@
 3년 반	DT
 3년 이상	DT
 3년 전	DT
-3년 전까지	DT
 3년 후인	DT
 3년간	DT
 3년전부터	DT
@@ -1309,13 +1312,11 @@
 3백년	DT
 3백여년	DT
 3번째 시즌	DT
-3분 뒤	TI
 3분 후	TI
 3분18초전	TI
 3분기	DT
-3분기부터	DT
 3분여 전	TI
-3시간	TI,DT
+3시간	DT,TI
 3시간 이상	TI
 3시즌	DT
 3월	DT
@@ -1327,6 +1328,7 @@
 3월 31일	DT
 3월 4일	DT
 3월 6일	DT
+3월 7일까지	DT
 3월 초순	DT
 3월19일	DT
 3월21일	DT
@@ -1338,7 +1340,6 @@
 3월초까지	DT
 3일	DT
 3일 전	DT
-3일(목)	DT
 3일간	DT
 3일까지	DT
 3일부터	DT
@@ -1352,7 +1353,6 @@
 3천년	DT
 3초	TI
 4 개월	DT
-4 월 5 일	DT
 4-7일	DT
 40년	DT
 40년 동안	DT
@@ -1367,21 +1367,22 @@
 42.1초전	TI
 42년 전	DT
 42분	TI
-43년	DT
 44년	DT
 44분	TI
 45rpm	PS
 45년	DT
 45년 1월	DT
+45년 3월	DT
 45년 간	DT
 45분	TI
 45일	DT
-46년 전	DT
 47년	DT
 48년	DT
 48일	DT
 49일	DT
+4~6년	DT
 4∼5월	DT
+4강po	OG
 4개년	DT
 4개월	DT
 4개월간	DT
@@ -1417,7 +1418,6 @@
 4월 28일까지	DT
 4월 29일	DT
 4월 4일	DT
-4월 5~6일	DT
 4월 7일부터 22일까지	DT
 4월 9일	DT
 4월 중	DT
@@ -1461,10 +1461,11 @@
 50분	TI
 50일간	DT
 50주년	DT
+53년 7월 27일	DT
 55년	DT
+56년	DT
 56억 7천만 년 뒤	DT
 57일 동안	DT
-57초	TI
 58년	DT
 58．9초전	TI
 59년과 62년 사이	DT
@@ -1473,7 +1474,9 @@
 5∼6년	DT
 5개월 동안	DT
 5공화국	OG
+5공화국 비리조사 특위	OG
 5년	DT
+5년 뒤	DT
 5년 이내	DT
 5년 이상	DT
 5년 전	DT
@@ -1482,6 +1485,7 @@
 5년간	DT
 5년동안	DT
 5년전부터	DT
+5년째	DT
 5분	TI
 5분 간	TI
 5분 뒤	TI
@@ -1500,6 +1504,8 @@
 5월 13일	DT
 5월 20일	DT
 5월 22일	DT
+5월 27일	DT
+5월 29일	DT
 5월 말	DT
 5월 초	DT
 5월12일~30일	DT
@@ -1512,13 +1518,14 @@
 5월부터	DT
 5일	DT
 5일12일부터	DT
-5일간	DT
+5일부터 입춘 전 3일까지	DT
 5일전	DT
 5주	DT
 5주간	DT
 5천년	DT
 5초	TI
 6 2	DT
+6 개월	DT
 6, 7일	DT
 6.10~9.10	DT
 6.15 정상회담	OG
@@ -1529,7 +1536,6 @@
 60~70년대	DT
 60∼70년대	DT
 60년	DT
-60년대	DT
 60년대 말	DT
 60년대 후반	DT
 60분간	TI
@@ -1545,11 +1551,11 @@
 66년 이후	DT
 684부대	OG
 688일	DT
-6·25	DT
+68분	TI
+69년	DT
 6·25전쟁 때	DT
 6·29	DT
 6개월	DT
-6개월 이상	DT
 6개월간	DT
 6공화국	OG
 6년	DT
@@ -1557,19 +1563,24 @@
 6년 전	DT
 6년간	DT
 6년째	DT
+6시	TI
+6시30분	TI
 6시간	TI
 6시즌	DT
 6월	DT
+6월 10일	DT
 6월 10일부터	DT
 6월 13일	DT
 6월 15일까지	DT
 6월 17일	DT
 6월 2일부터 14일까지	DT
 6월 4일	DT
+6월 4일자	DT
 6월 전까지	DT
 6월1일부터	DT
 6월2일	DT
 6월30일	DT
+6월7일	DT
 6월까지	DT
 6일	DT
 6일간	DT
@@ -1581,6 +1592,8 @@
 6자회담	OG
 6주	DT
 6초	TI
+7 8일간	DT
+7 ~10년	DT
 7 개월	DT
 7- 8월	DT
 7.14~9.9	DT
@@ -1591,7 +1604,6 @@
 70년 이전	DT
 70년대	DT
 70일	DT
-72년	DT
 731부대	OG
 73년	DT
 74년	DT
@@ -1601,8 +1613,10 @@
 78분	TI
 79년	DT
 79년도	DT
+7~8월	DT
 7~8일	DT
 7·7	DT
+7∼10년	DT
 7개월	DT
 7공주	PS
 7년	DT
@@ -1619,6 +1633,7 @@
 7월 18일부터	DT
 7월 1일 이후부터	DT
 7월 1일부	DT
+7월 20일부터 23일까지	DT
 7월 21일	DT
 7월 22일	DT
 7월 23일부터	DT
@@ -1628,7 +1643,6 @@
 7월 둘째주말	DT
 7월 마지막 주	DT
 7월 말부터	DT
-7월 첫째 주	DT
 7월11일	DT
 7월12일	DT
 7월14~20일	DT
@@ -1651,37 +1665,31 @@
 7초	TI
 8.13~9.2	DT
 8.15	DT
-8.17~9.16	DT
 8/10	DT
 8/11	DT
 80년	DT
 80년 대	DT
 80년대	DT
-80년대 후반	DT
 80년대말	DT
-80년대초	DT
 80여년	DT
+81∼83년	DT
 81년도	DT
+82년	DT
 83년	DT
 84	DT
 84년	DT
 84년부터	DT
 85년	DT
 85년 1월이후	DT
-86	DT
 86년	DT
 86년 서울아시아 경기대회 당시	DT
 86분	TI
 87년	DT
-88cc	OG
 88년	DT
 88년 이후	DT
-88년부터	DT
 89년	DT
 89년 12월	DT
 8~12	DT
-8·15로 환국 후	DT
-8∼9월	DT
 8개월	DT
 8년	DT
 8년 전	DT
@@ -1697,6 +1705,7 @@
 8월 14일	DT
 8월 18일	DT
 8월 20일	DT
+8월 22일	DT
 8월 25일	DT
 8월 26일	DT
 8월 27일	DT
@@ -1716,10 +1725,13 @@
 8월1일~5일	DT
 8월24일	DT
 8월31-9월10일	DT
+8월3일	DT
+8월4일	DT
 8월7일	DT
 8월8-9일	DT
 8월8일	DT
 8월말	DT
+8월중순	DT
 8월초	DT
 8월초까지	DT
 8일	DT
@@ -1733,16 +1745,15 @@
 90년대부터 2000년대 초반	DT
 90년대초	DT
 90분	TI
-90분간	TI
 90일	DT
 90일 전	DT
 90초	TI
-91	DT
 91- 92년	DT
 91년	DT
 91년 6월 19일	DT
 92	DT
 92년	DT
+92년 2월	DT
 92년까지	DT
 93년	DT
 93년 1월이후	DT
@@ -1750,21 +1761,18 @@
 94-95 시즌	DT
 94년	DT
 94년 12월 16일부터 95년 1월 14일까지	DT
-94년 8월	DT
 94년4월19일	DT
 95년	DT
 95년 1월 9일부터 1월 20일까지	DT
 95년까지	DT
-96	DT
 96년	DT
 96년 8월2일	DT
 96년 이후	DT
-96년까지	DT
 97∼2000년까지	DT
 97년	DT
 97년 11월	DT
 97년 12월	DT
-98	DT
+97년말	DT
 98년	DT
 99-00시즌부터	DT
 99년	DT
@@ -1792,19 +1800,20 @@
 9월26일~30일	DT
 9월27일	DT
 9월29일	DT
-9월6~19일	DT
 9월9일~9월11일까지	DT
+9월부터	DT
 9월중	DT
 9월중순	DT
 9일	DT
 9주간	DT
+9학기째	DT
 aba	OG
+abc	OG
 abc-tv	OG
 abc마트	OG
 ac 밀란	OG
+ac밀란	OG
 ac파르마	OG
-ad 0세기	DT0
-ad 4세기	DT
 adata technology korea	OG
 adt캡스	OG
 aehi	OG
@@ -1819,9 +1828,9 @@ alexandridis alex	PS
 alternate energy holdings	OG
 amd	OG
 amuse	OG
-amy smart	PS
 ap	OG
 ap 통신	OG
+apec 정상회의	OG
 ap통신	OG
 ard	OG
 ard/zdf	OG
@@ -1830,46 +1839,48 @@ as 로마	OG
 asustek사	OG
 as로마	OG
 at	OG
+atomic	OG
 atp	OG
 avc	OG
+axel ritt	PS
 a매치 데이	DT
 a에이전트	OG
 a조	OG
 b.b	PS
 b.j. 라이언	PS
-b.알리	PS
 babbo	OG
 bbc	OG
 bc 000년	DT0
 bc 600년	DT
 bc 660년	DT
 ben sidran	PS
+bernie colbe	PS
 betapro	OG
-bijou phillips	PS
+bikerstarlet	OG
 bjorn again	PS
-bmw	OG
 bmw자동차	OG
 bn그룹 컨소시엄	OG
 boc	OG
 boof	OG
 bracketron	OG
+brigham young university	OG
 bs금융지주	OG
 buyse nils	PS
 buzrun	OG
 bwf	OG
 b조	OG
 c.c.사바시아	PS
-c.야신	PS
 c.호날두	PS
 cbs	OG
 cbs tv	OG
 cc듀오	PS
 ceo 명품아카데미	OG
 cgv	OG
-cgv 용산	OG
+chad	PS
 chris bhm	PS
 chris fedde	PS
 cia	OG
+cis	OG
 cj	OG
 cj cgv	OG
 cj 오쇼핑	OG
@@ -1881,10 +1892,10 @@ cj인터넷	OG
 cj제일제당	OG
 cnbc	OG
 cnn	OG
+cnnsi	OG
 cnosf	OG
 corsair	OG
 cpim	OG
-csis	OG
 csx	OG
 ct&t	OG
 c조	OG
@@ -1900,13 +1911,12 @@ dan	PS
 daniel malmedahl	PS
 datv	OG
 dice-k	PS
-dmz	LC
 dreamwiz.com	OG
 ds	OG
-d조	OG
 e !tv	OG
 e-tribe	PS
 e1	OG
+e2	OG
 eaff 상벌위원회	OG
 eas	OG
 east sea	LC
@@ -1942,11 +1952,11 @@ fed	OG
 fiba	OG
 fifa	OG
 fivb	OG
+fnc뮤직	OG
 fox	OG
 frank farian	PS
 frb	OG
 fsb	OG
-fs코퍼레이션	OG
 fta	OG
 ftc	OG
 f조	OG
@@ -1978,7 +1988,8 @@ i-pmc	OG
 iaaf	OG
 ibm	OG
 ibrd	OG
-ice	OG
+ib스포츠	OG
+ib투자	OG
 idg	OG
 idp에듀케이션	OG
 iffhs	OG
@@ -1990,17 +2001,14 @@ ing	OG
 ioc	OG
 ioc 프로그램위원회	OG
 isga	OG
-isis	PS
 isu	OG
 itv	OG
+izi	PS
 j-리그	OG
-j2리그	OG
-jack huston	PS
 jama	OG
 jce	OG
 jdc	OG
 jem	PS
-jessica lowndes	PS
 jr	OG
 jtl	PS
 jva	OG
@@ -2025,7 +2033,6 @@ kbs제주방송총국	OG
 kbs홀	OG
 kb국민은행	OG
 kb금융	OG
-kb투자증권	OG
 kcc	OG
 kcm	PS
 kdb산업은행	OG
@@ -2035,8 +2042,6 @@ kepco45	OG
 kfa	OG
 kgb	OG
 kia	OG
-kia 타이거즈	OG
-klm	OG
 km컬쳐	OG
 kntv	OG
 koica	OG
@@ -2065,6 +2070,7 @@ la 레이커스	OG
 la 에인절스	OG
 la 에인절스 오브 애너하임	OG
 la 클리퍼스	OG
+lars nilson	PS
 la갤럭시	OG
 la에인절스	OG
 la타임스	OG
@@ -2087,19 +2093,17 @@ lig 손해보험	OG
 light사	OG
 lig손보	OG
 lig손해보험	OG
-lig손해보험 배구단	OG
-likke li	PS
 lpga	OG
 ls	OG
 ls네트웍스	OG
 ls엠트로	OG
-lucca	LC
 luther vandross	PS
 m.net	OG
 m3	PS
 mama guitar	PS
 mb	PS
 mbc	OG
+mbc espn	OG
 mbc fm	OG
 mbc tv	OG
 mbc 드라마넷	OG
@@ -2118,6 +2122,7 @@ mpc	OG
 ms	OG
 mtv	OG
 mtv 코리아	OG
+multimedia acceleration engine	OG
 muno	PS
 mytv21	OG
 nate	OG
@@ -2131,18 +2136,15 @@ nhn주식회사	OG
 nh농협	OG
 nintendo	OG
 nl	OG
-no charge semicircles	LC
-noc	OG
 noon	PS
 norman mclaren	PS
 npd	OG
-ns	OG
 nsic	OG
 nyse	OG
 nyt	OG
 nyx	OG
+o-matic	OG
 ob	OG
-ob베어스	OG
 ockhee	PS
 ocn	OG
 oecd	OG
@@ -2151,7 +2153,6 @@ oecd그룹	OG
 ofc	OG
 oneballjoy	OG
 option code ltd	OG
-p.일한	PS
 padua대학	OG
 padua시기의 말	DT
 pat metheny	PS
@@ -2170,11 +2171,11 @@ psb 부산방송	OG
 psv	OG
 psv 에인트호벤	OG
 psv에인트호벤	OG
+pu	PS
 pudua대학	OG
 rabbani	PS
 rai	OG
 rbs우즈베키스탄 은행	OG
-rce자연생태공원부지	LC
 redeem team	OG
 rotc	OG
 s&p	OG
@@ -2191,7 +2192,6 @@ sbs스포츠채널	OG
 sbs콘텐츠허브	OG
 sce	OG
 scis	OG
-scott caan	PS
 sea of japan	LC
 sek	OG
 sga	OG
@@ -2204,7 +2204,6 @@ sk	OG
 sk c&c	OG
 sk 구단	OG
 sk 와이번스	OG
-sk 응원단	OG
 skc	OG
 skt	OG
 sky스포츠	OG
@@ -2216,6 +2215,7 @@ sk증권	OG
 sk텔레콤	OG
 sm	OG
 sma	OG
+smap	PS
 sm엔터테인먼트	OG
 snap	OG
 sofa	OG
@@ -2238,16 +2238,16 @@ tk	LC
 tnms	OG
 trade sos	OG
 trt	OG
+tu미디어	OG
 tv 아사히	OG
 tvb	OG
 tve	OG
-tvn	OG
-tv리포트	OG
 twista	PS
 u.n.	PS
 u20 청소년 대표팀	OG
 uae	LC
 ubcare	OG
+ucla	OG
 uc학생정책부	OG
 uefa	OG
 ugi	OG
@@ -2272,6 +2272,7 @@ who	OG
 wkbl	OG
 wnba	OG
 wsj	OG
+wta	OG
 wwf	OG
 xtm	OG
 y m양성숙	OG
@@ -2295,13 +2296,12 @@ ze:a	PS
 ㈜피플크리에이티브	OG
 ㈜필립스전자	OG
 ㈜혁신전공사	OG
-三星 전자	OG
 三煥기업	OG
 中共	LC
 中國	LC
+佐佐江賢一郞	PS
 佛敎	OG
 元都	LC
-光武	PS
 光武帝	PS
 全斗煥	PS
 公州	LC
@@ -2315,6 +2315,7 @@ ze:a	PS
 唐末	DT
 善竹橋	LC
 嚴子陵	PS
+國望峰	LC
 地球 레코드	OG
 夢陽	PS
 大乘佛敎	OG
@@ -2336,7 +2337,7 @@ ze:a	PS
 德治	PS
 徽宗皇帝	PS
 成渾	PS
-揚子江	LC
+揚子江上	LC
 摹瑟浦	LC
 文匯報	OG
 文昌洙	PS
@@ -2374,7 +2375,6 @@ ze:a	PS
 美예일 大	OG
 美의회	OG
 與野	OG
-英親	PS
 許由	PS
 鄭夢周	PS
 鄭漢模	PS
@@ -2384,15 +2384,14 @@ ze:a	PS
 金宏弼	PS
 金平默	PS
 金長生	PS
-開城	LC
 閤廬	PS
 雨期	DT
 雪嶽山	LC
 雲山	PS
-鞏悧	PS
 韓國	LC
 韓寶철강	OG
 高宗	PS
+鳴聲山	LC
 鷹峰山	LC
 黃伯禪師	PS
 가나	LC
@@ -2410,18 +2409,14 @@ ze:a	PS
 가레스 사우스게이트	PS
 가르시아	PS
 가마가츠	OG
-가마모토	PS
 가마봉	LC
 가매봉	LC
-가메봉	LC
 가솔	PS
-가수지부	OG
-가스케	PS
 가시마	OG
 가시마 앤틀러스	OG
 가시와	OG
 가시와 레이솔	OG
-가야동계곡	LC
+가야3동	LC
 가야바	LC
 가엘 가르시아 베르나르	PS
 가온누리장애인예술단	OG
@@ -2435,6 +2430,7 @@ ze:a	PS
 가이후 도시키	PS
 가인	PS
 가임기간	DT
+가족영화제 사무국	OG
 가지모토 다카오	PS
 가지야마	PS
 가지야마 세이로쿠	PS
@@ -2450,14 +2446,15 @@ ze:a	PS
 가평군의회	OG
 가평종고	OG
 가희	PS
-간미연	PS
+각트	PS
+각흘봉	LC
 간밤	TI
 갈라타사라이	OG
 갈레노스	PS
 갈리아니	PS
 갈릴레오	PS
+갈전곡봉	LC
 감나무재	LC
-감나무집	OG
 감바 오사카	OG
 감비노	OG
 감비노가	OG
@@ -2485,6 +2482,7 @@ ze:a	PS
 강릉문화예술관	OG
 강릉시	LC
 강릉시청	OG
+강릉제일	OG
 강명구	PS
 강민호	PS
 강병근	PS
@@ -2511,11 +2509,11 @@ ze:a	PS
 강영식	PS
 강영호	PS
 강우석	PS
-강우형	PS
 강욱순	PS
 강원	LC,OG
 강원경찰	OG
 강원대	OG
+강원대학교	OG
 강원도	LC
 강원도당	OG
 강원도립	OG
@@ -2549,21 +2547,29 @@ ze:a	PS
 강태공	PS
 강택민	PS
 강하	PS
+강해신	PS
 강혁	PS
 강혜정	PS
 강호동	PS
+강호선	PS
 강화	LC
 강화군	LC
 강화도	LC
 강화읍	LC
 강화토산품판매장	OG
 강희락	PS
+같은 해 00월	DT0
+같은 해 11월	DT
+같은달 00일	DT0
+같은달 22일	DT
 같은해 00월	DT0
 같은해 11월	DT
 개나리벽지	OG
+개리 레스	PS
 개리 매튜스 주니어	PS
 개미 플릭	PS
 개성	LC
+개인산	LC
 개포동	LC
 개혁통신	OG
 개화기	DT
@@ -2588,6 +2594,7 @@ ze:a	PS
 건우	PS
 건전비디오 연구를 위한 모임	OG
 건축디자인과	OG
+건축위원회	OG
 건축토목과	OG
 걸스카우트	OG
 걸프전 당시	DT
@@ -2616,13 +2623,13 @@ ze:a	PS
 견지동	LC
 경기	LC,OG
 경기 시흥공단	LC
+경기고	OG
 경기과천	OG
 경기대	OG
 경기도	LC
 경기도 지역	LC
 경기도공동모금회	OG
 경기도립대학	OG
-경기도팔당수질개선본부	OG
 경기디지털아트센터	OG
 경기만	LC
 경기수원공	OG
@@ -2635,7 +2642,6 @@ ze:a	PS
 경기초지	OG
 경기풍생고	OG
 경남	LC,OG
-경남 fc	OG
 경남개발공사	OG
 경남거제	OG
 경남도	LC
@@ -2645,6 +2651,7 @@ ze:a	PS
 경남무역	OG
 경남신문	OG
 경남제약	OG
+경남지방	LC
 경남지부	OG
 경동고	OG
 경동나비엔	OG
@@ -2656,6 +2663,7 @@ ze:a	PS
 경상남북도	LC
 경상대학	OG
 경상도	LC
+경상북도수목원	LC
 경서동	LC
 경서삼거리	LC
 경성경제전문학교	OG
@@ -2690,22 +2698,23 @@ ze:a	PS
 경헌호	PS
 경희	OG
 경희대	OG
+경희대의대	OG
 계룡면	LC
 계룡중학교	OG
-계산	OG
 계산동	LC
 계성국민학교	OG
 계양1선거구	LC
 계양구	LC
 계양산	LC
-계양산 골프장	LC
 계양산공원	LC
 계양전기	OG
 고광순	PS
 고구려	LC
+고뉴스tv	OG
 고다르	PS
 고대	DT
 고대 말에서부터	DT
+고대 안암병원	OG
 고대면	LC
 고대올스타	OG
 고동	PS
@@ -2718,8 +2727,6 @@ ze:a	PS
 고려대	OG
 고려대 올스타	OG
 고려대ob	OG
-고려대학교	OG
-고려독립청년당	OG
 고려말	DT
 고려병원	OG
 고려조	DT
@@ -2744,6 +2751,7 @@ ze:a	PS
 고소영	PS
 고수부지	LC
 고시카와 유	PS
+고씨	PS
 고아라	PS
 고아성	PS
 고양	LC
@@ -2752,7 +2760,7 @@ ze:a	PS
 고양시	LC
 고양시민축구단	OG
 고양시청	OG
-고영구	PS
+고어	OG
 고영립	PS
 고영민	PS
 고완선	PS
@@ -2771,6 +2779,7 @@ ze:a	PS
 고흐	PS
 곤도	PS
 곤지암	LC
+골고다	LC
 골닷컴	OG
 골드호	OG
 골든스테이트	OG
@@ -2790,7 +2799,6 @@ ze:a	PS
 공립학교	OG
 공명이	PS
 공보실	OG
-공비사건 이후	DT
 공산당	OG
 공심위	OG
 공안 1부	OG
@@ -2809,16 +2817,18 @@ ze:a	PS
 공주시	LC
 공직자 윤리위원회	OG
 공진석	PS
-공항동	LC
+공태욱	PS
+공평희	PS
 공화당	OG
 공휴 국경일	DT
+공휴일	DT
 과외방	OG
 과천	LC
-과천 서울랜드	LC
 과천시	LC
 과학기술처	OG
 과학아카데미	OG
 과학혁명기	DT
+곽민정	PS
 곽윤기	PS
 곽정숙	PS
 곽정술	PS
@@ -2837,6 +2847,7 @@ ze:a	PS
 관할지구대	OG
 관훈클럽	OG
 괌 올림픽위원회	OG
+광고물관리심의위원회	OG
 광나루역	LC
 광덕산	LC
 광동제약	OG
@@ -2845,15 +2856,12 @@ ze:a	PS
 광무	PS
 광문고	OG
 광복절	DT
-광산 김씨	OG
 광양시	LC
-광양제철소	OG
 광역상수도	LC
 광영	OG
 광저우	LC
 광주	LC,OG
 광주 상무	OG
-광주 상무노원 험멜	OG
 광주 인화학교	OG
 광주광역시	LC
 광주김치타운	LC
@@ -2866,7 +2874,6 @@ ze:a	PS
 광주실고	OG
 광주은행의 날	DT
 광주일고	OG
-광주태평극장	OG
 광천	LC
 광천동	LC
 광천젓갈시장	LC
@@ -2879,11 +2886,10 @@ ze:a	PS
 교대	OG
 교도통신	OG
 교동초	OG
-교민회	OG
 교보증권	OG
+교본용태랑	PS
 교원대	OG
 교육개혁 현장착근 지원협의회	OG
-교육개혁위원회	OG
 교육과학기술부	OG
 교육과학대학	OG
 교육부	OG
@@ -2901,6 +2907,7 @@ ze:a	PS
 구곡폭포	LC
 구글	OG
 구대성	PS
+구도	LC
 구랍 00일	DT0
 구랍 0일	DT0
 구랍 10일	DT
@@ -2909,7 +2916,6 @@ ze:a	PS
 구로구청	OG
 구로다	PS
 구로동	LC
-구로사	PS
 구리시	LC
 구미	LC
 구민정	PS
@@ -2945,7 +2951,6 @@ ze:a	PS
 국군체육	OG
 국군체육부대	OG
 국내시장	LC
-국립 농수산물관리원	OG
 국립 도서관	LC
 국립과학수사연구소	OG
 국립국악관현악단	OG
@@ -2955,7 +2960,6 @@ ze:a	PS
 국립산림과학원	OG
 국립섬유수사연구소	OG
 국립수의과학검역원	OG
-국립식물검역원	OG
 국립오페라단	OG
 국립원예특작과학원	OG
 국립의료원	OG
@@ -2964,6 +2968,7 @@ ze:a	PS
 국립합창단	OG
 국립현대미술관	OG
 국립환경과학원	OG
+국망봉	LC
 국무부	OG
 국무회	OG
 국무회의	OG
@@ -2978,7 +2983,6 @@ ze:a	PS
 국민연금공단	OG
 국민은행	OG
 국민참여당	OG
-국민체육진흥공단	OG
 국민회의	OG
 국방부	OG
 국방안보관계자회의	OG
@@ -2987,6 +2991,7 @@ ze:a	PS
 국세청	OG
 국악원	OG
 국왕 방중 전날	DT
+국왕 방중기간	DT
 국왕시대	DT
 국제디지털대	OG
 국제배구연맹	OG
@@ -2998,8 +3003,8 @@ ze:a	PS
 국제올림픽조직위원회	OG
 국제육상경기연맹	OG
 국제자동차연맹	OG
-국제전문대학원	OG
 국제축구연맹	OG
+국제축구평의회	OG
 국제통화기금	OG
 국진이	PS
 국토부	OG
@@ -3009,20 +3014,22 @@ ze:a	PS
 국회 5공화국 비리 특별위	OG
 국회 의원회관	OG
 국회법제실	OG
-국회예산결산위원회	OG
 국회운영위원회	OG
 국회특별위원회	OG
 군대	OG
 군부	OG
+군부대	OG
 군사분계선	LC
 군사정전위	OG
+군사정전위원회	OG
 군산	LC
 군산상고	OG
 군산세무서	OG
+군산시	LC
+군인공제회	OG
 군자지구	LC
 군포수리고	OG
 궁내동 ic	LC
-궁리	PS
 궁택희일	PS
 궈안	LC
 궈징징	PS
@@ -3034,6 +3041,7 @@ ze:a	PS
 권상우	PS
 권선아	PS
 권수진	PS
+권씨	PS
 권영근	PS
 권영락	PS
 권영민	PS
@@ -3045,7 +3053,6 @@ ze:a	PS
 권익위	OG
 권인혁	PS
 권재진	PS
-권재혁	PS
 권준모	PS
 권진규	PS
 권태신	PS
@@ -3059,11 +3066,13 @@ ze:a	PS
 귀뚜라미보일러	OG
 규리	PS
 규민이	PS
-규슈	LC
 그 해	DT
 그 해 00월	DT0
+그 해 0월	DT0
 그 해 10월	DT
+그 해 6월	DT
 그 해 연말	DT
+그늘집	OG
 그라바노	PS
 그라비티	OG
 그랜드 인터컨티넨탈호텔	OG
@@ -3097,16 +3106,18 @@ ze:a	PS
 그린스튜디오	OG
 그린스피드	OG
 그린프리미엄	OG
+그림자	PS
 극단청강	OG
 극동	OG
 극동가스	OG
 극동지역	LC
 근대	DT
 근로복지공단	OG
+근로자종합복지관	OG
 근현대	DT
-근호	PS
 근화제약	OG
 글렌애비gc	OG
+글렙 갈프린	PS
 금감원	OG
 금강	LC
 금강산	LC
@@ -3116,15 +3127,12 @@ ze:a	PS
 금년 가을	DT
 금년 봄	DT
 금년 상반기	DT
-금방울자매	PS
 금보라	PS
 금비	PS
 금산군청	OG
 금성	LC
 금성사	OG
 금속노조	OG
-금속노조연맹	OG
-금순	PS
 금아플로어	OG
 금왕읍	LC
 금요비	PS
@@ -3157,11 +3165,9 @@ ze:a	PS
 기동욱	PS
 기득	PS
 기득이	PS
-기린	OG
 기무사령부	OG
 기보	OG
 기상청	OG
-기상청예보관리과	OG
 기성용	PS
 기술개발공사	OG
 기술보증기금	OG
@@ -3175,7 +3181,6 @@ ze:a	PS
 기욱	PS
 기재위	OG
 기타노	PS
-기타노 다케시	PS
 기획시대	OG
 기획예산처	OG
 기획재정부	OG
@@ -3187,6 +3192,7 @@ ze:a	PS
 긴자	LC
 길건	PS
 길다 부타	PS
+길리어드 사이언스	OG
 길림성	LC
 길보아산	LC
 길손이	PS
@@ -3194,21 +3200,23 @@ ze:a	PS
 김 연아	PS
 김 제임스 우	PS
 김c	PS
+김간호사	PS
 김갑배	PS
 김강민	PS
 김강석	PS
 김건모	PS
 김건태	PS
+김경동	PS
 김경련	PS
 김경문	PS
 김경숙	PS
 김경식	PS
 김경아	PS
 김경옥	PS
+김경종	PS
 김경태	PS
 김경현	PS
 김계관	PS
-김계령	PS
 김광모	PS
 김광섭	PS
 김광혁	PS
@@ -3219,13 +3227,11 @@ ze:a	PS
 김교성	PS
 김교신	PS
 김규동	PS
-김규리	PS
 김규문	PS
 김근배	PS
 김근희	PS
 김기덕	PS
 김기동	PS
-김기만	PS
 김기용	PS
 김기웅	PS
 김기표	PS
@@ -3248,6 +3254,7 @@ ze:a	PS
 김대의	PS
 김대중	PS
 김대중평화센터	OG
+김대통령	PS
 김대현	PS
 김도연	PS
 김도완	PS
@@ -3255,6 +3262,7 @@ ze:a	PS
 김동규	PS
 김동률	PS
 김동수	PS
+김동연	PS
 김동욱	PS
 김동이	PS
 김동주	PS
@@ -3283,6 +3291,7 @@ ze:a	PS
 김미자	PS
 김미정	PS
 김미현	PS
+김민경	PS
 김민기	PS
 김민석	PS
 김민선	PS
@@ -3295,22 +3304,21 @@ ze:a	PS
 김병지	PS
 김병철	PS
 김병현	PS
-김병호	PS
 김보경	PS
-김보배	PS
 김보영	PS
 김보일	PS
 김봉기	PS
 김봉수	PS
+김봉회	PS
 김부선	PS
 김부식	PS
 김부일	PS
+김부일회장	PS
 김사니	PS
 김상곤	PS
 김상기	PS
 김상덕	PS
 김상록	PS
-김상배	PS
 김상식	PS
 김상우	PS
 김상주	PS
@@ -3320,19 +3328,18 @@ ze:a	PS
 김상현	PS
 김상호	PS
 김상훈	PS
+김석동	PS
 김석원	PS
 김석윤	PS
 김선민	PS
 김선빈	PS
-김선아	PS
+김선영	PS
 김선우	PS
+김선임연구원	PS
 김선재	PS
-김선정	PS
-김설	PS
 김성근	PS
 김성수	PS
 김성순	PS
-김성완	PS
 김성인	PS
 김성준	PS
 김성철	PS
@@ -3350,7 +3357,6 @@ ze:a	PS
 김수근	PS
 김수남	PS
 김수미	PS
-김수연	PS
 김수용	PS
 김수현	PS
 김수환	PS
@@ -3360,12 +3366,14 @@ ze:a	PS
 김순남	PS
 김순자	PS
 김승수	PS
+김승용	PS
 김승현	PS
-김시진	PS
 김신영	PS
 김신호	PS
 김쌍수	PS
+김씨	PS
 김양신	PS
+김양제	PS
 김양하	PS
 김양호	PS
 김언호	PS
@@ -3379,7 +3387,6 @@ ze:a	PS
 김영갑갤러리	OG
 김영광	PS
 김영구	PS
-김영균	PS
 김영기	PS
 김영녀	PS
 김영대	PS
@@ -3409,14 +3416,15 @@ ze:a	PS
 김용환	PS
 김용희	PS
 김우병	PS
+김우주	PS
 김우진	PS
 김운용	PS
-김운하	PS
 김원길	PS
 김원탁	PS
 김원태	PS
 김원형	PS
 김위중	PS
+김유감	PS
 김유미	PS
 김유석	PS
 김유신	PS
@@ -3432,9 +3440,11 @@ ze:a	PS
 김윤희	PS
 김은영	PS
 김은정	PS
+김은혜	PS
 김은호	PS
 김은희	PS
 김응룡	PS
+김이사	PS
 김이섭	PS
 김인	PS
 김인경	PS
@@ -3444,15 +3454,16 @@ ze:a	PS
 김인철	PS
 김일권	PS
 김일두	PS
+김일병	PS
 김일성	PS
 김일성 대학	OG
 김일성대학	OG
+김장관	PS
+김장생	PS
 김장수	PS
-김장윤	PS
 김장훈	PS
 김재건	PS
 김재구	PS
-김재동	PS
 김재박	PS
 김재영	PS
 김재현	PS
@@ -3467,12 +3478,10 @@ ze:a	PS
 김정문알로에	OG
 김정섭	PS
 김정수	PS
-김정숙	PS
 김정아	PS
 김정우	PS
 김정은	PS
 김정일	PS
-김정헌	PS
 김정회	PS
 김정훈	PS
 김정희	PS
@@ -3524,8 +3533,10 @@ ze:a	PS
 김창남	PS
 김창동	PS
 김창삼	PS
+김창수	PS
 김창완	PS
 김창윤	PS
+김창호	PS
 김채원	PS
 김천	LC
 김천시	LC
@@ -3534,6 +3545,7 @@ ze:a	PS
 김춘미	PS
 김춘진	PS
 김충용	PS
+김치곤	PS
 김치우	PS
 김치율	PS
 김태균	PS
@@ -3553,24 +3565,25 @@ ze:a	PS
 김포	LC,OG
 김포공항	LC
 김포시청	OG
-김포외고	OG
 김필진	PS
+김필호	PS
 김하늘	PS
 김하종	PS
 김하주	PS
 김하진	PS
 김학민	PS
 김학범	PS
-김학영	PS
 김한길	PS
+김한섭	PS
 김한수	PS
+김한유	PS
 김한윤	PS
 김한주	PS
 김해	LC
 김해 지역	LC
+김해건설공	OG
 김해님	PS
 김해란	PS
-김해시	LC
 김해시청	OG
 김해여	OG
 김해연	PS
@@ -3583,6 +3596,7 @@ ze:a	PS
 김현철	PS
 김현태	PS
 김형구	PS
+김형규	PS
 김형근	PS
 김형범	PS
 김형석	PS
@@ -3591,6 +3605,7 @@ ze:a	PS
 김형실	PS
 김형오	PS
 김형준	PS
+김형찬	PS
 김형태	PS
 김혜나	PS
 김혜수	PS
@@ -3604,14 +3619,17 @@ ze:a	PS
 김호철	PS
 김홍선	PS
 김홍준	PS
+김홍철	PS
 김화집	PS
 김환기	PS
+김황식	PS
 김회장	PS
 김효석	PS
 김흥호	PS
 김희선	PS
 김희옥	PS
 까보레	PS
+깜씨	PS
 깡통	PS
 깨바즐낚	PS
 꽃피는 봄이 오면	OG
@@ -3649,7 +3667,6 @@ ze:a	PS
 나카무라	PS
 나카무라 순스케	PS
 나카무라 시도	PS
-나카소네 야스히로	PS
 나카타 히데토시	PS
 나콘라차시마	LC
 나폴레옹	PS
@@ -3665,6 +3682,7 @@ ze:a	PS
 낙하산	PS
 난센	PS
 난징대	OG
+남경사	PS
 남경필	PS
 남구	LC
 남구청	OG
@@ -3683,7 +3701,7 @@ ze:a	PS
 남무교	PS
 남미	LC
 남미대륙	LC
-남부	OG,LC
+남부	LC,OG
 남부지방법원	OG
 남북	LC
 남북정상회담	OG
@@ -3726,28 +3744,28 @@ ze:a	PS
 남조선팀	OG
 남지연	PS
 남진	PS
+남쪽	LC
 남창섭	PS
 남철원	LC
 남춘천여중	OG
 남포동	LC
 남한	LC
 남한산성	LC
-남한산성 유원지	LC
 남해	LC
-남해동부먼바다	LC
 남해안	LC
 남현희	PS
 낮 00시	TI0
-낮 00시00분	TI0
 낮 12시	TI
-낮 12시50분	TI
-낮부터 저녁시간대까지	TI
 내곡	LC
 내곡동	LC
 내년	DT
 내년 0월	DT0
+내년 0월 0일	DT0
+내년 0월 0일부터	DT0
 내년 0월까지	DT0
 내년 1월	DT
+내년 1월 1일	DT
+내년 1월 1일부터	DT
 내년 3월	DT
 내년 4월	DT
 내년 5월	DT
@@ -3771,14 +3789,15 @@ ze:a	PS
 내달 26일	DT
 내달 2일부터	DT
 내달 3일	DT
+내달 4일	DT
 내달 6일	DT
 내달초	DT
 내덕동	LC
 내무반	OG
 내무부	OG
 내서읍	LC
-내설악	LC
 내셔널 리그	OG
+내셔널골프장	OG
 내셔널리그	OG
 내쉬	PS
 내야	LC
@@ -3788,6 +3807,7 @@ ze:a	PS
 냉전시대	DT
 너바나	PS
 네덜란드	LC
+네덜란드 대표팀	OG
 네드베트	PS
 네리 카르도소	PS
 네마냐 비디치	PS
@@ -3798,18 +3818,16 @@ ze:a	PS
 네스테로비치	PS
 네오위즈게임즈	OG
 네이버	OG
-네이파비아노	PS
 네자 비시마야 가제타	OG
 네패스	OG
 넥슨	OG
 넬슨 신	PS
 넬슨 크루즈	PS
-넷째 주	DT
+넵티스	PS
 넷째주 일요일	DT
 노개위	OG
 노동부	OG
 노동자문학회	OG
-노라 존스	PS
 노래박물관	OG
 노르웨이	LC
 노먼	PS
@@ -3820,12 +3838,13 @@ ze:a	PS
 노무라종합연구소	OG
 노무현	PS
 노민상	PS
+노사	OG
+노사관계개혁위원회	OG
 노사정위원회	OG
 노성대	PS
 노성운	PS
 노소영	PS
 노수석	PS
-노수현	PS
 노스캐롤라이나대	OG
 노스햄튼	OG
 노승열	PS
@@ -3839,6 +3858,7 @@ ze:a	PS
 노원구	LC
 노원신문	OG
 노원정보도서관	OG
+노원험멜	OG
 노인자살예방센터	OG
 노장진	PS
 노정윤	PS
@@ -3850,6 +3870,7 @@ ze:a	PS
 노포크 타이즈	OG
 노현정	PS
 노홍철	PS
+노회찬	PS
 녹십자	OG
 논지 니미부트르	PS
 놀란스	PS
@@ -3870,7 +3891,6 @@ ze:a	PS
 누경	PS
 누멜라	PS
 누얼까이 초원	LC
-누트	PS
 눈높이	OG
 뉴로테크	OG
 뉴사운드처치	OG
@@ -3879,6 +3899,7 @@ ze:a	PS
 뉴올리언스	OG
 뉴올리언스 호네츠	OG
 뉴욕	LC,OG
+뉴욕 닉스	OG
 뉴욕 메츠	OG
 뉴욕 양키스	OG
 뉴욕 테러단	OG
@@ -3888,6 +3909,7 @@ ze:a	PS
 뉴욕증시	OG
 뉴욕타임스	OG
 뉴저지	LC
+뉴저지 네츠	OG
 뉴저지주	LC
 뉴질랜드	LC
 뉴트로지나	OG
@@ -3895,10 +3917,10 @@ ze:a	PS
 뉴햄프셔	LC
 뉴햄프셔주	LC
 능내초	OG
-늦가을	DT
 늦겨울까지	DT
 니나 로빈슨	PS
 니나왕	PS
+니낫	PS
 니느웨	LC
 니스텔루이	PS
 니시코리	PS
@@ -3911,13 +3933,14 @@ ze:a	PS
 니키 호프스	PS
 니트젠테크놀로지	OG
 니혼햄	OG
+니혼햄 파이터스	OG
+닉 나이트	PS
 닌텐도	OG
 닐슨	OG
 닛산	OG
 닛칸스포츠	OG
 닝보은행	OG
 다 실바	PS
-다곤	PS
 다나카 타쓰야	PS
 다니 료코	PS
 다니얼	PS
@@ -3929,6 +3952,7 @@ ze:a	PS
 다니엘 헤니	PS
 다니엘스	PS
 다람살라	LC
+다롄	LC
 다문화가정센터	OG
 다비	PS
 다비덴코	PS
@@ -3942,33 +3966,31 @@ ze:a	PS
 다윗	PS
 다음	OG
 다음 달	DT
-다음 달 00일까지	DT0
-다음 달 26일까지	DT
 다음 시즌	DT
 다음 시즌부터	DT
 다음 주	DT
 다음날	DT
 다음다음 해	DT
-다음다음날	DT
 다음달	DT
 다음달 0-00일	DT0
 다음달 0-0일	DT0
 다음달 00-00일	DT0
 다음달 00일	DT0
 다음달 00일까지	DT0
-다음달 00일부터 0월 00일까지	DT0
+다음달 00일부터	DT0
 다음달 0일	DT0
 다음달 0일까지	DT0
 다음달 0일부터	DT0
 다음달 1-8일	DT
 다음달 10일	DT
 다음달 12일	DT
+다음달 12일부터	DT
+다음달 13-15일	DT
 다음달 14-23일	DT
 다음달 19-24일	DT
 다음달 19일까지	DT
 다음달 1일	DT
 다음달 21일	DT
-다음달 21일부터 8월 22일까지	DT
 다음달 22일	DT
 다음달 3일	DT
 다음달 4-15일	DT
@@ -3999,6 +4021,7 @@ ze:a	PS
 닥스골프	OG
 닥터 k	PS
 닥터 레게	PS
+닥터k	PS
 닥터케이	OG
 단구초	OG
 단국대	OG
@@ -4008,10 +4031,12 @@ ze:a	PS
 단성사	OG
 단양	LC
 단운협	LC
+달나라	LC
 달라이 라마	PS
 달맞이	OG
 달성	LC
 닷새	DT
+닷새간	DT
 당원자격심사위원회	OG
 당원협의회	OG
 당일	DT
@@ -4021,7 +4046,6 @@ ze:a	PS
 대경대학	OG
 대관령	LC
 대교	OG
-대교동파	OG
 대구	LC,OG
 대구 fc	OG
 대구 ymca	OG
@@ -4042,6 +4066,7 @@ ze:a	PS
 대마신	PS
 대만	LC
 대명	OG
+대명 홍천스키장	OG
 대미단독평화협정	OG
 대방초	OG
 대법원	OG
@@ -4050,10 +4075,8 @@ ze:a	PS
 대산면	LC
 대선주조	OG
 대성	PS
-대승	LC
 대신동	LC
 대신증권	OG
-대아고속해운	OG
 대안	LC
 대암중	OG
 대양	OG
@@ -4075,12 +4098,12 @@ ze:a	PS
 대유에이텍	OG
 대전	LC,OG
 대전 시티즌	OG
-대전 한국수력원자원	OG
 대전고등법원	OG
 대전대	OG
 대전시	LC
 대전시청	OG
 대전엑스포	OG
+대전충남본부	OG
 대전한국수력원자력	OG
 대정	LC
 대정부	OG
@@ -4089,14 +4112,15 @@ ze:a	PS
 대진	PS
 대진여고	OG
 대청봉	LC
+대청호수	LC
 대치동	LC
 대통령비서실	OG
 대판	LC
 대표단	OG
 대표팀	OG
+대학	OG
 대학로	LC
-대학원	OG
-대한	OG
+대한	OG,DT
 대한 민국	LC
 대한ywca	OG
 대한골프협회	OG
@@ -4105,9 +4129,7 @@ ze:a	PS
 대한민국학술원	OG
 대한배구협회	OG
 대한불교 조계종	OG
-대한빙상경기연맹	OG
 대한사격연맹	OG
-대한생명	OG
 대한석궁연맹	OG
 대한성공회	OG
 대한양계협회	OG
@@ -4117,6 +4139,8 @@ ze:a	PS
 대한적십자사	OG
 대한적십자혈액원	OG
 대한전선	OG
+대한주택건설협회	OG
+대한주택협회	OG
 대한체육회	OG
 대한축구협회	OG
 대한한공	OG
@@ -4124,6 +4148,7 @@ ze:a	PS
 대한항공 점보스	OG
 대한해운	OG
 대항	LC
+대호	PS
 대호에이엘	OG
 대회 조직위원회	OG
 대흥동	LC
@@ -4134,9 +4159,11 @@ ze:a	PS
 더 에이미	OG
 더 크로스	PS
 더 클래식 500	OG
+더 타임스지	OG
 더그 클락	PS
 더글러스 조	PS
 더블러셀	OG
+더블유한의원	OG
 더비카운티	OG
 더원시앤시	OG
 더존비즈온	OG
@@ -4144,14 +4171,13 @@ ze:a	PS
 더타임스	OG
 더타임즈	OG
 덕 노비츠키	PS
-덕물산	LC
 덕산하이메탈	OG
 덕소	LC
 덕수상고	OG
+덕수이씨 종친회	OG
 덕수정보고	OG
 덕양구	LC
 덕양어울림누리	OG
-덕유산	LC
 덕일이	PS
 덕천2동	LC
 덕천리	LC
@@ -4185,10 +4211,12 @@ ze:a	PS
 데이비드 코티스	PS
 데이비스	PS
 데이빗 오르티스	PS
+데일리 스타	OG
 데일리 스포츠	OG
 데카르트	PS
+데프콘	PS
 덴마크	LC
-덴버	OG,LC
+덴버	OG
 덴버 너게츠	OG
 도 교육청	OG
 도고 파라다이스호텔	OG
@@ -4209,6 +4237,7 @@ ze:a	PS
 도봉구	LC
 도서관 정보화 추진위원회	OG
 도시가스회사	OG
+도시경관자문위원회	OG
 도시바	OG
 도싸	OG
 도암면	LC
@@ -4221,6 +4250,7 @@ ze:a	PS
 도장애인배구협회	OG
 도종환	PS
 도철	PS
+도청	OG
 도춘방	PS
 도쿄	LC
 도쿄 국제포럼	OG
@@ -4228,11 +4258,14 @@ ze:a	PS
 도쿄지검특수부	OG
 도토	PS
 도평리	LC
+도하	LC
 도화성	PS
 독도	LC
+독립국가연합	OG
 독일	LC
 독일 1부리그	OG
 독일 프로축구 1부리그	OG
+독일 항공 루프트한자	OG
 독일축구협회	OG
 독일팀	OG
 독종	PS
@@ -4259,13 +4292,14 @@ ze:a	PS
 동대문 시장	LC
 동대문구	LC
 동덕여대	OG
-동독	LC
 동독 항공군관학교	OG
 동두천	LC
 동두천시	LC
 동막골	LC
+동물원	PS
 동방신기	PS
 동부	OG
+동부메탈	OG
 동부증권	OG
 동부지구	OG
 동부지역	LC
@@ -4274,7 +4308,7 @@ ze:a	PS
 동부화재	OG
 동북아	LC
 동사무소	OG
-동산고	OG
+동산정보고	OG
 동산정산	OG
 동산정산고	OG
 동서울	LC
@@ -4285,7 +4319,7 @@ ze:a	PS
 동아대	OG
 동아대병원	OG
 동아시아 정상회의	OG
-동아일보	OG
+동아일보사	OG
 동아제약	OG
 동아타이어그룹	OG
 동안구	LC
@@ -4304,6 +4338,7 @@ ze:a	PS
 동일중앙	OG
 동일중앙초	OG
 동작구	LC
+동절기	DT
 동주여상	OG
 동철이	PS
 동티모르	LC
@@ -4313,7 +4348,6 @@ ze:a	PS
 동하	PS
 동해	LC
 동해관광호텔	OG
-동해먼바다	LC
 동해시	LC
 동해시청	OG
 동해안	LC
@@ -4326,7 +4360,6 @@ ze:a	PS
 두 시간	TI,DT
 두 해	DT
 두꺼비	PS
-두달새	DT
 두달여동안	DT
 두두	PS
 두레교회	OG
@@ -4344,6 +4377,7 @@ ze:a	PS
 두바이	LC
 두바이월드	OG
 두산	OG
+두산 베어스	OG
 두산그룹	OG
 두산베어스	OG
 두산인프라코어	OG
@@ -4371,10 +4405,12 @@ ze:a	PS
 드래곤애쉬	PS
 드래곤플라이	OG
 드레스덴	LC
+드림스코	OG
 드림써치	OG
 드림오브팀	OG
 드림웍스	OG
 드림위즈	OG
+드미트리 도브로스코크	PS
 드뷔시	PS
 드와이트 하워드	PS
 드웨인 웨이드	PS
@@ -4393,6 +4429,7 @@ ze:a	PS
 디아즈	PS
 디앤디컴	OG
 디어사이드	PS
+디오게네스	PS
 디자인스킨	OG
 디즈니	OG
 디초콜릿이앤티에프	OG
@@ -4405,7 +4442,6 @@ ze:a	PS
 딕 아드보카트	PS
 딕슨	PS
 딘 허든	PS
-딜레이드 더블스틸	PS
 딜론테 웨스트	PS
 따바레즈	PS
 떡가게	OG
@@ -4425,11 +4461,11 @@ ze:a	PS
 라마다 올림피아호텔	OG
 라마다 플라자 청주호텔	OG
 라마디	LC
+라미	PS
 라미레스	PS
 라바니	PS
 라쇼 네스테로비치	PS
 라스베이거스	LC
-라스코리니코프	PS
 라승미	PS
 라오스	LC
 라온골프장	OG
@@ -4438,6 +4474,7 @@ ze:a	PS
 라응찬	PS
 라이너스의 담요	PS
 라이브의 황제	PS
+라이브클럽 쌈	OG
 라이스	PS
 라이언 긱스	PS
 라이언 바벨	PS
@@ -4453,9 +4490,9 @@ ze:a	PS
 라켓볼협회	OG
 라타	PS
 라트비아	LC
+라파 베니테스	PS
 라파엘 베니테즈	PS
 라파엘 팔메이로	PS
-라호야	LC
 락샥	OG
 락앤락	OG
 락휴	OG
@@ -4469,6 +4506,7 @@ ze:a	PS
 랜돌프	PS
 램퍼드	PS
 랫소	PS
+랴오닝성골프협회	OG
 량등	PS
 러브필름닷컴	OG
 러브홀릭	PS
@@ -4480,7 +4518,6 @@ ze:a	PS
 럭키	OG
 런던	LC
 럿셀	PS
-레나토 링고르	PS
 레녹스	LC
 레닌	PS
 레더	PS
@@ -4492,8 +4529,10 @@ ze:a	PS
 레바논	LC
 레버쿠젠	OG
 레베카 헤인즈	PS
+레블론화장품	OG
 레비 스트로스	PS
 레스	PS
+레스 로빈슨	PS
 레안드롱	PS
 레알	OG
 레알 마드리드	OG
@@ -4509,13 +4548,12 @@ ze:a	PS
 레이먼드 플로이드	PS
 레이몽 도메네크	PS
 레이번	PS
-레이존 론도	PS
 레이커스	OG
+레이크힐스제주cc	OG
 레저스포츠경영과	OG
 레저신문	OG
 레지	PS
 레지 오코사	PS
-레킷 벤키저사	OG
 레트	PS
 레티프 구센	PS
 레티프 구슨	PS
@@ -4533,6 +4571,7 @@ ze:a	PS
 로레나 오초아	PS
 로레아 오초아	PS
 로레이나 오초아	PS
+로렌 허튼	PS
 로리 사바티니	PS
 로리 사바티이니	PS
 로리 케인	PS
@@ -4549,18 +4588,15 @@ ze:a	PS
 로보	PS
 로브레도	PS
 로빈슨	PS
-로스 페로	PS
 로스앤젤레스	LC
-로스앤젤레스 타임스지	OG
 로스앤젤레스타임스	OG
 로스엔젤레스	LC
 로시	PS
 로시뇰	OG
 로아이자	PS
-로야 지르카	OG
+로열필하모닉	OG
 로이 킨	PS
 로이 할러데이	PS
-로이드 벤센	PS
 로이스터	PS
 로이터	OG
 로이터 통신	OG
@@ -4578,6 +4614,7 @@ ze:a	PS
 록히드 마틴	OG
 롤링홀	OG
 롯데	OG
+롯데 그룹	OG
 롯데 마린스	OG
 롯데 원정응원단	OG
 롯데 자이언츠	OG
@@ -4586,8 +4623,8 @@ ze:a	PS
 롯데닷컴	OG
 롯데마트	OG
 롯데백화점	OG
-롯데백화점 창원점	OG
 롯데삼강	OG
+롯데시네마 송내	OG
 롯데시네마 일산 14	OG
 롯데엔터테인먼트	OG
 롯데제과	OG
@@ -4621,7 +4658,6 @@ ze:a	PS
 루이지애나	LC
 루체른	LC
 루치노 비스콘티	PS
-루카	LC
 루카스 티하첵	PS
 루크	PS
 루크 도널드	PS
@@ -4633,6 +4669,7 @@ ze:a	PS
 뤼앤지지에	PS
 류가미	PS
 류각현	PS
+류더화	PS
 류마티스 퇴행성관절센터	OG
 류샹	PS
 류승범	PS
@@ -4662,7 +4699,6 @@ ze:a	PS
 리동규	PS
 리딤팀	OG
 리마	PS
-리명수체육단	OG
 리반 에르난데스	PS
 리버스	PS
 리버티 프로페셔널	OG
@@ -4683,9 +4719,9 @@ ze:a	PS
 리우	LC
 리우데자네이루	LC
 리웨이펑	PS
+리융진	PS
+리즈 테일러도	PS
 리차드 해밀턴	PS
-리차즈	PS
-리처드 게파트	PS
 리처드 기어	PS
 리처드 윌리엄	PS
 리츠칼튼 호텔	OG
@@ -4693,17 +4729,16 @@ ze:a	PS
 리치 하든	PS
 리카르도 로드리게스	PS
 리카르도 블라스	PS
-리케 리	PS
 리쿠잔카이	OG
 리투아니아	LC
 리틀 마라도나	PS
-리폰	PS
 리플리	PS
 릭 구톰슨	PS
 린 파스코	PS
 린 파스코에	PS
 린쎄이	OG
 린쎄이 아카데미	OG
+린제이 로한	PS
 린지 라이트	PS
 릴랜드	PS
 릴리	OG
@@ -4712,9 +4747,11 @@ ze:a	PS
 마가리토	PS
 마누 지노빌리	PS
 마니커	OG
+마닐라	LC
 마돈나	PS
 마드리드	LC,OG
 마드리드회의	OG
+마띨데 우르떼아	PS
 마라도	LC
 마라도나	PS
 마르세유	OG
@@ -4731,8 +4768,8 @@ ze:a	PS
 마리안	PS
 마리엘 자구니스	PS
 마리오 안치치	PS
-마리오 쿠오모	PS
 마리온 바르톨리	PS
+마린 실리치	PS
 마린보이	PS
 마릴린 맨슨	PS
 마릴린 먼로	PS
@@ -4741,6 +4778,7 @@ ze:a	PS
 마빈 루소	PS
 마산	LC
 마산고	OG
+마산기상대	OG
 마산시	LC
 마소드 아콘자데	PS
 마술피리	OG
@@ -4752,8 +4790,6 @@ ze:a	PS
 마쓰자카 다이스케	PS
 마암분교	OG
 마야	PS
-마요	PS
-마우	PS
 마이너리그	OG
 마이다스의 손	PS
 마이데일리	OG
@@ -4766,12 +4802,11 @@ ze:a	PS
 마이크로스트레티지코리아	OG
 마이크론	OG
 마이클 볼튼	PS
-마이클 오언	PS
 마이클 잭슨	PS
-마이클 조던	PS
 마이클 캐릭	PS
 마이클 펠프스	PS
 마이키	PS
+마이티 마우스	PS
 마장동	LC
 마전중	OG
 마지막 날	DT
@@ -4789,6 +4824,7 @@ ze:a	PS
 마크 벌리	PS
 마크 코세이	PS
 마크 테세이라	PS
+마테라치	PS
 마테야 케즈만	PS
 마티아스 괴르네	PS
 마틴	PS
@@ -4796,10 +4832,10 @@ ze:a	PS
 마포	LC
 마포구	LC
 마해영	PS
-마혜영	PS
+마혜리	PS
 마흔 아홉날	DT
 막녀	PS
-만국 평화 회의장	LC
+막스 야콥	PS
 만도	OG
 만사마	PS
 만수산	LC
@@ -4848,8 +4884,13 @@ ze:a	PS
 매주	DT
 매주 목요	DT
 매주 목요일	DT
+매주 월 수 금	DT
+매주 월, 목요일	DT
 매주 월, 수	DT
+매주 월, 수, 금	DT
 매주 월-수요일	DT
+매주 일, 수, 토	DT
+매주 토요일	DT
 매튜	PS
 매해	DT
 매홀	OG
@@ -4862,6 +4903,7 @@ ze:a	PS
 맨체스터	LC,OG
 맨체스터 시티	OG
 맨체스터 유나이티드	OG
+맨체스터 이브닝뉴스	OG
 맨체스터유나이티드	OG
 맨해턴	LC
 맨해튼	LC
@@ -4871,7 +4913,6 @@ ze:a	PS
 맷 로렌조	PS
 맷 클레맨트	PS
 머독	PS
-머레이	PS
 머튼	PS
 멀더	PS
 메가박스	OG
@@ -4880,7 +4921,6 @@ ze:a	PS
 메도우사	PS
 메디안	LC
 메라노	LC
-메르세크네트	PS
 메르센느	PS
 메르센트	PS
 메릴랜드주	LC
@@ -4915,6 +4955,7 @@ ze:a	PS
 명동	LC
 명보	OG
 명서초등학교	OG
+명성산	LC
 명성여고	OG
 명승희	PS
 명이	PS
@@ -4923,13 +4964,15 @@ ze:a	PS
 명지대	OG
 몇 년 후	DT
 몇 년전	DT
+몇 분	TI
 몇 시간	TI
 몇 주 전부터	DT
-몇년간	DT
 몇년전	DT
 모건 엔스버그	PS
+모건 프레셀	PS
 모나리자	PS
 모니	PS
+모딜리아니	PS
 모따	PS
 모라토리엄	PS
 모라티	PS
@@ -4953,27 +4996,31 @@ ze:a	PS
 모태범	PS
 모택동	PS
 모토로라	OG
+모토로라 모빌리티	OG
 모트	PS
 모하메드	PS
 모호필름	OG
 목동	LC
+목동아이스링크	LC
 목요일	DT
 목포	OG
 목포대학의 날	DT
 목포여	OG
 목포여상	OG
+목포중앙여	OG
 몬로	LC
 몬스	PS
 몬테네그로	LC
-몬트리얼	LC
-몬트리올	LC
 몰리	PS
 몰리즈	OG
 몽골	LC
+몽구스	PS
 몽돌해안	LC
 몽모르	OG
 몽모르 아카데미	OG
+몽베르골프장	OG
 몽실	OG
+몽촌토성	LC
 몽크	PS
 무거동	LC
 무노	PS
@@ -4993,17 +5040,15 @@ ze:a	PS
 무위도선착장	LC
 무의도	LC
 무자헤딘	OG
+무자헤딘 임시정부	OG
 무자헤딘그룹	OG
 무장공비 침투사건 이후	DT
 무장굴	LC
-무주	LC
 무주리조트	OG
 무학도	LC
 무학산	LC
 무현	PS
-묵호중	OG
 묵호초	OG
-문경	LC
 문경정토수련원	OG
 문공부	OG
 문광부	OG
@@ -5020,7 +5065,6 @@ ze:a	PS
 문삼화	PS
 문성근	PS
 문성민	PS
-문성현	PS
 문소리	PS
 문수영	PS
 문암 1리	LC
@@ -5078,7 +5122,6 @@ ze:a	PS
 미국 농구대표팀	OG
 미국 대표팀	OG
 미국 상공회의소	OG
-미국 여자프로골프	OG
 미국남자배구대표팀	OG
 미국대학스포츠	OG
 미국여자프로골프	OG
@@ -5099,6 +5142,7 @@ ze:a	PS
 미드필드	LC
 미들스브러	OG
 미들즈브러	OG,LC
+미디안	LC
 미디에이트	PS
 미라콤아이앤씨	OG
 미란다 커	PS
@@ -5111,8 +5155,8 @@ ze:a	PS
 미륵	PS
 미사리	LC
 미산정육	PS
+미샤 마이스키	PS
 미셀	PS
-미셀위	PS
 미션힐스골프장	OG
 미셸 리	PS
 미셸 에시앙	PS
@@ -5131,7 +5175,6 @@ ze:a	PS
 미야토비치	PS
 미얀마	LC
 미영	PS
-미우라 가즈요시	PS
 미운 오리새끼	PS
 미주	LC
 미치 마이어	PS
@@ -5140,6 +5183,7 @@ ze:a	PS
 미켈슨	PS
 미코 오이바넨	PS
 미키 캘러웨이	PS
+미키마우스	PS
 미투데이	OG
 미하일로비치	PS
 미한재계회의	OG
@@ -5147,6 +5191,7 @@ ze:a	PS
 미현이	PS
 미화원협의회	OG
 민경	PS
+민경찬	PS
 민기원	PS
 민나온	PS
 민노당	OG
@@ -5157,7 +5202,10 @@ ze:a	PS
 민병헌	PS
 민병흥	PS
 민사합의 18부	OG
+민선생	PS
+민선생님	PS
 민수	PS
+민영환	PS
 민예총	OG
 민요섭	PS
 민원봉사과	OG
@@ -5170,10 +5218,12 @@ ze:a	PS
 민주	OG
 민주노동당	OG
 민주노조	OG
+민주노총	OG
 민주당	OG
 민주언론운동협의회	OG
 민주통일민중운동연합	OG
 민주파	OG
+민중탕제원	OG
 민호	PS
 밀라그로스 카브랄	PS
 밀란	OG
@@ -5184,16 +5234,15 @@ ze:a	PS
 밀워크 브루어스	OG
 밀워키	OG
 밀튼 레이놀즈	PS
+바그너	PS
 바그다드	LC
 바니아	LC
 바라바	PS
 바람의 아들	PS
-바랑산	LC
 바레인	LC
 바르가스	PS
 바르셀로나	OG
 바른전자	OG
-바리바스	OG
 바리사이파	LC
 바바라 보니	PS
 바버	PS
@@ -5207,20 +5256,23 @@ ze:a	PS
 바알	PS
 바이넘	PS
 바이더웨이	OG
-바이런 스캇레이커스	OG
 바이로이트	LC
 바이에른	LC
 바이에른주	LC
 바이엘	OG
 바이츠제커	PS
+바이커스탈렛	OG
 바이크클리닉	OG
 바찌이니	OG
 바츨라프 하벨	PS
+바쿨롄코	LC
 바크먼	PS
 바톨로 콜론	PS
 바트	PS
+바트 브라이언트	PS
 바티칸	LC
 바하마	LC
+바흐	PS
 바히아	PS
 박강조	PS
 박건하	PS
@@ -5236,18 +5288,20 @@ ze:a	PS
 박금자	PS
 박기남	PS
 박기용	PS
-박기원	PS
+박기자	PS
 박기혁	PS
 박남규	PS
 박노인	PS
+박도규	PS
+박동석	PS
 박동혁	PS
 박동희	PS
 박명환	PS
 박미	PS
 박미희	PS
+박민규	PS
 박민일	PS
 박민철	PS
-박보드레	PS
 박보배	PS
 박보생	PS
 박보영	PS
@@ -5259,7 +5313,6 @@ ze:a	PS
 박석민	PS
 박선영	PS
 박성광	PS
-박성래	PS
 박성배	PS
 박성원	PS
 박성현	PS
@@ -5268,6 +5321,7 @@ ze:a	PS
 박성환	PS
 박성효	PS
 박세리	PS
+박세채	PS
 박세호	PS
 박소연	PS
 박수근	PS
@@ -5275,15 +5329,17 @@ ze:a	PS
 박수혁	PS
 박스오피스	OG
 박승문	PS
-박승화	PS
 박승희	PS
 박시연	PS
+박씨	PS
 박연경	PS
 박영길	PS
 박영부	PS
 박영석	PS
+박영수	PS
 박영혜	PS
 박영호	PS
+박용래	PS
 박용성	PS
 박용우	PS
 박용택	PS
@@ -5304,7 +5360,6 @@ ze:a	PS
 박재훈	PS
 박정권	PS
 박정아	PS
-박정용	PS
 박정희	PS
 박종성	PS
 박종천	PS
@@ -5325,16 +5380,16 @@ ze:a	PS
 박진섭	PS
 박진성	PS
 박진영	PS
+박진형	PS
 박진희	PS
 박찬근	PS
 박찬욱	PS
+박찬종	PS
 박찬호	PS
-박창덕	PS
 박창진	PS
 박철수	PS
 박철순	PS
 박철우	PS
-박청호	PS
 박태우	PS
 박태환	PS
 박한이	PS
@@ -5344,15 +5399,14 @@ ze:a	PS
 박현순	PS
 박현승	PS
 박현식	PS
+박형사	PS
 박형욱	PS
 박혜경	PS
 박홍	PS
-박화요비	PS
 박효신	PS
 박훈근	PS
 박흥식	PS
 박희상	PS
-박희수	PS
 박희영	PS
 박희진	PS
 반 니스텔루이	PS
@@ -5375,8 +5429,11 @@ ze:a	PS
 발렌타인데이	DT
 발리	LC
 발리바	PS
+발발(00세기) 이후	DT0
+발발(18세기) 이후	DT
 발칸	LC
 발트해	LC
+발해	LC
 밤 00시	TI0
 밤 00시 00분	TI0
 밤 00시00분	TI0
@@ -5384,18 +5441,23 @@ ze:a	PS
 밤 10시30분	TI
 밤 11시	TI
 밤 11시 15분	TI
+밤 12시	TI
 밤 12시부터	TI
 밤 자정	TI
 밤낮	TI
 밤마을	LC
+밤부터	TI
 밤새	TI
+밤새껏	TI
 밤섬	LC
+밤중	TI
 밥 위크먼	PS
 밥보	OG
 방글라데시	LC
 방덕원	PS
 방동약수	LC
 방두환	PS
+방리동	LC
 방문진	OG
 방산 시장	OG
 방산올림픽공원	LC
@@ -5407,10 +5469,13 @@ ze:a	PS
 방송통신위원회	OG
 방승환	PS
 방실이	PS
+방중 이후	DT
 방천	LC
 방콕	LC
-방파제	LC
+배 감독	PS
 배경은	PS
+배구 청소년국가대표팀	OG
+배구대표팀	OG
 배구부	OG
 배구연맹	OG
 배구협회	OG
@@ -5433,15 +5498,12 @@ ze:a	PS
 배정식	PS
 배준덕	PS
 배창순	PS
-배창호	PS
 배트맨	PS
 배한성	PS
 배화교	OG
 배효성	PS
-백경훤	PS
 백남준	PS
 백남준 미술관	OG
-백담계곡	LC
 백도	LC
 백두	LC
 백두대간	LC
@@ -5450,12 +5512,13 @@ ze:a	PS
 백방준	PS
 백범	PS
 백병원	OG
+백보람	PS
 백설공주	PS
 백성희	PS
 백악관	OG
 백암	LC
+백여년 전	DT
 백운	LC
-백운동계곡	LC
 백원인	PS
 백유	PS
 백이	PS
@@ -5463,19 +5526,19 @@ ze:a	PS
 백제 시대	DT
 백종진	PS
 백주년기념교회	OG
-백지연	PS
 백지훈	PS
 백진희	PS
+백현	PS
 백화점협회	OG
 백희수	PS
 백희영	PS
+밴 버냉키	PS
 밴쿠버	LC
 밸런타인	PS
 밸런타인 데이	DT
 밸런타인데이	DT
 버그테스트	OG
 버드	PS
-버라이존	OG
 버락 오바마	PS
 버버리	OG
 버즈	PS
@@ -5486,7 +5549,7 @@ ze:a	PS
 버클리음대	OG
 버튼	OG
 번게이	PS
-번동	LC
+번성	LC
 범계역	LC
 범석	PS
 범어1-3동	LC
@@ -5511,15 +5574,14 @@ ze:a	PS
 베론	PS
 베르나르도 베르톨루치	PS
 베르나마 통신	OG
+베르니 콜베	PS
 베르다스코	PS
 베르사체	PS
 베를린	LC,OG
 베를린 과학아카데미	OG
 베버리 힐즈	LC
 베살리우스	PS
-베스 베이더	PS
 베스텍씨앤씨	OG
-베시크타스	OG
 베어링스	OG
 베어스데이	DT
 베어스타운	OG
@@ -5527,7 +5589,6 @@ ze:a	PS
 베이징	LC
 베이징 시엔다이	OG
 베이징올림픽 대표팀	OG
-베이징올림픽 한국 선수단	OG
 베이컨	PS
 베컴	PS
 베크맘베토브	PS
@@ -5537,10 +5598,10 @@ ze:a	PS
 베트맨	OG
 베트콩	OG
 벡스코바이크	OG
-벤 버냉키	PS
 벤 버냉키 연준	PS
 벤 스틸러	PS
 벤 시드란	PS
+벤 존슨	PS
 벤 호건	PS
 벤큐	OG
 벤틀리	PS
@@ -5555,7 +5616,6 @@ ze:a	PS
 변석화	PS
 변연하	PS
 변진섭	PS
-변청운	PS
 병규	PS
 병무청	OG
 병철	PS
@@ -5580,9 +5640,10 @@ ze:a	PS
 보비	PS
 보비 찰턴	PS
 보석	PS
-보성	LC,OG
+보성	OG,LC
 보수당	OG
 보수파	OG
+보쉬	PS
 보스니아	LC
 보스턴	OG,LC
 보스턴 레드삭스	OG
@@ -5593,6 +5654,7 @@ ze:a	PS
 보아	PS
 보안부	OG
 보와	PS
+보우 마나와바이슈타	PS
 보이즈투맨	PS
 보일	PS
 보잉	OG
@@ -5600,13 +5662,11 @@ ze:a	PS
 보카 주니어스	OG
 보카주니어스	OG
 보코	PS
-보통고등학교	OG
 보해저축은행	OG
 보후 마나	PS
 보훈병원	OG
 보훈처	OG
 복강	LC
-복건성	LC
 복장포국교	OG
 복정역	LC
 복지문화회관	OG
@@ -5634,20 +5694,20 @@ ze:a	PS
 봉천	LC
 봉평면	LC
 봉화군	LC
+부가킹즈	PS
 부개	LC
 부개문화사랑방	OG
 부광약품	OG
 부기	PS
 부기맨	PS
 부동산 연구소	OG
-부동산114	OG
 부룬디	LC
 부르하누딘 라바니	PS
 부르하누딘 라바이니	PS
 부마항쟁	OG
 부산	LC,OG
+부산 ktf 선수단	OG
 부산 갈매기 롯데	OG
-부산 교통공사	OG
 부산 아이파크	OG
 부산2	OG
 부산銀	OG
@@ -5669,10 +5729,10 @@ ze:a	PS
 부산우유	OG
 부산은행	OG
 부산일보사	OG
+부산지구	LC
 부산지방해양항만청	OG
 부산진구	LC
 부속한방병원과	OG
-부스러기사랑나눔회	OG
 부시	PS
 부안군청	OG
 부여	LC
@@ -5681,7 +5741,7 @@ ze:a	PS
 부차	PS
 부처	PS
 부처님	PS
-부천	OG,LC
+부천	LC,OG
 부천 sk	OG
 부천 영화제 사무국	OG
 부천 영화제사무국	OG
@@ -5700,7 +5760,6 @@ ze:a	PS
 부흥	OG
 부흥 여인숙	OG
 부흥중학교	OG
-북(北)시리아	LC
 북경	LC
 북경대	OG
 북경온누리교회	OG
@@ -5710,7 +5769,6 @@ ze:a	PS
 북면	LC
 북미	LC
 북반구	LC
-북부산림청	OG
 북부지역	LC
 북송	LC
 북신동 사무소	OG
@@ -5719,6 +5777,7 @@ ze:a	PS
 북제주군	LC
 북중미	LC
 북창동	LC
+북측광장	LC
 북한	LC
 북한 대표팀	OG
 북한 무장공비 남파사건 후	DT
@@ -5735,13 +5794,14 @@ ze:a	PS
 분당	LC
 분당구	LC
 분데스리가 프리드리히샤펜	OG
-불가리아	LC
+불가리아	LC,OG
 불교	OG
 불교방송	OG
 불교환경교육원	OG
 불교환경연대	OG
 불록골프장	OG
 불모산	LC
+불암산	LC
 불타	PS
 붉은 악마	OG
 붉은 악마 응원단	OG
@@ -5759,11 +5819,9 @@ ze:a	PS
 브래드 피트	PS
 브랙케트론	OG
 브랜드	PS
-브랜든 푸퍼	PS
 브런치	PS
 브레댄코	OG
 브렛 분	PS
-브렛 톰코	PS
 브루크너	PS
 브루클린연방법원	OG
 브룸바	PS
@@ -5789,8 +5847,6 @@ ze:a	PS
 블룸버그 통신	OG
 블룸버그뉴스	OG
 블룸버그통신	OG
-블리스	PS
-비 반칙 반원	LC
 비너스	PS
 비너스 윌리엄스	PS
 비대위	OG
@@ -5808,7 +5864,6 @@ ze:a	PS
 비자카드	OG
 비제이 싱	PS
 비쥬	PS
-비쥬 필립스	PS
 비즐리	PS
 비테세	OG
 비트컴퓨터	OG
@@ -5826,23 +5881,22 @@ ze:a	PS
 빈스	PS
 빈증fc	OG
 빈필	PS
+빈홍민	PS
 빌 게이츠	PS
-빌 더피사	OG
 빌 클린턴	PS
 빌라도	PS
 빌럽스	PS
-빌리 진 킹	PS
 빌바오	LC
 빌보드 뮤직 어워드	OG
-빗셀 고베	OG
 빙그레	OG
 빠른발	PS
 빼빼	PS
 뻬뜨루 최	PS
 뽀뽀	PS
-뿌까	PS
+쁘렝땅, 에떼코스	LC
 사 년전	DT
 사계절	DT
+사나흘	DT
 사담 후세인	PS
 사당역	LC
 사동	LC
@@ -5852,7 +5906,6 @@ ze:a	PS
 사루나스 야스케비시우스	PS
 사루나스 야시케비시우스	PS
 사립전문학교	OG
-사마나	PS
 사마란치	PS
 사무국	OG
 사무엘	PS
@@ -5862,6 +5915,7 @@ ze:a	PS
 사법부	OG
 사법제도개혁특위	OG
 사분위	OG
+사사에 겐이치로	PS
 사사키 가즈히로	PS
 사사키 교스케	PS
 사엔스	PS
@@ -5892,13 +5946,16 @@ ze:a	PS
 사해	LC
 사회당	OG
 사회복지 공동모금회	OG
+사회복지 섬나기 제주시니어클럽	OG
+사회복지공동모금회	OG
 사회학과	OG
 사흘	DT
+사흘 간	DT
 사흘 뒤	DT
-사흘 전	DT
 사흘 후	DT
 사흘간	DT
 사흘씩	DT
+산2-2번지	LC
 산동성	LC
 산리	PS
 산림청	OG
@@ -5932,9 +5989,9 @@ ze:a	PS
 삼릉	OG
 삼매봉	LC
 삼매봉 공원	LC
+삼봉	PS
 삼봉이	PS
 삼사 일 뒤	DT
-삼산	LC
 삼성	OG
 삼성 sdi	OG
 삼성 라이온스	OG
@@ -5947,7 +6004,6 @@ ze:a	PS
 삼성電	OG
 삼성그룹	OG
 삼성동	LC
-삼성라이온스	OG
 삼성라이온즈 2군	OG
 삼성물산	OG
 삼성산	LC
@@ -5961,19 +6017,17 @@ ze:a	PS
 삼성치어리드	OG
 삼성카드	OG
 삼성화재	OG
-삼성화재 v10	OG
 삼성화재 구단	OG
 삼성화재 배구단	OG
+삼성화재 블루팡스	OG
 삼소도	LC
 삼송지구	LC
-삼순	PS
 삼십분 전	TI
 삼월이	PS
 삼육오	OG
 삼익악기	OG
 삼일제약	OG
 삼정호텔	OG
-삼정회계법인	OG
 삼척	LC
 삼척지역	LC
 삼천동	LC
@@ -5981,7 +6035,6 @@ ze:a	PS
 상계 10동	LC
 상계동	LC
 상구	PS
-상규	PS
 상당구	LC
 상대	LC
 상록구	LC
@@ -5990,10 +6043,9 @@ ze:a	PS
 상반기	DT
 상비군	OG
 상암	LC
-상암월드컵경기장 서문 야외공연장	LC
+상옥리	LC
 상원	OG
 상원고	OG
-상이관리소	OG
 상인대학	OG
 상임위	OG
 상임전국위원회	OG
@@ -6014,12 +6066,16 @@ ze:a	PS
 새벽	TI
 새벽 0, 0시까지	DT0
 새벽 0시	TI0
+새벽 0시까지	TI0
 새벽 0시까지 00~00분	TI0
+새벽 0시부터	TI0
 새벽 1시	TI
 새벽 2시	TI
 새벽 2시까지 12~30분	TI
 새벽 3, 4시까지	DT
 새벽 3시	TI
+새벽 4시까지	TI
+새벽 4시부터	TI
 새벽 두 시	TI
 새벽녁	TI
 새벽에서 아침까지	TI
@@ -6037,6 +6093,7 @@ ze:a	PS
 샌타모니카	LC
 샌프란시스코	OG,LC
 샘 멘디스	PS
+샘 카셀	PS
 생각의 나무	OG
 생드니	LC
 생명과학부	OG
@@ -6044,14 +6101,12 @@ ze:a	PS
 생명운동아카데미	OG
 생태학교	OG
 생활협동조합	OG
-샤라포바	PS
 샤론 스톤	PS
 샤를 보들레르	PS
 샤모니	OG
 샤이니	PS
 샤킬 오닐	PS
 샤프	OG
-샤피시	PS
 샬럿	OG
 섀넌	PS
 서강대	OG
@@ -6065,19 +6120,16 @@ ze:a	PS
 서귀포	LC
 서귀포시	LC
 서귀포시선관위	OG
-서귀포지점	OG
 서귀포평생학습센터	OG
 서규용	PS
 서기	PS
 서기 0000년 무렵	DT0
-서기 0천	DT0
 서기 1000년 무렵	DT
-서기 1천	DT
 서너 시간	TI
+서대문 형무소	OG
 서대문구	LC
 서대문소방서	OG
 서독	LC
-서동석	PS
 서동철	PS
 서동현	PS
 서리나 윌리엄스	PS
@@ -6087,7 +6139,6 @@ ze:a	PS
 서방	LC
 서방 선진 7 개국	OG
 서병문	PS
-서보미	PS
 서부	LC
 서부권	LC
 서부지구	OG
@@ -6100,17 +6151,14 @@ ze:a	PS
 서세원	PS
 서아현	PS
 서양	LC
+서영희	PS
 서우	PS
 서울	LC,OG
 서울 sk	OG
 서울 ywca	OG
 서울 삼성	OG
 서울 삼성 썬더스	OG
-서울 시청	OG
-서울 여고	OG
-서울 역삼초등학교	OG
 서울 파발fc	OG
-서울y	OG
 서울ymca	OG
 서울가락	OG
 서울경신	OG
@@ -6131,6 +6179,7 @@ ze:a	PS
 서울서울체	OG
 서울성모병원	OG
 서울수화전문교육원	OG
+서울스키리조트	OG
 서울시	LC
 서울시 교육청	OG
 서울시교육청	OG
@@ -6155,7 +6204,6 @@ ze:a	PS
 서울지방경찰청	OG
 서울지역	LC
 서울통신기술	OG
-서울특별시	LC
 서울특별시의회	OG
 서울팀	OG
 서울풍물단	OG
@@ -6163,7 +6211,6 @@ ze:a	PS
 서원대	OG
 서원밸리	OG
 서원밸리골프클럽	OG
-서원선	PS
 서유럽	LC
 서인영	PS
 서인우	PS
@@ -6172,7 +6219,9 @@ ze:a	PS
 서재응	PS
 서정진	PS
 서정테크	OG
+서정화	PS
 서정희	PS
+서준식	PS
 서지혜	PS
 서천범	PS
 서청원	PS
@@ -6213,17 +6262,19 @@ ze:a	PS
 석해균	PS
 선거구	LC
 선거구획정위원회	OG
+선거전담반	OG
 선관위	OG
 선녀	PS
 선다운스	OG
+선댄스	LC
+선덜랜드	OG
 선동열	PS
 선미	PS
 선봉지구	LC
-선사시대	DT
+선사	DT
 선산휴게소	LC
 선수단	OG
 선수협	OG
-선양 주	OG
 선우미디어	OG
 선인완궈 증권	OG
 선재	PS
@@ -6235,9 +6286,7 @@ ze:a	PS
 설 명절 연휴까지	DT
 설 연휴	DT
 설 연휴 동안	DT
-설 연휴기간동안	DT
 설기현	PS
-설날	DT
 설동근	PS
 설렌타인데이	DT
 설립위원회	OG
@@ -6251,6 +6300,7 @@ ze:a	PS
 성결대학교 예술대학	OG
 성골주차장	LC
 성공회	OG
+성공회대	OG
 성공회대학교	OG
 성균관대	OG
 성균관대학교	OG
@@ -6265,20 +6315,19 @@ ze:a	PS
 성내역	LC
 성덕	OG
 성덕초등학교	OG
+성동고	OG
 성동구	LC
 성룡	PS
 성류파크호텔	OG
 성바오로 수녀회	OG
 성북구	LC
 성북구청	OG
-성산 왕산	LC
+성소	PS
 성수	PS
-성시경	PS
 성시백	PS
 성시연	PS
 성심학교	OG
 성암여상	OG
-성요셉요양원	OG
 성우	PS
 성유리	PS
 성재	PS
@@ -6292,14 +6341,15 @@ ze:a	PS
 세 시간	TI
 세계 전자정부	OG
 세계닷컴	OG
+세계무역기구	OG
 세계무용한국본부	OG
 세계배드민턴연맹	OG
 세계보건기구	OG
 세계야생생물기금	OG
-세계올스타팀	OG
 세계은행	OG
 세계일보	OG
 세관	OG
+세네갈	LC
 세르게이 파라자노프	PS
 세르비아	LC
 세르징요	PS
@@ -6319,7 +6369,6 @@ ze:a	PS
 세이트루이스 카디널스	OG
 세이프넷	OG
 세인트루이스	OG
-세인트포 골프＆리조트	OG
 세인트프레드골프장	OG
 세조	PS
 세종	PS
@@ -6351,7 +6400,6 @@ ze:a	PS
 소그룹 연구모임	OG
 소냐	PS
 소녀시대	PS
-소노브이	OG
 소니	OG
 소니컴퓨터엔터테인먼트	OG
 소돔	LC
@@ -6371,7 +6419,8 @@ ze:a	PS
 소비자 단체	OG
 소비자시민모임	OG
 소비자원	OG
-소아시아	LC
+소속사	OG
+소연혜삼	PS
 소울 스타	OG
 소위	OG
 소이면	LC
@@ -6391,8 +6440,8 @@ ze:a	PS
 손기철	PS
 손미정	PS
 손민한	PS
+손범규	PS
 손봉숙	PS
-손숙	PS
 손승락	PS
 손시헌	PS
 손예진	PS
@@ -6437,11 +6486,11 @@ ze:a	PS
 송죽원	OG
 송중기	PS
 송지만	PS
+송지원	PS
 송진우	PS
 송창의	PS
 송천 떡마을	LC
 송천권	PS
-송추	OG
 송태일	PS
 송파	LC
 송파구	LC
@@ -6451,6 +6500,7 @@ ze:a	PS
 송호범	PS
 송호영	PS
 송호진	PS
+쇼리j	PS
 쇼박스	OG
 쇼이스트	OG
 쇼트트랙 대표팀	OG
@@ -6466,28 +6516,28 @@ ze:a	PS
 수구팀	OG
 수나라	LC
 수년	DT
+수년 전	DT
 수년간	DT
 수단	LC
 수도권	LC
 수도권매립지관리공사	OG
 수도권지역	LC
 수도전공	OG
-수렴동계곡	LC
 수리	PS
+수백년	DT
 수산나 리가시	PS
 수서	LC
 수성구	LC
 수십 년 동안	DT
 수안보	LC
+수안보 오로라밸리	OG
 수안보파크호텔	OG
 수암골	LC
 수완지구	LC
-수요일	DT
 수원	OG,LC
 수원 kepco45	OG
 수원 구단	OG
 수원 삼성	OG
-수원 삼성 블루윙즈	OG
 수원 애경백화점	OG
 수원 한일전산여고	OG
 수원 한전 45(포티파이브)	OG
@@ -6529,7 +6579,6 @@ ze:a	PS
 슈세프스키	PS
 슈텔리안 모쿠레스쿠	PS
 슈투트가르트	OG
-슈퍼땅콩	PS
 슈퍼이글스	OG
 슈퍼주니어	PS
 스가랴	LC
@@ -6538,7 +6587,7 @@ ze:a	PS
 스리랑카	LC
 스마일서브	OG
 스마일킹	PS
-스무디킹	OG
+스마프	PS
 스미스	PS
 스벤 예란 에릭손	PS
 스승의 날	DT
@@ -6554,7 +6603,6 @@ ze:a	PS
 스카이72골프클럽	OG
 스카이디지탈	OG
 스카이라이프	OG
-스카이스포츠	OG
 스카이프	OG
 스칼렛	PS
 스캇	OG,PS
@@ -6563,12 +6611,11 @@ ze:a	PS
 스케쳐스	OG
 스코비	PS
 스코틀랜드	LC
+스코틀랜드 2부리그	OG
 스콜라리	PS
 스콜스	PS
 스콧	PS
 스콧 다운스	PS
-스콧 칸	PS
-스키부대	OG
 스키조	PS
 스킬전동공구	OG
 스타엠엔터테인먼트	OG
@@ -6576,6 +6623,7 @@ ze:a	PS
 스탠더드앤드푸어스	OG
 스탠더드앤푸어스	OG
 스탠리	PS
+스탠리 큐브릭	PS
 스탠퍼드대	OG
 스테이시 루이스	PS
 스테파넥	PS
@@ -6584,10 +6632,10 @@ ze:a	PS
 스토니 스컹크	OG
 스토리온	OG
 스토브리그	OG
-스톤헨지 주얼리	OG
+스토크	OG
+스톡홀름	LC
 스트라이커	OG
 스트롱	PS
-스티브 내쉬	PS
 스티브 슈몰	PS
 스티브 스트리커	PS
 스티브 잡스	PS
@@ -6595,19 +6643,18 @@ ze:a	PS
 스티븐 소더버그	PS
 스티븐 스필버그	PS
 스티븐 제라드	PS
-스팔레티	PS
 스페이스빔	OG
 스페인	LC
 스페인 농구대표팀	OG
 스펙트럼dvd	OG
-스포니치	OG
 스포츠	OG
 스포츠과학부	OG
-스포츠뉴스	OG
 스포츠닛폰	OG
 스포츠바우처	OG
 스포츠서울	OG
+스포츠서울21	OG
 스포츠서울닷컴	OG
+스포츠위원회	OG
 스포츠중계제작팀	OG
 스포츠콤플렉스	OG
 스포츠토토 상품운영부	OG
@@ -6629,6 +6676,7 @@ ze:a	PS
 시그넷시스템	OG
 시나위	PS
 시네마서비스	OG
+시네마테크 부산	OG
 시니어 대표팀	OG
 시더리지cc	OG
 시드니	LC
@@ -6643,14 +6691,11 @@ ze:a	PS
 시몬 결승골	PS
 시미즈 s-펄스	OG
 시미즈 s펄스	OG
-시미즈 다카시	PS
 시민 단체	OG
 시민공원	LC
-시민교육분과	OG
 시민단체연대	OG
 시민사회단체	OG
 시민영상문화기구	OG
-시브가툴라 모자디디	PS
 시사저널	OG
 시세라	PS
 시세이도	OG
@@ -6660,7 +6705,6 @@ ze:a	PS
 시애틀	OG
 시애틀 매리너스	OG
 시애틀 수퍼소닉스	OG
-시에나	LC
 시에나 음악 학교	OG
 시엠	OG
 시오필름	OG
@@ -6669,25 +6713,27 @@ ze:a	PS
 시의회	OG
 시장단	OG
 시청	OG
+시청사 잔디광장	LC
 시청앞 광장	LC
 시카고	LC,OG
 시카고 대학	OG
 시카고 불스	OG
 시카고 컵스	OG
 시카고 화이트삭스	OG
-시카고주	LC
 시큐브	OG
 시크	PS
 시티 누르할리자	PS
 시티 오브 런던 경찰	OG
 시흥	LC
 식사	LC
+식사지구	LC
+식약청	OG
 식품의약품안전청	OG
 신갈	LC
 신갈고	OG
+신경식	PS
 신경현	PS
 신계륜	PS
-신계사	LC
 신구	PS
 신나는 그룹홈	OG
 신낙균	PS
@@ -6695,6 +6741,7 @@ ze:a	PS
 신당	OG
 신데렐라	PS
 신동구	PS
+신동연	PS
 신동엽	PS
 신동주	PS
 신라	LC
@@ -6702,6 +6749,7 @@ ze:a	PS
 신라에스지	OG
 신라저축은행	OG
 신랑	OG
+신림	LC
 신명철	PS
 신문로	LC
 신문방송학과	OG
@@ -6725,6 +6773,7 @@ ze:a	PS
 신성우	PS
 신세계	OG
 신세계백화점	OG
+신세기통신	OG
 신송식품	OG
 신수지	PS
 신수천	PS
@@ -6742,18 +6791,16 @@ ze:a	PS
 신영수	PS
 신용운	PS
 신월 2동	LC
-신은주	PS
 신익희	PS
 신일	OG
 신자철	PS
 신정시장	LC
-신정자	PS
+신제록	PS
 신준식	PS
 신중현	PS
 신지애	PS
 신진당	OG
 신창중학교	OG
-신천중	OG
 신천지미술관	OG
 신촌	LC
 신촌 창천공원	LC
@@ -6762,10 +6809,13 @@ ze:a	PS
 신탄리	LC
 신하균	PS
 신한금융지주회사	OG
+신한동	PS
 신한은행	OG
 신한지주	OG
 신한카드	OG
+신한캐피탈	OG
 신해철	PS
+신현준	PS
 신현택	PS
 신협 상무	OG
 신협상무배구단	OG
@@ -6773,7 +6823,6 @@ ze:a	PS
 신형 엔진	PS
 신혜성	PS
 신화	PS
-신흥학원	OG
 실로암공원	LC
 실링	PS
 실미디어	OG
@@ -6782,6 +6831,7 @@ ze:a	PS
 실용음악과	OG
 실천불교전국승가회	OG
 심광호	PS
+심교수	PS
 심대평	PS
 심만순	PS
 심사위원회	OG
@@ -6790,17 +6840,17 @@ ze:a	PS
 심수봉	PS
 심수창	PS
 심은하	PS
-심재용	PS
 심재학	PS
 심정수	PS
 심청	PS
+심플리치오	PS
 심화반	OG
-십 년	DT
 십 년 동안	DT
 십 년 전	DT
 십여 년 전	DT
 십여 분	TI
 싱가포르	LC
+싱가포르인	PS,LC
 싱클레어	PS
 싸이	PS
 싸이더스픽처스	OG
@@ -6813,20 +6863,21 @@ ze:a	PS
 쌍무협상	OG
 쌍용그룹	OG
 쌍용정보통신	OG
-쌍폭	LC
 써니	PS
 써튼	PS
-쎄비	PS
+쏘내추럴	OG
 쑤이페이페이	OG
 쓰촨성	LC
 쓰쿠미	LC
 씨네21	OG
 씨네락	OG
+씨네큐브	OG
 씨모텍	OG
 씨알	PS
 씨엔블루	PS
 씨엘	PS
 씨티그룹	OG
+아-태지역 ngo회의	OG
 아그네스 발카이	PS
 아기돼지	PS
 아나트	PS
@@ -6840,18 +6891,17 @@ ze:a	PS
 아담 존슨	PS
 아더 패터슨	PS
 아데바요르	PS
-아덴만의 영웅	PS
 아동 성폭력 추방의 날	DT
 아드리아누	PS
 아드리안 오웬	PS
 아디	PS
-아라동	LC
 아라우조	PS
 아라키	PS
 아랍	LC
 아랍걸프만	LC
 아랍국	OG
 아랍에미리트	LC
+아랍에미리트연합(uae) 대표팀	OG
 아레나스	PS
 아로요	PS
 아르노드 투어넌트	PS
@@ -6866,11 +6916,10 @@ ze:a	PS
 아메리칸 리그	OG
 아메리칸리그	OG
 아메리칸리그팀	OG
-아멘 라	PS
 아모레퍼시픽	OG
 아모에바	OG
 아뮤즈	OG
-아바	OG,PS
+아바	PS,OG
 아바나	LC
 아바타	PS
 아베 신노스케	PS
@@ -6879,6 +6928,8 @@ ze:a	PS
 아사다 마오	PS
 아사쿠라	PS
 아사쿠사	LC
+아사히tv	OG
+아사히맥주	OG
 아산	LC
 아산병원	OG
 아산시	LC
@@ -6887,11 +6938,8 @@ ze:a	PS
 아서	PS
 아수라	PS
 아수스	OG
-아쉐라	PS
 아스날	OG
 아스널	OG
-아스널 fc	OG
-아스타르트	PS
 아스펜	LC
 아시아	LC
 아시아 지역	LC
@@ -6902,13 +6950,11 @@ ze:a	PS
 아시아문화교류재단	OG
 아시아문화전당	OG
 아시아연맹	OG
-아시아영화아카데미	OG
 아시아지역	LC
 아시아태평양	LC
 아시안게임 대표팀	OG
 아씨레알레	LC
 아야모리에	OG
-아야세 하루카	PS
 아약스	OG
 아오모리	LC
 아우네	OG
@@ -6923,7 +6969,6 @@ ze:a	PS
 아이스네트워크	OG
 아이슬란드	LC
 아이알윈드파워	OG
-아이엠에프	OG
 아이엠지	OG
 아이티	LC
 아인트호벤	OG
@@ -6935,7 +6980,6 @@ ze:a	PS
 아침 0시	TI0
 아침 7시	TI
 아침 동틀 무렵	DT
-아침까지	TI
 아침부터	TI
 아침프로	PS
 아칸소대학	OG
@@ -6948,7 +6992,6 @@ ze:a	PS
 아키오	PS
 아키히토	PS
 아타	PS
-아타르	PS
 아탁셀세스	PS
 아테네	LC
 아톤	PS
@@ -6962,11 +7005,13 @@ ze:a	PS
 아후라 마즈다	PS
 악동	PS
 악셀 룬 스빈달	PS
+악셀 리트	PS
 안경현	PS
 안기한	PS
 안나	PS
 안나 로손	PS
 안나스도	PS
+안너 빌스마	PS
 안니카 소렌스탐	PS
 안데르센 쥬피터	OG
 안데르손	PS
@@ -6974,7 +7019,6 @@ ze:a	PS
 안도 코주에	PS
 안동	LC
 안동섭	PS
-안두희	PS
 안드레스 갈라라가	PS
 안드레스 멘도사	PS
 안드레아 보첼리	PS
@@ -6989,7 +7033,7 @@ ze:a	PS
 안병기	PS
 안병만	PS
 안보리	OG
-안산	OG,LC
+안산	LC,OG
 안산 신한은행	OG
 안산 할렐루야	OG
 안산시	LC
@@ -7002,6 +7046,7 @@ ze:a	PS
 안성시청	OG
 안승국	PS
 안시현	PS
+안씨	PS
 안양	LC
 안양 kt&g	OG
 안양 kt&g 카이츠	OG
@@ -7011,6 +7056,7 @@ ze:a	PS
 안영옥	PS
 안영학	PS
 안와르 알-올라키	PS
+안익수	PS
 안익태	PS
 안재만	PS
 안재욱	PS
@@ -7027,6 +7073,7 @@ ze:a	PS
 안준태	PS
 안준호	PS
 안중근	PS
+안철수	PS
 안철수연구소	OG
 안탈리아	LC
 안토니오	PS
@@ -7057,6 +7104,7 @@ ze:a	PS
 알바몬	OG
 알베르	PS
 알베르토 두알리브	PS
+알베르토 질라르디노	PS
 알앤디클럽	OG
 알제리	LC
 알툴	PS
@@ -7064,19 +7112,21 @@ ze:a	PS
 알폰소 소리아노	PS
 알프레도 로타	PS
 알프레드손	PS
-알프스	LC
 알프스리조트	OG
+암사동	LC
 암스테르담	LC
 암웨이	OG
 암웨이 플라자	OG
 압구정	LC
+압구정 지구	LC
 압구정동	LC
+압구정지구	LC
 압록강	LC
+압바스 키아로스타미	PS
 압살라	PS
 앙골라	LC
 앙그라 마이뉴	PS
 앙드레 김	PS
-앙드레김	PS
 앙리	PS
 앙리 세랑두르	PS
 앙헬 카브레라	PS
@@ -7099,7 +7149,7 @@ ze:a	PS
 액티비전 코리아	OG
 앤 우드	PS
 앤더슨	PS
-앤드류 바이넘	PS
+앤드루 보거트	PS
 앤드류 하우스	PS
 앤드리 애거시	PS
 앤디 대번포트	PS
@@ -7118,6 +7168,7 @@ ze:a	PS
 앳킨슨	PS
 앵내의웅	PS
 야간	TI
+야간 돌봄 전담유치원	OG
 야곱	PS
 야권	OG
 야당	OG
@@ -7126,10 +7177,10 @@ ze:a	PS
 야마모토	PS
 야마모토 타카히로	PS
 야생마	PS
+야스쿠니	LC
 야스쿠니 신사	LC
 야스쿠니(정국) 신사	LC
 야스쿠니신사	LC
-야스트르젬스키	PS
 야엘	PS
 야오 밍	PS
 야오밍	PS
@@ -7143,6 +7194,10 @@ ze:a	PS
 야후코리아	OG
 야훼	PS
 약 00년 동안	DT0
+약 0년간	DT0
+약 0세기 동안	DT0
+약 2년간	DT
+약 2세기 동안	DT
 약 35년 동안	DT
 양경갑	PS
 양경민	PS
@@ -7159,10 +7214,12 @@ ze:a	PS
 양산시청	OG
 양상문	PS
 양수렬	PS
+양승실	PS
 양승조	PS
 양승헌	PS
-양양	LC,PS
+양양	PS
 양양군	LC
+양양지사	OG
 양용은	PS
 양익	PS
 양익준	PS
@@ -7171,25 +7228,26 @@ ze:a	PS
 양재동	LC
 양재역	LC
 양재점	OG
+양정고보	OG
 양정승	PS
 양준혁	PS
-양지병원	OG
+양지리조트	OG
 양지희	PS
 양천구	LC
 양천구의회	OG
-양천구청	OG
 양키스	OG
 양평	LC
 양평해장국	OG
 양현석	PS
 양현재단	OG
 양현진	PS
+양효지	PS
 양효진	PS
 양희동프로바이크	OG
 양희성	PS
 양희영	PS
 어경준	PS
-어나더 썬데이	OG
+어누라다 코이랄라	PS
 어느 날	DT
 어니 엘스	PS
 어린이 대공원	LC
@@ -7213,12 +7271,14 @@ ze:a	PS
 업무팀	OG
 에관공	OG
 에너지경제연구원	OG
+에너지관리공단	OG
 에넹	PS
 에덴버그	LC
 에두	PS
 에두아 스페샤	PS
 에듀윌	OG
 에드 윈	PS
+에드밀손	PS
 에드카를로스	PS
 에디나	LC
 에디뉴	PS
@@ -7227,10 +7287,14 @@ ze:a	PS
 에레아	OG
 에루살렘	LC
 에르체베트 발카이	PS
+에리카 브레스베리	PS
+에릭 사티	PS
 에릭 스티븐	PS
+에릭 칸토나	PS
 에마누엘	PS
 에머슨퍼시픽	OG
 에머슨퍼시픽)	OG
+에메르손	PS
 에미레이트 항공	OG
 에밀 브라운	PS
 에밀리	PS
@@ -7246,17 +7310,17 @@ ze:a	PS
 에브게니아 카나에바	PS
 에브라	PS
 에스비에스	OG
+에스에프에이	OG
 에스엠	OG
 에스이에스	OG
 에스케이브로드밴드	OG
+에스케이텔레콤	OG
 에스테반 로아이사로	PS
 에스티컴퓨터	OG
 에스파뇰	OG
 에이데이타코리아	OG
 에이머리	PS
 에이미	PS
-에이미 스마트	PS
-에이미 양	PS
 에이케이	OG
 에이케이게임몰	OG
 에이케이커뮤니케이션즈㈜	OG
@@ -7268,9 +7332,11 @@ ze:a	PS
 에프엑스	PS
 엑스칼리버	OG
 엑스포	OG
+엔니오 모리코네	PS
 엔씨	OG
 엔씨소프트	OG
 엔야	PS
+엔지오	OG
 엔터콘 코리아	OG
 엔텔스	OG
 엔트로피	PS
@@ -7278,7 +7344,9 @@ ze:a	PS
 엔티피아	OG
 엔피아	OG
 엘 문도 데포르티보	OG
+엘레나	PS
 엘레나 데멘티에바	PS
+엘레나 디멘티에바	PS
 엘렌 노르데그렌	PS
 엘리슨 파우치	PS
 엘리자베스	PS
@@ -7290,6 +7358,7 @@ ze:a	PS
 엘킨 소토	PS
 엘튼 브랜드	PS
 엠-플로	PS
+엠게임	OG
 엠디하우스	OG
 엠마누엘 웅가로	PS
 엠보트	OG
@@ -7312,11 +7381,11 @@ ze:a	PS
 여성건축가협회	OG
 여성듀오	PS
 여성문화예술기획	OG
-여성스포츠재단	OG
 여성정치연구소	OG
 여수	LC
 여수시	LC
 여수정보과학고	OG
+여신전문금융회사	OG
 여야	OG
 여오현	PS
 여운형	PS
@@ -7334,6 +7403,7 @@ ze:a	PS
 여주대	OG
 여주대학	OG
 여주도시개발	OG
+여창호	PS
 여초	PS
 여행스케치	PS
 여혜진	PS
@@ -7351,10 +7421,9 @@ ze:a	PS
 연립 여당	OG
 연말	DT
 연방보안국	OG
-연방정부	OG
 연방준비제도	OG
+연방준비제도이사회	OG
 연변대	OG
-연변조선족자치주	LC
 연변축구팀	OG
 연변팀	OG
 연산동	LC
@@ -7396,13 +7465,14 @@ ze:a	PS
 염혜선	PS
 영광군	LC
 영국	LC
-영국 이민국	OG
-영국대사관	OG
 영남	LC
 영남 알프스	LC
 영남알프스	LC
 영도	LC
+영도시큐리티	OG
 영동	LC
+영동관리역	LC
+영동역	LC
 영등위	OG
 영등포	LC
 영등포 경찰서	OG
@@ -7416,7 +7486,7 @@ ze:a	PS
 영상물등급위원회	OG
 영상위	OG
 영상위원회	OG
-영서지역	LC
+영생	OG
 영식	PS
 영신금속공업	OG
 영애	PS
@@ -7436,6 +7506,7 @@ ze:a	PS
 영태전자	OG
 영통구	LC
 영화인	OG
+영화인회	OG
 영화제 사무국	OG
 영화제작가협회	OG
 영화진흥위원회	OG
@@ -7455,12 +7526,12 @@ ze:a	PS
 예방의학교실	OG
 예비군	OG
 예산	LC
-예산 fc	OG
 예산위원회	OG
 예산정책처	OG
 예선a조	OG
 예선b조	OG
 예수	PS
+예술극장	OG
 예술마을 헤이리	LC
 예술세계	OG
 예일 대학	OG
@@ -7488,9 +7559,11 @@ ze:a	PS
 오는 0000년 0월까지	DT0
 오는 0000년 이후	DT0
 오는 0000년까지	DT0
+오는 00∼00일	DT0
 오는 00월	DT0
 오는 00월 00일	DT0
 오는 00월 0일	DT0
+오는 00월00일	DT0
 오는 00월부터	DT0
 오는 00월부터 00월까지	DT0
 오는 00일	DT0
@@ -7498,16 +7571,16 @@ ze:a	PS
 오는 00일까지	DT0
 오는 00일부터	DT0
 오는 00일부터 00일까지	DT0
-오는 00일부터 0월0일까지	DT0
+오는 00일부터 0월 0일까지	DT0
 오는 0~0일까지	DT0
 오는 0∼00월	DT0
 오는 0월	DT0
 오는 0월 00-00일	DT0
 오는 0월 00일	DT0
+오는 0월 0일부터	DT0
 오는 0월 말	DT0
 오는 0월 초	DT0
 오는 0월00일~00일	DT0
-오는 0월00일부터	DT0
 오는 0월0일	DT0
 오는 0월0일부	DT0
 오는 0월0일부터 00일까지	DT0
@@ -7517,6 +7590,8 @@ ze:a	PS
 오는 0월부터 내년 0월까지	DT0
 오는 0월초	DT0
 오는 0일	DT0
+오는 0일까지	DT0
+오는 0일부	DT0
 오는 0일부터	DT0
 오는 0일부터 0월0일	DT0
 오는 10월	DT
@@ -7525,23 +7600,24 @@ ze:a	PS
 오는 10일	DT
 오는 10일부터	DT
 오는 11월	DT
+오는 11월 16일	DT
 오는 11월 2일	DT
 오는 11월부터	DT
+오는 11일	DT
 오는 12월	DT
+오는 12월25일	DT
 오는 12일	DT
 오는 12일까지	DT
-오는 13일	DT
 오는 14일	DT
 오는 15일	DT
 오는 16일	DT
 오는 17일	DT
-오는 17일부터	DT
 오는 18.19일	DT
 오는 18일	DT
+오는 18일부터 3월 1일까지	DT
 오는 19일	DT
 오는 19일까지	DT
 오는 19일부터	DT
-오는 1월13일부터	DT
 오는 2007년 12월까지	DT
 오는 2008년	DT
 오는 2008년까지	DT
@@ -7551,6 +7627,7 @@ ze:a	PS
 오는 2012년까지	DT
 오는 2014년	DT
 오는 2016년까지	DT
+오는 20∼22일	DT
 오는 20일	DT
 오는 20일부터	DT
 오는 21일	DT
@@ -7563,6 +7640,7 @@ ze:a	PS
 오는 24일	DT
 오는 25일	DT
 오는 26일	DT
+오는 26일까지	DT
 오는 26일부터	DT
 오는 26일부터 28일까지	DT
 오는 28일	DT
@@ -7574,11 +7652,9 @@ ze:a	PS
 오는 30일부터	DT
 오는 31일	DT
 오는 31일부터	DT
-오는 31일부터 8월7일까지	DT
 오는 3월	DT
 오는 3월 11일	DT
 오는 3월말까지	DT
-오는 3월부터	DT
 오는 3월초	DT
 오는 4~7일까지	DT
 오는 4월	DT
@@ -7589,13 +7665,15 @@ ze:a	PS
 오는 5일	DT
 오는 5일부터	DT
 오는 5일부터 6월7일	DT
-오는 6월	DT
 오는 6월 말	DT
 오는 6월6일	DT
 오는 6월부터	DT
+오는 6일까지	DT
 오는 7월	DT
+오는 7월 1일부터	DT
 오는 7월 23일	DT
 오는 7월2일	DT
+오는 7일부	DT
 오는 8∼10월	DT
 오는 8월	DT
 오는 8월 11-16일	DT
@@ -7607,12 +7685,10 @@ ze:a	PS
 오는 9월 초	DT
 오는 9월1일부	DT
 오는 9일	DT
-오는 9일부터	DT
 오는 가을	DT
 오는 구정 연휴	DT
 오는 여름	DT
 오늘	DT
-오늘 새벽	DT
 오늘날	DT
 오늘부터	DT
 오닐	PS
@@ -7628,14 +7704,13 @@ ze:a	PS
 오르마즈드	PS
 오르테스강	LC
 오리엔탈 호텔	OG
-오리엔탱고	PS
 오리역	LC
 오리온스	OG
 오리콘	OG
 오릭스	OG
 오릭스 버팔로스	OG
+오마르	PS
 오마르 비스켈	PS
-오마르 알-바시르	PS
 오만	LC
 오맹달	PS
 오메가3	PS
@@ -7646,11 +7721,13 @@ ze:a	PS
 오버하우젠	OG
 오봉옥	PS
 오부치	PS
+오부치 게이조	PS
 오비맥주	OG
 오사마 빈 라덴	PS
 오사카	LC
 오산	LC
 오산학교	OG
+오상민	PS
 오상은	PS
 오서산	LC
 오성엘에스티자회사	OG
@@ -7670,13 +7747,11 @@ ze:a	PS
 오승환	PS
 오시리스	PS
 오시리스교	OG
-오앤영성형외과	OG
 오언 하그리브스	PS
+오연천	PS
 오영호	PS
-오영환	PS
 오예리	PS
 오용원	PS
-오용준	PS
 오윤정	PS
 오은석	PS
 오이에르	PS
@@ -7695,8 +7770,9 @@ ze:a	PS
 오전 00시00분	TI0
 오전 00시00분부터	TI0
 오전 00시부터	TI0
+오전 00시부터 오후 0시	TI0
 오전 00시부터 오후 0시 00분까지	TI0
-오전 00시부터 오후 0시까지	TI0,DT0
+오전 00시부터 오후 0시까지	TI0
 오전 0시	TI0,TI
 오전 0시 00분	TI0
 오전 0시 00분까지	TI0
@@ -7706,10 +7782,11 @@ ze:a	PS
 오전 0시부터 자정까지	TI0
 오전 10시	TI
 오전 10시 30분부터	TI
+오전 10시 38분	TI
 오전 10시30분부터	TI
 오전 10시부터	TI
-오전 10시부터 오후 2시까지	DT
 오전 10시부터 오후 4시 30분까지	TI
+오전 10시부터 오후 5시	TI
 오전 10시부터 오후 5시까지	TI
 오전 11시	TI
 오전 11시 10분	TI
@@ -7726,19 +7803,19 @@ ze:a	PS
 오전 9시30분부터 오후 6시30분까지	TI
 오전 동안	TI
 오전00시	TI0
+오전00시 00분부터 오후0시까지	TI0
 오전00시부터 00시까지	TI0
 오전0시	TI0
 오전10시	TI
+오전10시 30분부터 오후6시까지	TI
 오전10시부터 12시까지	TI
 오전9시	TI
 오전부터	TI
-오정해	PS
 오졸리나	PS
 오주상사	OG
 오즈 야스지로	PS
 오지영	PS
 오지호	PS
-오진우	PS
 오창	LC
 오창훈	PS
 오채아	PS
@@ -7756,11 +7833,11 @@ ze:a	PS
 오태근	PS
 오태현	PS
 오프시즌	DT
-오피넷	OG
 오헤어 국제공항	LC
 오현경	PS
 오호	PS
 오후	TI
+오후 0	TI0
 오후 00시	TI0
 오후 00시 00분	TI0
 오후 00시00분	TI0
@@ -7776,7 +7853,8 @@ ze:a	PS
 오후 0시까지	TI0
 오후 0시께부터	TI0
 오후 0시부터	TI0
-오후 0시부터 0시 00분까지	TI0,DT0
+오후 0시부터 0시 00분까지	DT0,TI0
+오후 0시부터 0시까지	TI0
 오후 0～00시	TI0
 오후 10시	TI
 오후 11시 50분	TI
@@ -7788,6 +7866,7 @@ ze:a	PS
 오후 1시30분	TI
 오후 1시부터	TI
 오후 1시부터 1시 30분까지	TI
+오후 2	TI
 오후 2∼4시	TI
 오후 2시	TI
 오후 2시 30분 - 3시까지	TI
@@ -7797,9 +7876,11 @@ ze:a	PS
 오후 3시	TI
 오후 3시 30분	TI
 오후 3시30분∼5시30분	TI
+오후 3시부터 4시까지	TI
 오후 4시	TI
 오후 4시30분	TI
 오후 4시50분	TI
+오후 4시부터	TI
 오후 4～10시	TI
 오후 5시	TI
 오후 5시 20분	TI
@@ -7812,6 +7893,8 @@ ze:a	PS
 오후 6시 30분	TI
 오후 6시 36분	TI
 오후 6시 50분	TI
+오후 6시20분	TI
+오후 6시30분	TI
 오후 6시까지	TI
 오후 6시부터	TI
 오후 7∼10시	TI
@@ -7826,7 +7909,6 @@ ze:a	PS
 오후 8시30분	TI
 오후 9시	TI
 오후 9시 30분	TI
-오후 9시 50분	TI
 오후0시	TI0
 오후0시00분	TI0
 오후2시	TI
@@ -7834,6 +7916,7 @@ ze:a	PS
 오후3시	TI
 오후6시	TI
 오후7시	TI
+오후부터	TI
 옥녀	PS
 옥녀봉	LC
 옥동초	OG
@@ -7843,7 +7926,6 @@ ze:a	PS
 옥주현	PS
 옥천초	OG
 옥포	LC
-온모	PS
 온미디어	OG
 온세 칼다스	OG
 온양여	OG
@@ -7852,12 +7934,14 @@ ze:a	PS
 올 00월 이전까지	DT0
 올 0월	DT0
 올 0월 00일	DT0
+올 0월 말	DT0
 올 0월까지	DT0
 올 10월 이전까지	DT
 올 1월	DT
 올 1월까지	DT
 올 3월 26일	DT
 올 4월	DT
+올 6월 말	DT
 올 9월	DT
 올 가을	DT
 올 겨울	DT
@@ -7866,7 +7950,6 @@ ze:a	PS
 올 시즌	DT
 올 시즌부터	DT
 올 여름	DT
-올 초	DT
 올 한해	DT
 올 해	DT
 올겨울	DT
@@ -7889,7 +7972,6 @@ ze:a	PS
 올림픽대표팀	OG
 올림픽축구대표팀	OG
 올림픽팀	OG
-올림픽파크텔	OG
 올부터 00년까지	DT0
 올부터 88년까지	DT
 올상반기	DT
@@ -7920,7 +8002,7 @@ ze:a	PS
 올해부터	DT
 올해부터 0000년까지	DT0
 올해부터 2014년까지	DT
-와룡	LC
+와그너	PS
 와이낫?	PS
 와이드	OG
 와이즈만연구소	OG
@@ -7945,6 +8027,7 @@ ze:a	PS
 외규장각	OG
 외무부	OG
 외무성	OG
+외무성 아시아대양주	OG
 외야	LC
 외자운용원	OG
 외잘란	PS
@@ -7960,14 +8043,11 @@ ze:a	PS
 요셉	PS
 요시노	PS
 요시카	PS
-요켈슨	PS
 요코타	PS
 요코하마	OG
 요코하마 f.마리노스	OG
-요코하마 fc	OG
 요코하마 베이스타스	OG
 요코하마고교	OG
-요하네스 본프레레	PS
 요한	PS
 요한 산타나	PS
 욕지권	LC
@@ -7976,7 +8056,7 @@ ze:a	PS
 용덕한	PS
 용두동	LC
 용문	LC
-용산	OG,LC
+용산	LC
 용산 시장	OG
 용산구	LC
 용소골	LC
@@ -7984,10 +8064,8 @@ ze:a	PS
 용유임시역	LC
 용인	LC
 용인 시민축구단	OG
-용인 자연농원	LC
 용인 태성고	OG
 용인경찰서	OG
-용인대	OG
 용인시	LC
 용인시청	OG
 용평리조트	OG
@@ -7997,6 +8075,7 @@ ze:a	PS
 우규민	PS
 우근민	PS
 우기	DT
+우기정	PS
 우노	OG
 우노필름	OG
 우도	LC
@@ -8012,13 +8091,14 @@ ze:a	PS
 우리 나라	OG
 우리 캐피탈	OG
 우리 히어로즈	OG
-우리골프	OG
 우리금융그룹	OG
+우리금융지주	OG
 우리나라	LC
 우리법연구회	OG
 우리은행	OG
 우리캐피탈	OG
 우리캐피탈팀	OG
+우리투자증권	OG
 우리파이낸셜	OG
 우면동	LC
 우면산	LC
@@ -8050,7 +8130,6 @@ ze:a	PS
 운암삼거리	LC
 운영위원회	OG
 운총	PS
-울릉군청	OG
 울릉도	LC
 울버햄프턴	OG
 울브즈	OG
@@ -8058,7 +8137,6 @@ ze:a	PS
 울산 구단	OG
 울산 모비스	OG
 울산 모비스 피버스	OG
-울산 미포조선	OG
 울산 학성고	OG
 울산 현대	OG
 울산과학	OG
@@ -8081,6 +8159,7 @@ ze:a	PS
 워시번	PS
 워싱턴	OG,LC
 워싱턴 내셔널스	OG
+워싱턴 위저즈	OG
 워싱턴 회담	OG
 워싱턴주	LC
 워싱턴포스트지	OG
@@ -8094,7 +8173,6 @@ ze:a	PS
 원더걸스	PS
 원더랜드	LC
 원더랜드사	OG
-원도보이	PS
 원동	LC
 원병오	PS
 원빈	PS
@@ -8119,7 +8197,6 @@ ze:a	PS
 원타임	PS
 원투	PS
 원혁이	PS
-원현임	PS
 원혜영	PS
 원호청	OG
 월(越)나라	LC
@@ -8129,7 +8206,7 @@ ze:a	PS
 월간	DT
 월나라	LC
 월남	LC
-월산마을	LC
+월스트리트	LC
 월스트리트 저널	OG
 월스트리트저널	OG
 월암리	LC
@@ -8143,8 +8220,10 @@ ze:a	PS
 웨스트사이드	LC
 웨스트우드	PS
 웨스트햄	OG
+웨이드	PS
 웨이지중	PS
 웨인 루니	PS
+웨일스	LC
 웬델 화이트	PS
 웬디 워드	PS
 웰링턴 실바	PS
@@ -8154,24 +8233,22 @@ ze:a	PS
 위덕대학교	OG
 위도	LC
 위례신도시	LC
-위명재	PS
-위미에덴요양원	OG
 위성락	PS
 위성미	PS
+위종수	PS
 위창수	PS
 위클리	PS
-윈스턴 로드	PS
 윌리엄	PS
 윌리엄 데버록스	PS
 윌리엄 데이비드슨	PS
 윌리엄 로즈	PS
 윌리엄스	PS
 윔블던	LC
-유가증권시장	OG
 유경렬	PS
 유고	LC
 유고슬라비아	LC
 유고연합	OG
+유기수	PS
 유네스코	OG
 유네스코 국제무용협회 한국본부	OG
 유니더스	OG
@@ -8180,12 +8257,10 @@ ze:a	PS
 유니코리아	OG
 유니텍전자	OG
 유다	PS
-유달	LC
 유덕화	PS
 유도훈	PS
 유라팜	OG
 유럽	LC
-유럽 공동체	OG
 유럽경제공동체	OG
 유럽공동체	OG
 유럽연합	OG
@@ -8195,19 +8270,16 @@ ze:a	PS
 유로존	LC
 유로파이터	OG
 유리	PS
-유리상자	PS
 유릭와이	PS
 유림엔마텍	OG
 유문숙	PS
 유미	PS
-유민	PS
 유민근	PS
 유밀카 루이스 루아체스	PS
 유벤투스	OG
 유비	PS
 유비벨록스	OG
 유빈	PS
-유산마을	LC
 유상수	PS
 유상욱	PS
 유상철	PS
@@ -8231,6 +8303,7 @@ ze:a	PS
 유엔묘지	LC
 유엔안보리	OG
 유엔안전보장이사회	OG
+유엔젤	OG
 유엔총회	OG
 유엔평화유지활동	OG
 유엔환경개발회의	OG
@@ -8238,9 +8311,7 @@ ze:a	PS
 유영근	PS
 유영모	PS
 유오성	PS
-유원상	PS
 유이	PS
-유인영	PS
 유인촌	PS
 유잉	PS
 유재석	PS
@@ -8248,12 +8319,11 @@ ze:a	PS
 유재웅	PS
 유정복	PS
 유제국	PS
-유즈니	PS
-유지태	PS
 유진	PS
 유진로보틱스	OG
+유창서	PS
 유콘시스템	OG
-유타	OG
+유타	OG,LC
 유타 재즈	OG
 유타주	LC
 유태우	PS
@@ -8262,9 +8332,8 @@ ze:a	PS
 유한양행	OG
 유한킴벌리	OG
 유호철	PS
+육군 제6군단	OG
 육군본부	OG
-육민관고	OG
-육민관중	OG
 육성회	OG
 육심길	PS
 육십령	LC
@@ -8275,7 +8344,6 @@ ze:a	PS
 윤동균	PS
 윤두서	PS
 윤명선	PS
-윤명찬	PS
 윤병주 밴드	PS
 윤보선	PS
 윤봉우	PS
@@ -8297,7 +8365,6 @@ ze:a	PS
 윤옥희	PS
 윤용자	PS
 윤종신	PS
-윤종신꽃배달	OG
 윤증현	PS
 윤지원	PS
 윤진	PS
@@ -8306,7 +8373,6 @@ ze:a	PS
 윤채영	PS
 윤향순	PS
 윤혁	PS
-윤현숙	PS
 윤호영	PS
 윤후명	PS
 율 브린너	PS
@@ -8314,30 +8380,34 @@ ze:a	PS
 율동콩나물	OG
 율리아노	PS
 융미옌	PS
-융프라우요흐	LC
 은신	PS
 은아	PS
 은재	PS
 은정	PS
-은태공문	OG
+은지원	PS
 은평구	LC
 은행감독원	OG
 은행동	LC
 은혜와진리교회	OG
 을사 보호 조약	OG
+을지대학교	OG
 을지로	LC
 을지문덕	PS
+을지병원	OG
 음력설	DT
 음베키	PS
 음봉면	LC
+음악원	OG
 음제협	OG
 응봉산	LC
 의과대학	OG
 의대	OG
 의료관광재단	OG
+의림여	OG
 의무팀	OG
 의암공원	LC
 의왕경찰서	OG
+의왕시	LC
 의원총회	OG
 의정부	LC
 의정부경전철㈜	OG
@@ -8351,7 +8421,6 @@ ze:a	PS
 이 준	PS
 이 준형	PS
 이간	PS
-이강	PS
 이강래	PS
 이강산	PS
 이강생	PS
@@ -8376,7 +8445,6 @@ ze:a	PS
 이규로	PS
 이규섭	PS
 이규연	PS
-이규원	PS
 이근철	PS
 이근호	PS
 이금희	PS
@@ -8398,13 +8466,9 @@ ze:a	PS
 이달 00일	DT0
 이달 00일부터	DT0
 이달 00일부터 다음달 00일까지	DT0
-이달 0일	DT0
-이달 0일부터	DT0
 이달 17일부터	DT
 이달 17일부터 다음달 13일까지	DT
-이달 1일부터	DT
 이달 28일	DT
-이달 5일	DT
 이달 말	DT
 이달 중순	DT
 이달내	DT
@@ -8433,20 +8497,19 @@ ze:a	PS
 이동수골프단	OG
 이동엽	PS
 이동우	PS
+이동원	PS
 이동현	PS
 이동호	PS
 이동화	PS
 이동희	PS
 이듬해	DT
 이듬해 0월	DT0
-이듬해 5월	DT
 이듬해 7월	DT
 이라	PS
 이라스토텔레스	PS
 이라크	LC
 이라크군	OG
 이란	LC
-이루온	OG
 이르쿠츠크	LC
 이리나 보코바	PS
 이리여고	OG
@@ -8475,7 +8538,7 @@ ze:a	PS
 이번 6 2	DT
 이번 달 00일부터 00일까지	DT0
 이번 달 15일부터 17일까지	DT
-이번 설	DT
+이번 설 연휴	DT
 이번 시즌	DT
 이번 주	DT
 이번 주말	DT
@@ -8490,7 +8553,6 @@ ze:a	PS
 이병훈	PS
 이보영	PS
 이봉구	PS
-이봉련	PS
 이봉수	PS
 이북	LC
 이북 땅	LC
@@ -8507,7 +8569,6 @@ ze:a	PS
 이상득	PS
 이상목	PS
 이상민	PS
-이상벽	PS
 이상선	PS
 이상설	PS
 이상엽	PS
@@ -8531,15 +8592,16 @@ ze:a	PS
 이성희	PS
 이세은	PS
 이세종	PS
-이세준	PS
 이세창	PS
 이소연	PS
 이수건설	OG
 이수도	LC
 이수만	PS
 이수영	PS
+이숙영	PS
 이숙자	PS
 이순신	PS
+이순신 연구회	OG
 이순재	PS
 이순철	PS
 이숭용	PS
@@ -8550,11 +8612,11 @@ ze:a	PS
 이스테이트	LC
 이슬기	PS
 이슬람	OG
-이슬이	PS
 이승기	PS
 이승만	PS
 이승열	PS
 이승엽	PS
+이승우	PS
 이승은	PS
 이승철	PS
 이승태	PS
@@ -8571,11 +8633,12 @@ ze:a	PS
 이시하	PS
 이신미	PS
 이십 일 전	DT
+이씨	PS
 이양호	PS
 이어령	PS
-이여상	PS
 이연택	PS
 이영동	PS
+이영미	PS
 이영선	PS
 이영애	PS
 이영욱	PS
@@ -8593,7 +8656,6 @@ ze:a	PS
 이용택	PS
 이용훈	PS
 이운재	PS
-이원	PS
 이원렬	PS
 이원석	PS
 이원수	PS
@@ -8604,11 +8666,9 @@ ze:a	PS
 이위종	PS
 이유	PS
 이윤구	PS
-이윤기	PS
 이윤재	PS
 이윤종	PS
 이윤호	PS
-이은	PS
 이은경	PS
 이은별	PS
 이은상	PS
@@ -8616,7 +8676,6 @@ ze:a	PS
 이익수	PS
 이인	PS
 이인섭	PS
-이인숙	PS
 이인영	PS
 이일희	PS
 이자벨라 로셀리니	PS
@@ -8645,6 +8704,7 @@ ze:a	PS
 이정은	PS
 이정재	PS
 이정철	PS
+이정현	PS
 이정효	PS
 이정훈	PS
 이정희	PS
@@ -8661,9 +8721,9 @@ ze:a	PS
 이종혁	PS
 이종현	PS
 이주민 통역지원센터	OG
-이주실	PS
 이주영	PS
 이주일	PS
+이주임	PS
 이주헌	PS
 이주호	PS
 이준기	PS
@@ -8671,7 +8731,6 @@ ze:a	PS
 이준영	PS
 이준하	PS
 이중섭	PS
-이중원	PS
 이지안	PS
 이지영	PS
 이지원	PS
@@ -8679,14 +8738,13 @@ ze:a	PS
 이지현	PS
 이지환	PS
 이진	PS
-이진경	PS
-이진아	PS
 이진영	PS
 이진호	PS
 이집트	LC
+이찬성	PS
 이참	PS
+이창동	PS
 이창복	PS
-이창수	PS
 이창희	PS
 이천	LC,OG
 이천설봉호텔	OG
@@ -8700,7 +8758,6 @@ ze:a	PS
 이충헌	PS
 이치로	PS
 이치현	PS
-이카루스	OG
 이카루스 스포츠	OG
 이탈리아	LC,OG
 이탈리아 페루자	OG
@@ -8729,31 +8786,32 @@ ze:a	PS
 이현도	PS
 이현숙	PS
 이현승	PS
-이현준	PS
 이현태	PS
 이형두	PS
 이형선	PS
 이형수	PS
 이형택	PS
 이혜천	PS
+이호	PS
 이호석	PS
 이호연	PS
 이호준	PS
 이홍구	PS
 이화여고	OG
 이화여대	OG
-이환의	PS
 이활	PS
 이회창	PS
 이회택	PS
 이효리	PS
 이효식	PS
 이효희	PS
-이희근	PS
 이희솔	PS
 이희영	PS
 익산	LC
 익산시청	OG
+익산지방국토관리청	OG
+인간교육실현 학부모연대	OG
+인권운동사랑방	OG
 인권위	OG
 인덕원역	LC
 인도	LC
@@ -8767,10 +8825,10 @@ ze:a	PS
 인민 루니	PS
 인민군	OG
 인민권력전국회의	OG
-인민대표상무위원회	OG
 인민회의	OG
 인방사	OG
 인사동	LC
+인사위원회	OG
 인수	PS
 인수봉	LC
 인수초	OG
@@ -8779,20 +8837,16 @@ ze:a	PS
 인저리타임 0분	TI0
 인저리타임 1분	TI
 인절스	OG
-인제	LC
 인조	PS
 인종	PS
 인창이	PS
 인천	LC,OG
 인천 유나이티드	OG
 인천 전자랜드 블랙슬래머	OG
-인천 지역	LC
 인천 코레일	OG
 인천강화	OG
 인천경제자유구역	LC
 인천경제청	OG
-인천계양구청	OG
-인천공항	LC
 인천공항역	LC
 인천광역시	LC
 인천국제공항	LC
@@ -8806,6 +8860,7 @@ ze:a	PS
 인천시청소년회관	OG
 인천아트플랫폼	OG
 인천여성노동자회	OG
+인천연안여객터미널	LC
 인천운봉공	OG
 인천유나이티드	OG
 인천지역	LC
@@ -8816,8 +8871,6 @@ ze:a	PS
 인천화력본부	OG
 인추협	OG
 인치승	PS
-인카 그링스	PS
-인타센	PS
 인터 밀란	OG
 인터라인	OG
 인터라켄cc	OG
@@ -8840,7 +8893,6 @@ ze:a	PS
 일로나 코르스틴	PS
 일리노이주	LC
 일리아디스	PS
-일리히	PS
 일반대학원	OG
 일본	LC
 일본 대표팀	OG
@@ -8858,6 +8910,7 @@ ze:a	PS
 일요일	DT
 일원	PS
 일일	DT
+일일점검	DT
 일제	OG
 일제 때	DT
 일제 역사관	OG
@@ -8892,13 +8945,10 @@ ze:a	PS
 임이랑	PS
 임재범	PS
 임재철	PS
-임정희	PS
 임종석	PS
 임준혁	PS
-임지나	PS
 임지선	PS
 임지혜	PS
-임진각	LC
 임진강	LC
 임진모	PS
 임진석	PS
@@ -8910,6 +8960,7 @@ ze:a	PS
 임페리얼레이크cc	OG
 임필성	PS
 임하룡	PS
+임형사	PS
 임호	PS
 입법부	OG
 입법회의	OG
@@ -8917,6 +8968,7 @@ ze:a	PS
 입춘	DT
 잉그리드 버그만	PS
 잉글랜드	LC
+잉글랜드 프리미어리그	OG
 잉글랜드축구협회	OG
 잉스터	PS
 자갈치 시장	LC
@@ -8935,7 +8987,6 @@ ze:a	PS
 자연과학대학	OG
 자연농원 레이싱팀	OG
 자연생태 테마파크	LC
-자우림	PS
 자우양퀴	PS
 자위대	OG
 자유	OG
@@ -8944,11 +8995,9 @@ ze:a	PS
 자작나무숲	OG
 자전거탄풍경	PS
 자정	TI
-자정부터	TI
 자치정부	OG
 자치행정과	OG
 자크 라캉	PS
-자크 로게	PS
 자크 잭슨	PS
 자탄풍	PS
 자히르 샤	PS
@@ -8964,7 +9013,9 @@ ze:a	PS
 작년 11월	DT
 작년 12월	DT
 작년 12월 17일	DT
+작년 12월 말	DT
 작년 3분기	DT
+작년 6월	DT
 작년 6월 13일	DT
 작년 6월29일	DT
 작년 7월	DT
@@ -9003,16 +9054,17 @@ ze:a	PS
 장나라	PS
 장난감 월드	OG
 장남석	PS
+장노순	PS
 장덕수	PS
 장동건	PS
 장두환	PS
 장률	PS
+장막	PS
 장만세	PS
 장명부	PS
 장목면	LC
 장문리	LC
 장문영	PS
-장미	PS
 장미란	PS
 장백진료소	OG
 장백현	LC
@@ -9024,6 +9076,7 @@ ze:a	PS
 장성근	PS
 장성호	PS
 장성환	PS
+장순영	PS
 장안구	LC
 장애인먼저실천운동본부	OG
 장애인영화제 사무국	OG
@@ -9033,7 +9086,6 @@ ze:a	PS
 장외룡	PS
 장용	PS
 장우혁	PS
-장원봉	PS
 장원삼	PS
 장원재	PS
 장원준	PS
@@ -9044,17 +9096,14 @@ ze:a	PS
 장은지	PS
 장일주	PS
 장정	PS
-장정기	PS
 장제원	PS
 장종훈	PS
 장준환	PS
 장지혜	PS
 장진	PS
-장진영	PS
 장쩌민	PS
 장쯔이	PS
 장찬익	PS
-장첸	PS
 장충고	OG
 장필순	PS
 장필화	PS
@@ -9084,7 +9133,7 @@ ze:a	PS
 재판부	OG
 재향군인회	OG
 잭 니클로스	PS
-잭 휴스턴	PS
+잭 랜돌프	PS
 잭슨	PS
 쟈니 고메스	PS
 쟈니 데이먼	PS
@@ -9100,11 +9149,12 @@ ze:a	PS
 저녁 8시20분	TI
 저녁 여덟 시	DT
 저녁나절	TI
+저녁시간	TI
 저비악	PS
 저스티스 코에치	PS
 저스틴 듀크셔	PS
 저스틴 레너드	PS
-저우싱츠	PS
+저작권보호센터	OG
 저탄소 녹색성장비전체험관	OG
 저팔계	PS
 저폭포	LC
@@ -9113,13 +9163,12 @@ ze:a	PS
 적도	LC
 적십자 강서청소년복지교민회	OG
 적토마	PS
-전 분기	DT
 전 솔	PS
 전, 후반	TI
 전가을	PS
 전경련	OG
 전경업	PS
-전경윤	PS
+전교조	OG
 전국경제인연합회	OG
 전국교직원노동조합	OG
 전국노래연습장협회	OG
@@ -9141,20 +9190,16 @@ ze:a	PS
 전년 동월	DT
 전대협	OG
 전동공구사업부	OG
-전략기동사령부	OG
 전문대학원	OG
 전반	TI
 전반 00분	TI0
 전반 0분	TI0
 전반 10분	TI
-전반 11분	TI
 전반 12분	TI
 전반 13분	TI
 전반 15분	TI
 전반 17분	TI
-전반 1분	TI
 전반 20분	TI
-전반 21분	TI
 전반 29분	TI
 전반 2분	TI
 전반 34분	TI
@@ -9162,6 +9207,7 @@ ze:a	PS
 전반 37분	TI
 전반 3분	TI
 전반 41분	TI
+전반 45분	TI
 전반 4분	TI
 전반 5분	TI
 전반 6분	TI
@@ -9189,6 +9235,7 @@ ze:a	PS
 전수천	PS
 전술	PS
 전신 tg시	OG
+전씨	PS
 전영미	PS
 전용현	PS
 전용호	PS
@@ -9203,7 +9250,7 @@ ze:a	PS
 전자랜드	OG
 전재운	PS
 전재희	PS
-전주	LC,DT,OG
+전주	LC,OG,DT
 전주 kcc	OG
 전주 kcc 이지스	OG
 전주 kcc 이지스가	OG
@@ -9211,12 +9258,14 @@ ze:a	PS
 전주em	OG
 전주kcc	OG
 전주기계탄소기술원	OG
+전주시	LC
 전주시청	OG
 전주시축구협회	OG
 전주원	PS
-전주이씨 대동종약원	OG
 전주지법	OG
+전준수	PS
 전준호	PS
+전진	PS
 전진옥	PS
 전창진	PS
 전태현	PS
@@ -9231,8 +9280,10 @@ ze:a	PS
 전희철	PS
 절골	LC
 점심	TI
+점심때	TI
 정가	OG
 정가은	PS
+정경세	PS
 정경호	PS
 정광수	PS
 정구	PS
@@ -9250,31 +9301,30 @@ ze:a	PS
 정덕화	PS
 정도전	PS
 정동균	PS
+정동극장	OG
 정동식	PS
 정동영	PS
 정동진	LC
 정동초등학교	OG
-정두언	PS
 정두홍	PS
-정림 건축	OG
 정만호	PS
-정말순	PS
-정명원	PS
 정몽구	PS
 정몽규	PS
+정몽주	PS
 정몽준	PS
 정미년 칠월 열나흘 날	DT
 정민	PS
 정민철	PS
 정민태	PS
-정범호	PS
 정병국	PS
 정보당국	OG
 정보통신부	OG
 정부	OG
 정부개혁위원회	OG
+정부당국	OG
 정부종합청사	OG
 정삼석	PS
+정삼용	PS
 정상호	PS
 정상회담	OG
 정선	LC
@@ -9291,9 +9341,12 @@ ze:a	PS
 정수정	PS
 정숙희	PS
 정순훈	PS
+정승혜	PS
 정신대	OG
+정씨	PS
 정애리	PS
 정양	PS
+정영두	PS
 정영민	PS
 정영삼	PS
 정영석	PS
@@ -9314,7 +9367,6 @@ ze:a	PS
 정의화	PS
 정이수	PS
 정일재	PS
-정재복	PS
 정재영	PS
 정재원	PS
 정재은	PS
@@ -9330,18 +9382,20 @@ ze:a	PS
 정지민	PS
 정지우	PS
 정지호	PS
+정진석	PS
 정진선	PS
 정진수	PS
 정진후	PS
 정찬우	PS
+정찬헌	PS
+정찬호	PS
 정책위원회	OG
-정철어학원주니어	OG
-정철인터랩	OG
 정초신	PS
 정태섭	PS
 정토회	OG
 정필준	PS
 정한용	PS
+정홍희	PS
 정훈	PS
 정훈탁	PS
 정훈희	PS
@@ -9349,16 +9403,19 @@ ze:a	PS
 정희철	PS
 제 0주	DT0
 제 3주	DT
+제 5공화국 정부	OG
+제 6공화국 정부	OG
 제 6주	DT
 제2공화국	LC
 제2의 펠레	PS
 제3, 2, 1 폭포	LC
-제3땅굴	LC
 제3폭포	LC
 제3형사부	OG
 제구력의 마술사	PS
+제기동	LC
 제너럴모터스	OG
 제네바 국제공항	LC
+제네바 핵합의	OG
 제니트	OG
 제니퍼 라모어	PS
 제니퍼 베리	PS
@@ -9371,9 +9428,7 @@ ze:a	PS
 제라르 울리	PS
 제롬르 밴너	PS
 제리 로이스터	PS
-제리 프레일리	PS
 제시 산체스	PS
-제시카 론디스	PS
 제아	PS
 제이 데이비스	PS
 제이 카니	PS
@@ -9383,8 +9438,6 @@ ze:a	PS
 제이슨 레작	PS
 제이슨 베리텍	PS
 제이슨 워스	PS
-제이슨 지암비	PS
-제이슨 크리스티안센	PS
 제이슨 필립스	PS
 제이씨	OG
 제이씨엔터테인먼트	OG
@@ -9411,14 +9464,15 @@ ze:a	PS
 제주공항	LC
 제주대	OG
 제주도	LC
+제주도 해안	LC
 제주물류연구회	OG
 제주시	LC
 제주윈드오케스트라	OG
+제주일보	OG
 제주작가회의	OG
 제주지방	LC
 제주지법	OG
 제주지역	LC
-제주지역센터	OG
 제주지원	OG
 제주체신청	OG
 제주축협	OG
@@ -9435,14 +9489,12 @@ ze:a	PS
 제협	OG
 젠슨	PS
 조 네이선	PS
-조 메드윅	PS
 조 브라이언트	PS
 조 스미스	PS
 조 윌프리드 총가	PS
 조 콜	PS
 조 토레	PS
 조건회	PS
-조계종	OG
 조광래	PS
 조광조	PS
 조국	PS
@@ -9458,11 +9510,11 @@ ze:a	PS
 조동진	PS
 조동찬	PS
 조동팔	PS
+조동현	PS
 조동화	PS
 조로아스터	PS
 조르주 뒤비	PS
 조명 시장	LC
-조명남	PS
 조명래	PS
 조명사업부	OG
 조모 올스타 축구	OG
@@ -9473,17 +9525,19 @@ ze:a	PS
 조민환	PS
 조범석	PS
 조범현	PS
-조불련	OG
+조복동	PS
+조봉남	PS
 조상현	PS
 조선	OG,LC
-조선 시대	DT
 조선기	PS
 조선내화	OG
 조선대	OG
 조선시대	DT
 조선왕조	DT
 조선일보	OG
+조선일보사	OG
 조선조	DT
+조선조 말	DT
 조선초	DT
 조선후기	DT
 조성모	PS
@@ -9507,7 +9561,6 @@ ze:a	PS
 조용형	PS
 조운	PS
 조웅천	PS
-조원량	PS
 조원우	PS
 조윤희	PS
 조익희	PS
@@ -9529,22 +9582,20 @@ ze:a	PS
 조직형	PS
 조진웅	PS
 조차조약	OG
-조창수	PS
 조창호	PS
 조코비치	PS
-조태근	PS
 조페공사	OG
 조프 오길비	PS
 조한길	PS
-조항조	PS
 조해리	PS
 조현동	PS
+조현재	PS
 조현정	PS
 조형	PS
 조혜련	PS
 조혜정	PS
 조호루 바루 지역 축구협회	OG
-조홍희	PS
+조희연	PS
 존 갈랜드	PS
 존 고티	PS
 존 도노반	PS
@@ -9574,7 +9625,7 @@ ze:a	PS
 종로구청	OG
 종수	PS
 종일	DT
-종출	PS
+종일토록	DT
 좋은영화	OG
 좌사리도	LC
 좌완 특급	PS
@@ -9590,16 +9641,15 @@ ze:a	PS
 주말	DT
 주말마다	DT
 주문진중	OG
-주문진항	LC
 주민자치센터	OG
 주방천	LC
 주산지	LC
 주상용	PS
+주세페 로시	PS
 주세혁	PS
 주수현	PS
 주안역	LC
 주연	PS
-주엽고	OG
 주영훈	PS
 주예나	PS
 주왕굴	LC
@@ -9614,12 +9664,12 @@ ze:a	PS
 주희	PS
 주희정	PS
 죽당	PS
+죽장면	LC
 죽전	LC
 준지	OG
 준코	PS
 준호	PS
 줄리 잉스터	PS
-줄리아	PS
 줄리아 로버츠	PS
 줄리아 크리스테바	PS
 줄리엣 루이스	PS
@@ -9632,7 +9682,6 @@ ze:a	PS
 중국은행	OG
 중국팀	OG
 중국학과	OG
-중궈베이처	OG
 중남미	LC
 중대부	OG
 중도	LC
@@ -9648,7 +9697,6 @@ ze:a	PS
 중부지방	LC
 중세	DT
 중세기	DT
-중소기업 협동조합 중앙회	OG
 중소기업청	OG
 중앙공원	LC
 중앙관세분석소	OG
@@ -9656,7 +9704,6 @@ ze:a	PS
 중앙대	OG
 중앙문화재	OG
 중앙부산	OG
-중앙부처	OG
 중앙선거관리위원회	OG
 중앙승가대	OG
 중앙시네마	OG
@@ -9664,11 +9711,11 @@ ze:a	PS
 중앙여	OG
 중앙여고	OG
 중앙일보	OG
+중앙일보사	OG
 중앙정보부	OG
 중앙정부	OG
 중앙초	OG
 중앙회	OG
-중증근강홍	PS
 중진협의체	OG
 중학교	OG
 중화인민공화국	LC
@@ -9676,14 +9723,15 @@ ze:a	PS
 쥬얼리	PS
 즈윅	PS
 증산초등학교	OG
+지경부	OG
 지관	PS
 지구	LC
 지구대	OG
 지구촌	LC
+지기스발트 쿠이켄	PS
 지난 0 월	DT0
 지난 0,00년대	DT0
 지난 0-00일	DT0
-지난 0-0월	DT0
 지난 0.00	DT0
 지난 00-00년	DT0
 지난 00-00시즌	DT0
@@ -9694,16 +9742,18 @@ ze:a	PS
 지난 0000년 00월	DT0
 지난 0000년 00월 00일	DT0
 지난 0000년 00월 이전	DT0
-지난 0000년 00월말	DT0
 지난 0000년 0월	DT0
 지난 0000년 0월 00일	DT0
+지난 0000년 0월0일	DT0
 지난 0000년 말	DT0
 지난 0000년 이후	DT0
 지난 0000년말	DT0
 지난 0000년부터	DT0
 지난 00~00일	DT0
 지난 00년	DT0
+지난 00년 0월	DT0
 지난 00년 동안	DT0
+지난 00년 이후	DT0
 지난 00년간	DT0
 지난 00년대	DT0
 지난 00년대말부터	DT0
@@ -9711,7 +9761,6 @@ ze:a	PS
 지난 00년부터 00년도까지	DT0
 지난 00여 년 동안	DT0
 지난 00여년간	DT0
-지난 00여년동안	DT0
 지난 00월	DT0
 지난 00월 00일	DT0
 지난 00일	DT0
@@ -9719,6 +9768,7 @@ ze:a	PS
 지난 00일 이후	DT0
 지난 00일까지	DT0
 지난 00일부터	DT0
+지난 00일부터 0주	DT0
 지난 04-05시즌	DT
 지난 06-07시즌	DT
 지난 0∼0월	DT0
@@ -9731,6 +9781,7 @@ ze:a	PS
 지난 0월 00	DT0
 지난 0월 00일	DT0
 지난 0월 00일(토)	DT0
+지난 0월 00일자	DT0
 지난 0월 0일	DT0
 지난 0월 말	DT0
 지난 0월 이후	DT0
@@ -9741,10 +9792,8 @@ ze:a	PS
 지난 0월00일	DT0
 지난 0월00일부터 0월00일까지	DT0
 지난 0월00일이후	DT0
-지난 0월0일	DT0
 지난 0월말	DT0
 지난 0월부터	DT0
-지난 0월초부터	DT0
 지난 0월초부터 00월말 사이	DT0
 지난 0일	DT0
 지난 0일까지	DT0
@@ -9752,9 +9801,9 @@ ze:a	PS
 지난 0일부터 00일까지	DT0
 지난 0일부터 오는 00일까지	DT0
 지난 0일자	DT0
+지난 10년	DT
 지난 10년 동안	DT
 지난 10년간	DT
-지난 10여년동안	DT
 지난 10월	DT
 지난 10일	DT
 지난 10일까지	DT
@@ -9769,6 +9818,7 @@ ze:a	PS
 지난 13일부터	DT
 지난 14일	DT
 지난 15일	DT
+지난 15일부터	DT
 지난 16일	DT
 지난 17일	DT
 지난 1815년	DT
@@ -9779,11 +9829,14 @@ ze:a	PS
 지난 1989년	DT
 지난 1991년	DT
 지난 1991년 8월 19일	DT
+지난 1993년	DT
+지난 1994년	DT
 지난 1995년	DT
 지난 1998년	DT
 지난 1999년	DT
 지난 1999년 8월	DT
 지난 19일	DT
+지난 19일부터	DT
 지난 1년	DT
 지난 1년 4개월간	DT
 지난 1년 6개월간	DT
@@ -9792,12 +9845,11 @@ ze:a	PS
 지난 1분기	DT
 지난 1월	DT
 지난 1월 11일	DT
-지난 1월 25일	DT
+지난 1월 25일자	DT
 지난 1월 26	DT
 지난 1월 4일	DT
 지난 1월 하순부터	DT
 지난 1월부터	DT
-지난 1월초부터	DT
 지난 1일	DT
 지난 1일까지	DT
 지난 1일부터	DT
@@ -9818,18 +9870,19 @@ ze:a	PS
 지난 2004년 5월	DT
 지난 2005-06시즌	DT
 지난 2005년	DT
+지난 2005년 9월8일	DT
 지난 2006년	DT
+지난 2006년부터	DT
 지난 2007년	DT
 지난 2007년 11월 15일	DT
 지난 2007년 1월	DT
 지난 2007년 2월	DT
 지난 2008년	DT
 지난 2008년 11월 이전	DT
-지난 2008년 5월	DT
 지난 2008년 말	DT
-지난 2009년 12월말	DT
 지난 2009년말	DT
 지난 20일	DT
+지난 20일부터 8주	DT
 지난 21일	DT
 지난 22일	DT
 지난 23일	DT
@@ -9838,6 +9891,7 @@ ze:a	PS
 지난 25일	DT
 지난 26일	DT
 지난 27일	DT
+지난 27일까지	DT
 지난 2년	DT
 지난 2분기	DT
 지난 2월	DT
@@ -9849,6 +9903,7 @@ ze:a	PS
 지난 31일	DT
 지난 3년간	DT
 지난 3월	DT
+지난 3월 19일	DT
 지난 3월 2일	DT
 지난 3월 6일	DT
 지난 3월 중순부터	DT
@@ -9857,14 +9912,12 @@ ze:a	PS
 지난 3월31일	DT
 지난 3월말	DT
 지난 3일	DT
-지난 4-5월	DT
 지난 4.29	DT
 지난 43년	DT
-지난 48년	DT
 지난 4월	DT
+지난 4월 15일	DT
 지난 4월 5일	DT
 지난 4월 6일	DT
-지난 4월12일	DT
 지난 4월초부터 10월말 사이	DT
 지난 4일	DT
 지난 5년	DT
@@ -9874,7 +9927,6 @@ ze:a	PS
 지난 5월16일	DT
 지난 5월18일이후	DT
 지난 5월29일	DT
-지난 5월5일	DT
 지난 5일	DT
 지난 65년	DT
 지난 6월	DT
@@ -9886,6 +9938,7 @@ ze:a	PS
 지난 7 월	DT
 지난 7,80년대	DT
 지난 70년	DT
+지난 70년대	DT
 지난 72년	DT
 지난 73년	DT
 지난 74년부터	DT
@@ -9900,7 +9953,7 @@ ze:a	PS
 지난 7일부터	DT
 지난 80년대	DT
 지난 80년대말부터	DT
-지난 82년	DT
+지난 83년 1월	DT
 지난 84년	DT
 지난 85년	DT
 지난 86-87시즌	DT
@@ -9915,7 +9968,7 @@ ze:a	PS
 지난 96년	DT
 지난 97-98시즌	DT
 지난 98년부터	DT
-지난 99년	DT
+지난 99년 이후	DT
 지난 9월	DT
 지난 9일	DT
 지난 9일까지	DT
@@ -9926,6 +9979,7 @@ ze:a	PS
 지난 가을부터	DT
 지난 겨울	DT
 지난 날	DT
+지난 늦가을	DT
 지난 달	DT
 지난 달 00일	DT0
 지난 달 0일	DT0
@@ -9939,7 +9993,6 @@ ze:a	PS
 지난 몇년간	DT
 지난 봄	DT
 지난 설	DT
-지난 수년	DT
 지난 수요일	DT
 지난 시즌	DT
 지난 시즌 후	DT
@@ -9955,6 +10008,7 @@ ze:a	PS
 지난 해까지	DT
 지난0월	DT0
 지난3월	DT
+지난날	DT
 지난달	DT
 지난달 00-00일	DT0
 지난달 00~00일	DT0
@@ -9975,13 +10029,12 @@ ze:a	PS
 지난달 25-29일	DT
 지난달 25-31일	DT
 지난달 25일	DT
-지난달 25일부터	DT
 지난달 26일	DT
 지난달 27일	DT
 지난달 28~29일	DT
 지난달 29일	DT
 지난달 30일	DT
-지난달 31일	DT
+지난달 4일	DT
 지난달 7일부터	DT
 지난달 8일	DT
 지난달 9일	DT
@@ -10003,15 +10056,14 @@ ze:a	PS
 지난해 00월부터	DT0
 지난해 0분기	DT0
 지난해 0월	DT0
-지난해 0월 00일부터	DT0
 지난해 0월 0일	DT0
 지난해 0월 말	DT0
-지난해 0월 초	DT0
 지난해 0월00일	DT0
 지난해 0월부터	DT0
 지난해 0월부터 올 0월까지	DT0
 지난해 0월부터 올해 0월까지	DT0
 지난해 10월	DT
+지난해 10월 29일	DT
 지난해 10월 30일	DT
 지난해 10월 말	DT
 지난해 10월말	DT
@@ -10026,7 +10078,6 @@ ze:a	PS
 지난해 12월26일	DT
 지난해 12월말	DT
 지난해 1월	DT
-지난해 1월 초	DT
 지난해 1월부터 올 1월까지	DT
 지난해 2월	DT
 지난해 2월부터	DT
@@ -10041,7 +10092,6 @@ ze:a	PS
 지난해 7월	DT
 지난해 7월31일	DT
 지난해 7월부터 올해 2월까지	DT
-지난해 8월 22일부터	DT
 지난해 말부터	DT
 지난해 연말	DT
 지난해 연말까지	DT
@@ -10058,12 +10108,10 @@ ze:a	PS
 지누션	PS
 지단	PS
 지도부	OG
-지드래곤	PS
 지리산	LC
 지만	PS
 지미 롤린스	PS
 지미 카터	PS
-지미 헨드릭스	PS
 지바 롯데 마린스	OG
 지방	LC
 지방법원	OG
@@ -10077,21 +10125,21 @@ ze:a	PS
 지앤디윈텍	OG
 지야몽	PS
 지억산	LC
-지엔텍홀딩스	OG
+지엔에셋	OG
 지역교육청	OG
 지역농협	OG
 지연	PS
 지연규	PS
+지우마 호세피	PS
 지원	PS
+지은	PS
 지은희	PS
 지중해	LC
 지창욱	PS
 지축	LC
 지코	PS
 지티아이	OG
-지펠	OG
 지현우	PS
-지현정	PS
 지훈	PS
 지휘부	OG
 진 콘맨	PS
@@ -10119,6 +10167,7 @@ ze:a	PS
 진해시	LC
 진해지역	LC
 진현민	PS
+진화일보	OG
 진흥고	OG
 질 들뢰즈	PS
 질 스튜어트	PS
@@ -10128,6 +10177,7 @@ ze:a	PS
 짐 트레이시	PS
 짐 퓨릭	PS
 짐바브웨	LC
+집권여당	OG
 집속탄금지협약	OG
 집안진료소	OG
 집행위원회	OG
@@ -10135,8 +10185,10 @@ ze:a	PS
 쪽제비	PS
 쯔리겐	OG
 찢택연	PS
+차기시즌	DT
 차동민	PS
 차두리	PS
+차림	OG
 차범근	PS
 차붐	PS
 차승재	PS
@@ -10146,7 +10198,6 @@ ze:a	PS
 차이나켐 그룹	OG
 차이나켐 자선기금	OG
 차이코프스키	PS
-차일목	PS
 차황면	LC
 찰리 위	PS
 찰리박	PS
@@ -10162,7 +10213,6 @@ ze:a	PS
 창원갑	PS
 창원대	OG
 창원시	LC
-창원시청	OG
 창원종합사격장	OG
 창원지청	OG
 창작스튜디오	OG
@@ -10170,6 +10220,7 @@ ze:a	PS
 창춘 야타이	OG
 창희	PS
 채권단	OG
+채드 캠벨	PS
 채병용	PS
 채상병	PS
 채연	PS
@@ -10183,14 +10234,17 @@ ze:a	PS
 천년	DT
 천년만년	DT
 천룡	OG
+천마산리조트	OG
 천상지희	PS
 천석이	PS
+천수	PS
 천시 빌럽스	PS
 천안	LC,OG
 천안fc	OG
 천안시청	OG
 천여년	DT
 천재 골잡이	PS
+천재 스트라이커	PS
 천정명	PS
 천주교	OG
 천주교 주교회의	OG
@@ -10226,11 +10280,12 @@ ze:a	PS
 청소년대표팀	OG
 청소년리더십아카데미	OG
 청소년지도육성회	OG
+청송	LC
 청야니	PS
-청양	LC
 청어람	OG
 청와대	OG,LC
 청운중	OG
+청원	LC
 청주	LC
 청주공단	LC
 청주리포트	OG
@@ -10243,11 +10298,12 @@ ze:a	PS
 청파동	LC
 체노위드	PS
 체니	PS
+체르노미르딘	PS
 체신부	OG
 체육공단	OG
 체육과학연구소	OG
-체육진흥공단	OG
 체육학과	OG
+체육회	OG
 체이스 맨해튼은행	OG
 체인 씨네타운	OG
 체지	PS
@@ -10255,10 +10311,9 @@ ze:a	PS
 체코슬로바키아	LC
 첼시	OG
 첼시 fc	OG
-첼시 온더 록스	OG
 쳇 베이커	PS
 쳉 야니	PS
-초겨울	DT
+초난강	PS
 초도짱	PS
 초롱이	PS
 초반	TI
@@ -10271,11 +10326,11 @@ ze:a	PS
 촌부이리	OG
 촛대봉	LC
 총독부	OG
-총무과	OG
 총무기획팀	OG
 총무처	OG
 총무청	OG
 총선	OG
+총선 공정성시비 특별조사위원회	OG
 총영사관	OG
 총학생회	OG
 촬영감독협회	OG
@@ -10289,7 +10344,9 @@ ze:a	PS
 최고위원회의	OG
 최관호	PS
 최광수	PS
+최광희	PS
 최귀동	PS
+최규식	PS
 최기문	PS
 최나연	PS
 최다니엘	PS
@@ -10298,12 +10355,13 @@ ze:a	PS
 최덕근	PS
 최동수	PS
 최동열	PS
-최동원	PS
 최만식	PS
+최명호	PS
 최무배	PS
 최민식	PS
 최민호	PS
 최병도	PS
+최병석	PS
 최복숙	PS
 최상미	PS
 최상재	PS
@@ -10313,9 +10371,10 @@ ze:a	PS
 최순영	PS
 최순우	PS
 최승락	PS
-최연오	PS
+최씨	PS
 최영	PS
 최영림	PS
+최영사	PS
 최영우	PS
 최영필	PS
 최영훈	PS
@@ -10335,6 +10394,7 @@ ze:a	PS
 최인기	PS
 최인혜	PS
 최임	PS
+최재수	PS
 최재욱	PS
 최저 0년	DT0
 최저 2년	DT
@@ -10351,7 +10411,6 @@ ze:a	PS
 최진실	PS
 최진한	PS
 최진희	PS
-최천식	PS
 최충대	PS
 최치림	PS
 최태욱	PS
@@ -10362,6 +10421,7 @@ ze:a	PS
 최혜용	PS
 최혜정	PS
 최호성	PS
+최홍만	PS
 최흥철	PS
 최희섭	PS
 최희암	PS
@@ -10375,10 +10435,9 @@ ze:a	PS
 추승균	PS
 추신수	PS
 추윗 카몬위싯	PS
+추창민	PS
 축구공화국	OG
-축구국가대표팀	OG
 축구대표팀	OG
-축구천재	PS
 축구협	OG
 축구협회	OG
 축구황제	PS
@@ -10395,6 +10454,7 @@ ze:a	PS
 춘해보건대학	OG
 충남	LC,OG
 충남권	LC
+충남여	OG
 충남일화	OG
 충남지역	LC
 충무공	PS
@@ -10407,7 +10467,6 @@ ze:a	PS
 충주	LC
 충청권	LC
 충청도	LC
-충청지역	LC
 츄딘	PS
 치멘토 아카데미	OG
 치바스 과달라하라	OG
@@ -10436,10 +10495,10 @@ ze:a	PS
 칭다오	LC
 칭화대	OG
 카날 플뤼스	OG
+카네프스키	PS
 카돌릭중앙의료원	OG
 카라	PS
 카라누시치	PS
-카레우	PS
 카를라 두알리브	PS
 카를로스 딕슨	PS
 카를로스 로드리게스	PS
@@ -10451,7 +10510,6 @@ ze:a	PS
 카리모프	PS
 카린 코크	PS
 카림 가르시아	PS
-카림 스미스	PS
 카메니	PS
 카메론 디아즈	PS
 카메룬	LC
@@ -10477,11 +10535,12 @@ ze:a	PS
 카인	PS
 카자흐스탄	LC
 카젠버그	PS
-카짐	PS
+카타르	LC
 카탈루냐 라디오	PS
 카텍	OG
 카톨릭	OG
 카톨릭 교회당국	OG
+카톨릭재단	OG
 카트린느 드뇌브	PS
 카펜터	PS
 카펠로	PS
@@ -10513,20 +10572,20 @@ ze:a	PS
 캔자스시티	OG
 캘러웨이	OG,PS
 캘리포니아	LC
+캘리포니아대	OG
 캘리포니아월드	OG
 캘리포니아주	LC
-캘빈 워너	PS
-캘빈 클라인	OG
 캠벨	PS
+캠비	PS
 커세어	OG
 커크 살루스	PS
-컨티넨탈	OG
+컬리수	OG
 컬투	PS
+컴버놀드	LC
 컴투스	OG
 컴패션	OG
 케냐	LC
 케넌 마틴	PS
-케네디	PS
 케네벙크포트	LC
 케니 로저스	PS
 케니 페리	PS
@@ -10552,7 +10611,6 @@ ze:a	PS
 케플러	PS
 켄 그리피 주니어	PS
 켄드리 모랄레스	PS
-켄드릭 퍼킨스	PS
 켄트	PS
 켈러웨이	PS
 켐핀스키호텔	OG
@@ -10566,23 +10624,21 @@ ze:a	PS
 코라오홀딩스	OG
 코라진	PS
 코레일	OG
+코르네	PS
 코리 메게티	PS
 코리아	LC
 코리아소사이어티	OG
 코린티안스	OG
 코마츠	OG
-코모도 호텔	OG
 코발	PS
 코벤트리	PS
 코브라골프	OG
 코비	PS
 코비 브라이언트	PS
-코샤르	PS
 코스닥	OG
 코시카와	PS
 코시카와 유	PS
 코아필름서울	OG
-코야나키 유키	PS
 코엑스	OG
 코엔	PS
 코엔텍	OG
@@ -10607,7 +10663,6 @@ ze:a	PS
 콜린 파렐	PS
 콜베르	PS
 콤소몰스카야 프라우다	OG
-쾰러시	LC
 쾰른	OG
 쿠데타 이후	DT
 쿠바	LC
@@ -10641,13 +10696,10 @@ ze:a	PS
 크루즈	PS
 크리머	PS
 크리스	PS
-크리스 벤슨	PS
-크리스 에버트	PS
 크리스 영	PS
 크리스 카터	PS
 크리스 케이먼	PS
 크리스 켄티스	PS
-크리스 패턴	PS
 크리스 페데	PS
 크리스 폴	PS
 크리스마스	DT
@@ -10658,6 +10710,7 @@ ze:a	PS
 크벨	PS
 클라우디아 보켈	PS
 클라우디오 바르가스	PS
+클라이드	OG
 클라크 게이블	PS
 클락	PS
 클레망	PS
@@ -10667,10 +10720,10 @@ ze:a	PS
 클로드 레비 스트로스	PS
 클론	PS
 클리블랜드	OG
-클리블랜드 인디언스	OG
 클리블랜드 캐벌리어스	OG
 클리퍼스	OG
 클리프 리	PS
+클리프 브룸바	PS
 클리프턴	LC
 클린턴	PS
 클린트 이스트우드	PS
@@ -10680,7 +10733,6 @@ ze:a	PS
 키레네사람 시몬	PS
 키르기스스탄공화국	LC
 키부츠	OG
-키안티	OG
 키움證	OG
 키움증권	OG
 키자니아	LC
@@ -10690,18 +10742,21 @@ ze:a	PS
 킨켈	PS
 타깃	OG
 타나메라cc	LC
+타비아니	PS
 타오루나	PS
 타이 락 타이	OG
 타이거 우즈	PS
+타이거즈	OG
 타이러스 토마스	PS
 타이론 우즈	PS
 타이슨 챈들러	PS
 타이틀리스트	OG
 타임머신	OG
 타임스	OG
+타타대우상용차	OG
 탁봉호	PS
+탁선생	PS
 탁신 치나왓	PS
-탄샤오펑	PS
 탄종량	PS
 탄천	LC
 탈레반	OG
@@ -10710,9 +10765,7 @@ ze:a	PS
 탕웨이	PS
 태광	OG
 태국	LC
-태국리그	OG
 태권브이	PS
-태균	PS
 태릉사격장	LC
 태릉선수촌	LC
 태릉선수촌 양궁장	OG
@@ -10721,18 +10774,18 @@ ze:a	PS
 태백상공회의소	OG
 태백시	LC
 태백역	LC
+태봉	PS
 태봉이	PS
 태성	PS
 태양	LC
-태양계	LC
 태연	PS
 태영	OG
 태욱	PS
-태웅	PS,OG
+태웅	OG
 태자자본관리유한공사	OG
 태조	PS
 태종대	LC
-태평양	LC,OG
+태평양	LC
 태평양전쟁피해보상추진협의회	OG
 태하	PS
 태학사	OG
@@ -10753,12 +10806,10 @@ ze:a	PS
 테드 릴리	PS
 테디밸리 골프장	OG
 테디밸리 골프＆리조트	OG
-테디밸리골프장	OG
 테라움	OG
 테런스 섀넌	PS
 테레사 루	PS
 테렌스 레더	PS
-테베노	OG
 테베노 집단	OG
 테베스	PS
 테베즈	PS
@@ -10773,12 +10824,11 @@ ze:a	PS
 텍사스 레인저스	OG
 텍사스주	LC
 텍사코	OG
-텐드	OG
 텔레토비	PS
 텔아비브	LC
 템프테이션	OG
+토고	OG
 토끼굴	LC
-토너 리 강	PS
 토니 자	PS
 토니 클락	PS
 토니 파커	PS
@@ -10789,7 +10839,6 @@ ze:a	PS
 토드 헬턴	PS
 토런 리안	PS
 토레만테	PS
-토레스	PS
 토론토	OG
 토론토 랩터스	OG
 토론토 블루제이스	OG
@@ -10797,7 +10846,6 @@ ze:a	PS
 토리 모리스	PS
 토리 파인즈	OG
 토리첼리	PS
-토리파인즈 골프장	OG
 토마손	PS
 토마스	PS
 토마시 로시츠키	PS
@@ -10805,7 +10853,6 @@ ze:a	PS
 토머스 에이드슨	PS
 토비 홀	PS
 토비코	OG
-토스카나	LC
 토요	DT
 토요일	DT
 토요타	OG
@@ -10827,14 +10874,11 @@ ze:a	PS
 통산부	OG
 통신위원회	OG
 통영	LC,OG
-통영rce	OG
 통영시	LC
-통일국민당	OG
 통일부	OG
 통합 춘천시체육회	OG
 통합준비위원회	OG
 통합준비위원회 자문단	OG
-통합참모본부	OG
 퇴계	PS
 퇴계동	LC
 투니버스	OG
@@ -10862,7 +10906,6 @@ ze:a	PS
 티찌아노 테르짜니	PS
 티코	PS
 티코 브라헤	PS
-티테	PS
 티파니	PS
 틴틴 파이브	PS
 틴틴파이브	PS
@@ -10880,6 +10923,7 @@ ze:a	PS
 파라오 람세스 2세	PS
 파렐	PS
 파로호	LC
+파르마	OG
 파르티아	LC
 파리	LC
 파리 국립 음악원	OG
@@ -10894,7 +10938,6 @@ ze:a	PS
 파비우 산토스	PS
 파사노	PS
 파세코	OG
-파쇼나블	OG
 파스칼	PS
 파스코	PS
 파스퇴르	OG
@@ -10902,6 +10945,7 @@ ze:a	PS
 파울로	PS
 파월	PS
 파이셔	PS
+파인리즈cc	OG
 파출소	OG
 파캔오피씨	OG
 파커	PS
@@ -10911,7 +10955,6 @@ ze:a	PS
 파트리스 에브라	PS
 파티마	PS
 파파존스 피자	OG
-파헤이라	PS
 팍스리 광산	LC
 판 더 사르	PS
 판교	LC
@@ -10967,7 +11010,6 @@ ze:a	PS
 페로	PS
 페루	LC
 페루자	OG
-페르 박	PS
 페르난도 가고	PS
 페르난도 리크센	PS
 페르난도 코르테스	PS
@@ -10980,9 +11022,9 @@ ze:a	PS
 페어몬트 턴베리 아일골프장	OG
 페어웨이	LC
 페이스 에반스	PS
+페터 비스펠베이	PS
 페테르센	PS
 페테르손	PS
-펜실베니아 주립대학	OG
 펜실베이니아주립대	OG
 펠더	PS
 펠레	PS
@@ -10993,6 +11035,7 @@ ze:a	PS
 펩시콜라	OG
 편애리	PS
 평가위원회	OG
+평강군	LC
 평기리	LC
 평생교육기관	OG
 평양	LC
@@ -11013,14 +11056,18 @@ ze:a	PS
 포르투갈 국가대표팀	OG
 포스코	OG
 포스퀘어	OG
+포스터	PS
 포스트시즌	DT
 포야르	PS
 포에버	OG
 포우 가솔	PS
 포지	PS
 포천	LC
+포천교육청	OG
 포천군	LC
 포천시	LC
+포천시의회	OG
+포천시체육회	OG
 포철	OG
 포춘	PS
 포츠머스	OG
@@ -11032,15 +11079,15 @@ ze:a	PS
 포항	OG,LC
 포항 스틸러스	OG
 포항여	OG
+포항여고	OG
 포항제철	OG
-포항제철소	OG
 포항제철지곡초등학교	OG
 폭스	OG
-폭스 스포츠	OG
 폭스파겐	OG
 폰세카	PS
 폰테 프레타	OG
 폰테베드라비치	LC
+폴 고갱	PS
 폴 고이도스	PS
 폴 매카트니	PS
 폴 비릴리오	PS
@@ -11050,6 +11097,7 @@ ze:a	PS
 폴라 크리머	PS
 폴란드	LC,OG
 폴크스바겐	OG
+표군	PS
 표도르	PS
 표명일	PS
 표트르	PS
@@ -11060,17 +11108,18 @@ ze:a	PS
 푸마 코리아	OG
 푸마스	OG
 푸미폰	PS
+푸미폰국왕	PS
 푸에르도리코	OG
 푸에르토리코	LC
 푸조	OG
 푸조시트로엥	OG
-푸콤	PS
 풀럼	OG
 풀잎	PS
 풍 엔터테인먼트	OG
 풍경	PS
 풍납동	LC
 풍납취수장	LC
+풍락토성	LC
 풍물시장	LC
 풍운아	PS
 퓨어가닉	OG
@@ -11078,6 +11127,7 @@ ze:a	PS
 프라이어	OG
 프라임md	OG
 프라하	LC
+프란시스 로렌스	PS
 프란시스 베이컨	PS
 프란시스코 아라이자	PS
 프란체스코 마르티넬리	PS
@@ -11091,7 +11141,6 @@ ze:a	PS
 프랭크 로빈슨	PS
 프레드 베르그스텐 피터슨	PS
 프레드 커플스	PS
-프레드코스	LC
 프레스톤	PS
 프로그레스 에너지	OG
 프로바이오닉	OG
@@ -11130,6 +11179,8 @@ ze:a	PS
 플로리다	OG
 플로리다 말린스	OG
 플로리다주	LC
+플릭	PS
+플립 선더스	PS
 피구	PS
 피나바우슈	PS
 피넬라	PS
@@ -11138,7 +11189,6 @@ ze:a	PS
 피닉스 선즈	OG
 피델 카스트로	PS
 피레스	PS
-피렌체	LC
 피론	PS
 피사로	PS
 피쉬&그릴	OG
@@ -11154,24 +11204,21 @@ ze:a	PS
 피츠버그 파이리츠	OG
 피츠워터	PS
 피츠퍼드	LC
+피카소	PS
 피타고라스	PS
 피트 반 질	PS
 피파	PS
 피파닷컴	OG
-피플지	OG
 핀란드	LC
 필 미켈슨	PS
 필 잭슨	PS
-필라델피아	OG
 필라델피아 세븐티식서스	OG
-필라델피아 필리스	OG
 필로스골프장	OG
 필름포럼	OG
 필리프	PS
 필리핀	LC
 필립 코퀴	PS
 필립스	OG,PS
-핌랫	PS
 핑골프	OG
 핑크공주	PS
 하경민	PS
@@ -11192,6 +11239,7 @@ ze:a	PS
 하나회	OG
 하남	LC
 하남중앙	OG
+하늘	PS
 하대성	PS
 하동군	LC
 하드록 카페	OG
@@ -11221,8 +11269,7 @@ ze:a	PS
 하스불라토프	PS
 하승진	PS
 하시모토	PS
-하시모토(교본) 총리	PS
-하시스	PS
+하시모토 류타로	PS
 하아비	PS
 하얏트호텔	OG
 하얼삔	LC
@@ -11230,6 +11277,7 @@ ze:a	PS
 하오 7시반	TI
 하와이	LC
 하원	OG
+하원 금융서비스위원회	OG
 하은주	PS
 하이닉스	OG
 하이닉스반도체	OG
@@ -11245,6 +11293,7 @@ ze:a	PS
 하춘수	PS
 하춘화	PS
 하치	PS
+하클레로드	PS
 하타	PS
 하타 쓰토무	PS
 하프타임	TI
@@ -11255,6 +11304,7 @@ ze:a	PS
 학교	OG
 학도호국단	OG
 학백촌	PS
+학생회	OG
 학성중	OG
 학소대	LC
 학우	PS
@@ -11262,9 +11312,11 @@ ze:a	PS
 한 달간	DT
 한 달전	DT
 한 세대	DT
+한 시간	TI
 한 시즌	DT
 한 여름	DT
 한 주	DT
+한 학기	DT
 한 해	DT
 한-eu fta	OG
 한가인	PS
@@ -11280,9 +11332,10 @@ ze:a	PS
 한고은	PS
 한광옥	PS
 한국	LC,OG
+한국 건축가협회	OG
 한국 남자 유도 대표팀	OG
 한국 남자농구 대표팀	OG
-한국 남자대표팀	OG
+한국 남자농구대표팀	OG
 한국 남자배구 대표팀	OG
 한국 대표팀	OG
 한국 도로공사	OG
@@ -11293,6 +11346,7 @@ ze:a	PS
 한국 야구대표팀	OG
 한국 여성단체협의회	OG
 한국 여자농구	OG
+한국 여자배구대표팀	OG
 한국 올림픽대표팀	OG
 한국 전체 선수단	OG
 한국 지역사회교육후원회	OG
@@ -11323,7 +11377,6 @@ ze:a	PS
 한국기후변화포럼	OG
 한국남동발전	OG
 한국남자대학대표팀	OG
-한국네슬레	OG
 한국노총	OG
 한국농구연맹	OG
 한국농촌경제연구원	OG
@@ -11338,14 +11391,13 @@ ze:a	PS
 한국마사회	OG
 한국마이크로소프트	OG
 한국무역위원회	OG
-한국문화복지협의회	OG
 한국문화예술위원회	OG
+한국문화재보호재단	OG
 한국문화콘텐츠진흥원	OG
 한국민속관	OG
 한국민족예술인총연합	OG
 한국바이오벤처협회	OG
 한국방송공사	OG
-한국방송연기자노조	OG
 한국배구연맹	OG
 한국사회복귀시설협회	OG
 한국산 핵잠수함	PS
@@ -11371,6 +11423,7 @@ ze:a	PS
 한국영화제작가협회	OG
 한국영화진흥위원회	OG
 한국예술종합학교	OG
+한국예탁결제원	OG
 한국은행	OG
 한국음악평론가협회	OG
 한국음악학회	OG
@@ -11384,9 +11437,11 @@ ze:a	PS
 한국전자정보통신산업진흥회	OG
 한국전자통신연구원	OG
 한국정보화진흥원	OG
+한국조류보호협회	OG
 한국조류학회	OG
 한국존슨앤드존슨 비젼케어	OG
 한국주택금융공사	OG
+한국철도대학	OG
 한국체	OG
 한국체대	OG
 한국초등학교축구연맹	OG
@@ -11404,19 +11459,19 @@ ze:a	PS
 한국폴리텍 대학	OG
 한국표준협회	OG
 한국프랜차이즈협회	OG
-한국프로배구연맹	OG
 한국해양대	OG
 한국화장품	OG
 한국후지쓰	OG
 한규식	PS
 한규웅	PS
 한규정	PS
+한글날	DT
 한기주	PS
 한기평	OG
 한길안과병원	OG
 한나라	OG
 한나라당	OG
-한나절	DT,TI
+한나절	DT
 한남동	LC
 한낮	TI
 한농연	OG
@@ -11441,6 +11496,7 @@ ze:a	PS
 한맥영화	OG
 한명숙	PS
 한명현	PS
+한미	LC
 한미동맹	OG
 한미약품	OG
 한미재계회의	OG
@@ -11455,6 +11511,7 @@ ze:a	PS
 한석희	PS
 한선교	PS
 한성컴퓨터	OG
+한세실업	OG
 한솔pcs	OG
 한송이	PS
 한승원	PS
@@ -11466,6 +11523,7 @@ ze:a	PS
 한신평	OG
 한양	OG,LC
 한양mtb	OG
+한양공	OG
 한양대	OG
 한양여	OG
 한양여대	OG
@@ -11473,19 +11531,18 @@ ze:a	PS
 한옥마을	LC
 한우육 품질인정기관	OG
 한원진	PS
+한유미	PS
 한은	OG
 한의과대학	OG
+한일	LC
 한일 공동 다큐멘터리 제작위원회	OG
 한일전산여고	OG
 한재각	PS
 한재용	PS
-한재현	PS
 한전	OG
 한정호	PS
 한주	DT
 한중	OG
-한중대	OG
-한중외교장관 회담	OG
 한지연	PS
 한진	OG
 한진몰	OG
@@ -11495,6 +11552,7 @@ ze:a	PS
 한총련	OG
 한큐 브레이브스	OG
 한탄강	LC
+한태유	PS
 한토성	PS
 한한국	PS
 한해	DT
@@ -11510,11 +11568,9 @@ ze:a	PS
 할빈	LC
 함께 내일로	OG
 함께일하는세상	OG
-함께하는 사람들	OG
 함석헌	PS
 함성	OG
 함안군	LC
-함안사랑회	OG
 함영애	PS
 함평	LC
 함평군	LC
@@ -11530,11 +11586,11 @@ ze:a	PS
 해강도자박물관	OG
 해군	OG
 해군부대	OG
+해군사령부	OG
 해리거	PS
 해리슨 포드	PS
 해마다	DT
 해밀턴	PS
-해방 이후	DT
 해방정국기간	DT
 해병 2사단	OG
 해병대	OG
@@ -11551,7 +11607,7 @@ ze:a	PS
 해크먼	PS
 해태	OG
 해태음료	OG
-해태음료 안성공장	OG
+해태제과	OG
 해트버그	PS
 핸드볼협회	OG
 행당동	LC
@@ -11570,7 +11626,6 @@ ze:a	PS
 허강	PS
 허드슨	PS
 허리우드 극장	OG
-허리우드극장	OG
 허민우	PS
 허민호	PS
 허브공항	LC
@@ -11578,6 +11633,7 @@ ze:a	PS
 허석호	PS
 허슬플레이	PS
 허승민	PS
+허씨	PS
 허우 샤오시엔	PS
 허운	PS
 허인회	PS
@@ -11601,11 +11657,10 @@ ze:a	PS
 헤라신전	LC
 헤롯	LC
 헤르체고비나	LC
-헤이그	LC
 헤즈비 이슬라미	OG
 헤타페	OG
+헥사 바이 구호	OG
 헬리오 폴리스	LC
-헬싱키	LC
 혁명수비대	OG
 현경	PS
 현근이	PS
@@ -11614,9 +11669,9 @@ ze:a	PS
 현대 · 기아자동차	OG
 현대 · 기아차	OG
 현대 ㆍ 기아차	OG
-현대 건설	OG
 현대 그랜드 뉴코아 신세계	OG
 현대 백화점 부산점	OG
+현대 유니콘스	OG
 현대hcn	OG
 현대건설	OG
 현대고	OG
@@ -11643,7 +11698,6 @@ ze:a	PS
 현대카드m	OG
 현대캐피탈	OG
 현대캐피탈 배구단	OG
-현대캐피탈 스카이워커스	OG
 현대캐피탈 스카이워커스 배구단	OG
 현대홈쇼핑	OG
 현부	LC
@@ -11652,23 +11706,23 @@ ze:a	PS
 현성철	PS
 현영	PS
 현우	PS
+현일	OG
+현임왕	PS
 현재	DT
 현재윤	PS
 현재현	PS
+현정	PS
 현주	PS
-현주누나	PS
 현주엽	PS
 현중	PS
 현지훈	PS
-현철	PS
 협보	PS
 형곤	PS
 형사1부	OG
 형사부	OG
 형준	PS
 혜산군민회	OG
-혜성	LC
-혜숙	PS
+혜원동	LC
 혜화	OG
 호계로 사거리	LC
 호나우도	PS
@@ -11681,24 +11735,25 @@ ze:a	PS
 호남식품	OG
 호남정맥	LC
 호남정유	OG
+호남지역	LC
 호돌이	PS
 호동	PS
 호라이즌 베타프로	OG
 호룡곡산	LC
 호루스	PS
 호루스교	OG
+호르헤 칸투	PS
 호르헤 피에드라	PS
 호리 고이치	PS
 호머	PS
 호비뉴	PS
 호삼 아메드미	PS
+호석	PS
 호세 리마	PS
 호세 카브레라	PS
-호세 칸세코	PS
 호아킴	PS
 호아킴 노아	PS
 호안 산타나	PS
-호암미술관	OG
 호이겐스	PS
 호주	LC
 호주대표팀	OG
@@ -11727,9 +11782,11 @@ ze:a	PS
 홍성	LC
 홍성흔	PS
 홍순직	PS
+홍씨	PS
 홍영현	PS
 홍원기	PS
 홍원영	PS
+홍윤미	PS
 홍은동	LC
 홍의	PS
 홍익대	OG
@@ -11750,10 +11807,9 @@ ze:a	PS
 홍천지역	LC
 홍콩	LC
 홍콩 우정청	OG
-홍콩대공보	OG
+홍콩선발팀	OG
 홍혜경	PS
 화도진도서관	OG
-화란	LC
 화려	PS
 화성	LC
 화성시	LC
@@ -11771,7 +11827,6 @@ ze:a	PS
 화천군	LC
 화천읍	LC
 화천정보산업고	OG
-화하은행	OG
 환갑일	DT
 환경과학원	OG
 환경부	OG
@@ -11799,17 +11854,19 @@ ze:a	PS
 황씨	PS
 황연동	LC
 황연주	PS
+황영애	PS
 황우석	PS
 황우여	PS
 황운	PS
 황원희	PS
 황인춘	PS
+황인평	PS
 황재균	PS
 황재원	PS
 황정욱	PS
 황정음	PS
 황지 2동	LC
-황지우	PS
+황지중	OG
 황지중앙초	OG
 황진원	PS
 황찬희	PS
@@ -11820,7 +11877,10 @@ ze:a	PS
 황현주	PS
 황형주	PS
 회계산	LC
+회룡역	LC
+회산면	LC
 회생추진위원회	OG
+회장님	PS
 횡성군	LC
 횡성군 선발팀	OG
 횡성군 자원봉사센터	OG
@@ -11836,15 +11896,15 @@ ze:a	PS
 후반 13분	TI
 후반 16분	TI
 후반 17분	TI
+후반 18분	TI
 후반 21분	TI
 후반 24분	TI
 후반 25분	TI
 후반 29분	TI
 후반 2분	TI
 후반 30분	TI
-후반 31분	TI
 후반 33분	TI
-후반 39분	TI
+후반 35분	TI
 후반 3분	TI
 후반 40분	TI
 후반 42분	TI
@@ -11856,6 +11916,7 @@ ze:a	PS
 후반 초반 00분	TI0
 후반 초반 12분	TI
 후반기	DT
+후반부터	TI
 후반전	TI
 후샤오시엔	PS
 후세인	PS
@@ -11866,15 +11927,16 @@ ze:a	PS
 후인정	PS
 후진타오	PS
 후쿠도메 고스케	PS
-후쿠시마	PS
+후쿠시마	OG,PS
 후쿠오카	LC
+후쿠우라	PS
 후쿠하라	PS
 후쿠하라 아이	PS
 후크	PS
+훈이	PS
 훌리오 바로소	PS
 훼이셜	OG
 훼인클럽	OG
-휘슬링 스트레이츠	OG
 휘트니 휴스턴	PS
 휠라코리아	OG
 휴 매커천	PS
@@ -11882,28 +11944,26 @@ ze:a	PS
 휴스턴 로케츠	OG
 휴스턴 애스트로스	OG
 휴스틴	LC
+휴애리 공원	LC
 휴온스	OG
-휴이트	PS
 휴일	DT
 휴전선	LC
 휴전협정	OG
 흑상어	PS
 흑석동	LC
 흑해	LC
-흙벗농원	OG
 흡혈귀	PS
 흥국생명	OG
 흥국생명 핑크스파이더스	OG
 흥부	PS
 흥사단	OG
-희랍인	PS
 히노	OG
 히노 자동차(주)	OG
 히딩크	PS
 히라세 도모유키	PS
 히로시마	OG
 히로시마 도요카프	PS
-히사이시 조	PS
+히로시마 카프	OG
 히어로즈	OG
 히트 머신	PS
 히틀러	PS
@@ -11914,12 +11974,8 @@ ze:a	PS
 羅雄培	PS
 盧武鉉	PS
 盧泰愚	PS
-李垠	PS
-李堈	PS
 李彦迪	PS
 李恒老	PS
-李源	PS
-李玖	PS
 李珥	PS
 李穡	PS
 李震相	PS
