@@ -27,18 +27,20 @@ class Ner(nn.Module):
     """
     named entity recognizer pytorch model
     """
-    def __init__(self, window, voca, gazet, phoneme, gazet_embed, pos_enc):
+    def __init__(self, window, embed_dim, voca, gazet, phoneme, gazet_embed, pos_enc):
         """
         :param  window:  left/right window size from current character
         :param  voca:  vocabulary
         """
         super().__init__()
         self.window = window
+        self.embed_dim = embed_dim
         self.voca = voca
         self.gazet = gazet
         self.phoneme = phoneme
         self.gazet_embed = gazet_embed
         self.pos_enc = pos_enc
+        self.pe_tensor = None
 
     def forward(self, *inputs):
         raise NotImplementedError
@@ -66,23 +68,24 @@ class Ner(nn.Module):
             model.cuda()
         return model
 
-    def positional_encoding(self, context_len, embed_dim):
+    @classmethod
+    def positional_encoding(cls, context_len, embed_dim):
         """
         Positional encoding Variable 출력
         embeds [batch_size, context_len, embed_dim]에 Broadcasting 으로 더해짐
         :return: pe [context_len, embed_dim]
         """
-        pe = torch.zeros([context_len, embed_dim])
+        pe_tensor = torch.zeros([context_len, embed_dim])
         for j in range(context_len):
             j += 1 # 1-based indexing
             for k in range(embed_dim):
                 k += 1 # 1-based indexing
-                pe[j-1,k-1] = (1-j/context_len) - (k/embed_dim)*(1-2*j/context_len)
+                pe_tensor[j-1, k-1] = (1-j/context_len) - (k/embed_dim)*(1-2*j/context_len)
 
-        pe = Variable(pe)
+        pe_tensor = Variable(pe_tensor)
         if torch.cuda.is_available():
-            pe = pe.cuda()
-        return pe
+            pe_tensor = pe_tensor.cuda()
+        return pe_tensor
 
 
 class Fnn5(Ner):
@@ -96,7 +99,7 @@ class Fnn5(Ner):
         :param  embed_dim:  character embedding dimension
         :param  hidden_dim:  hidden layer dimension
         """
-        super().__init__(window, voca, gazet, phoneme, gazet_embed, pos_enc)
+        super().__init__(window, embed_dim, voca, gazet, phoneme, gazet_embed, pos_enc)
         context_len = 2 * window + 1
         self.embedding = nn.Embedding(len(voca['in']), embed_dim)
         gazet_dim = len(voca['out'])+4
@@ -107,10 +110,6 @@ class Fnn5(Ner):
 
         if self.phoneme:
             self.pho2syl = nn.Conv2d(1, embed_dim, (3, embed_dim), 3)
-
-        # Add Positional Encoding
-        if self.pos_enc:
-            self.pe = self.positional_encoding(context_len, embed_dim)
 
         self.relu = nn.ReLU()
         self.embeds2hidden = nn.Linear(context_len * (embed_dim + gazet_dim), hidden_dim)
@@ -127,8 +126,12 @@ class Fnn5(Ner):
         if self.phoneme:
             embeds = F.relu(self.pho2syl(embeds.unsqueeze(1)).squeeze().transpose(1, 2))
 
+        # Add Positional Encoding
         if self.pos_enc:
-            embeds += self.pe
+            if self.pe_tensor is None:
+                context_len = self.window * 2 + 1
+                self.pe_tensor = self.positional_encoding(context_len, self.embed_dim)
+            embeds += self.pe_tensor
 
         if self.gazet_embed:
             gazet_embeds = self.gazet_embedding(gazet)
@@ -154,7 +157,7 @@ class Cnn7(Ner):    # pylint: disable=too-many-instance-attributes
         :param  embed_dim:  character embedding dimension
         :param  hidden_dim:  hidden layer dimension
         """
-        super().__init__(window, voca, gazet, phoneme, gazet_embed, pos_enc)
+        super().__init__(window, embed_dim, voca, gazet, phoneme, gazet_embed, pos_enc)
         self.context_len = 2 * window + 1
         self.embedding = nn.Embedding(len(voca['in']), embed_dim)
 
@@ -165,10 +168,6 @@ class Cnn7(Ner):    # pylint: disable=too-many-instance-attributes
 
         if self.phoneme:
             self.pho2syl = nn.Conv1d(embed_dim, embed_dim, 3, 3)
-
-        # Add Positional Encoding
-        if self.pos_enc:
-            self.pe = self.positional_encoding(self.context_len, embed_dim)
 
         concat_dim = embed_dim + gazet_dim
         # conv2_1
@@ -234,7 +233,11 @@ class Cnn7(Ner):    # pylint: disable=too-many-instance-attributes
 
         # Add Positional Encoding
         if self.pos_enc:
-            embeds = embeds + self.pe
+            if self.pe_tensor is None:
+                context_len = self.window * 2 + 1
+                self.pe_tensor = self.positional_encoding(context_len, self.embed_dim)
+
+            embeds = embeds + self.pe_tensor
 
         if self.gazet_embed:
             gazet_embeds = self.gazet_embedding(gazet)
