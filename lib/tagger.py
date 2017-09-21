@@ -113,7 +113,8 @@ class PerformanceMeasure(object):
                 match_ne = self.match[key]
                 f_score, recall, precision = self._calc_f_score(gold_ne, pred_ne, match_ne)
                 if display:
-                    logging.info('%s : f-score: %f (recall = %f, precision = %f) : (gold = %d, pred = %d, match = %d)',\
+                    logging.info('%s : f-score: %f (recall = %f, precision = %f)'\
+                                 ':(gold = %d, pred = %d, match = %d)',\
                                  key, f_score, recall, precision, gold_ne, pred_ne, match_ne)
 
     def calculate_score(self, display=False):
@@ -199,7 +200,10 @@ class GraceTagger(object):
         nes = sent.get_named_entity_list(predicts, self.voca)
         beg_list = []
         end_dict = {}
+        ne_list = []
+        is_inside = False
         tagged_line = ''
+        named_entity = ''
         for item in nes:
             beg, end, tag = item.get_ne_pos_tag()
             beg_list.append(beg)
@@ -207,14 +211,20 @@ class GraceTagger(object):
         for idx, char in enumerate(raw_line):
             if idx in beg_list:
                 tagged_line += '<'
+                is_inside = True
             tagged_line += char
+            if is_inside:
+                named_entity += char
             if idx in end_dict:
                 tagged_line += ':%s>' % (end_dict[idx])
+                ne_list.append((named_entity, end_dict[idx]))
+                named_entity = ''
+                is_inside = False
 
         logging.debug([x.get_ne_pos_tag() for x in nes])
-        return tagged_line
+        return tagged_line, ne_list
 
-    def tagging(self, line):
+    def tagging(self, line, fmt_competition=False):
         """
         입력 문장을 대상으로 개체명 태깅을 수행합니다.
         :param line: 태깅할 문자열
@@ -223,10 +233,15 @@ class GraceTagger(object):
         tagged_line = ''
         sent = cp.Sentence(line)
         predicts = self.get_predicts(sent)
-        tagged_line = self.get_tagged_result(sent, predicts)
+        tagged_line, ne_list = self.get_tagged_result(sent, predicts)
+        if fmt_competition:
+            tagged_line = "; %s\n$%s\n%s\n" % (line, tagged_line,\
+                          "\n".join("%s\t%s" % (x[0], x[1]) for x in ne_list))
         logging.debug("%s\tORIGINAL : %s", self.__class__.__name__, line)
         logging.debug("%s\tTAGGED   : %s", self.__class__.__name__, tagged_line)
+        logging.debug("%s\tNE LIST : %s", self.__class__.__name__, ne_list)
         return tagged_line
+
 
     @classmethod
     def _calc_f_score(cls, gold_ne, pred_ne, match_ne):
