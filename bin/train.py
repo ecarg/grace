@@ -8,7 +8,7 @@ __author__ = 'Jamie (krikit@naver.com)'
 __copyright__ = 'No copyright. Just copyleft!'
 """
 
-
+#pylint: disable=no-member
 ###########
 # imports #
 ###########
@@ -43,7 +43,6 @@ BATCH_SIZE = 100
 EPOCH_NUM = 100
 RVT_ITER = 24    # 2 epoch
 RVT_TERM = 10
-
 
 #########
 # types #
@@ -98,6 +97,7 @@ def _make_model_id(args):
     model_ids.append('pe%d' % (1 if args.pos_enc else 0))
     model_ids.append('ri%d' % args.rvt_iter)
     model_ids.append('rt%d' % args.rvt_term)
+    model_ids.append('bs%d' % args.batch_size)
     return '.'.join(model_ids)
 
 def _init(args):
@@ -128,7 +128,6 @@ def _init(args):
     else:
         raise ValueError('unknown model name: %s' % args.model_name)
     return voca, gazet, data_, model
-
 
 def run(args):    # pylint: disable=too-many-locals,too-many-statements
     """
@@ -182,6 +181,7 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
 
     revert = 0
     while revert < args.rvt_term:
+        batches = []
         for train_sent in data_['train']:
             # Convert to CUDA Variable
             train_labels, train_contexts, train_gazet = \
@@ -199,8 +199,17 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
 
             # Forwardprop / Backprop
             model.train()
+
             outputs = model((train_contexts, train_gazet))
-            loss = criterion(outputs, train_labels)
+            batches.append((train_labels, outputs))
+            total_syllable_count = sum([x[0].size(0) for x in batches])
+            if total_syllable_count < args.batch_size and data_['train'].has_next():
+                continue
+            batch_label = torch.cat([x[0] for x in batches], 0)
+            batch_output = torch.cat([x[1] for x in batches], 0)
+            batches = []
+
+            loss = criterion(batch_output, batch_label)
             loss.backward()
             optimizer.step()
 
@@ -253,16 +262,15 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
 
                 # revert policy
                 if (iter_ - best_iter) > (args.rvt_iter * 1000):
-                    #model.load(args.output)
                     model_dump = CheckPoint.load('%s.chk' % args.output)
                     model.load_state_dict(model_dump['model'])
                     optimizer.load_state_dict(model_dump['optim'])
+                    revert += 1
                     lrs = []
                     for param_group in optimizer.param_groups:
-                        param_group['lr'] *= 0.9
+                        param_group['lr'] *= 0.9 ** revert
                         lrs.append(param_group['lr'])
                     best_iter = iter_
-                    revert += 1
                     logging.info('==== revert to iter: %dk, revert count: %d ====', iter_ // 1000,
                                  revert)
                     logging.info('learning rates: %s', ', '.join([str(_) for _ in lrs]))

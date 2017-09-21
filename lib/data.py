@@ -56,6 +56,11 @@ class NerDataset(object):
             raise StopIteration()
         return self.sents[self.sent_idx]
 
+    def has_next(self):
+        """
+        남아 있는 문장이 있는지 확인
+        """
+        return self.sent_idx < len(self.sents)-1
 
 #############
 # functions #
