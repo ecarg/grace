@@ -43,7 +43,7 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
         line = line.strip()
         if not line:
             continue
-        tagged_line = grace.tagging(line)
+        tagged_line = grace.tagging(line, args.competition)
         print(tagged_line)
 
 ########
@@ -63,6 +63,7 @@ def main():
                         type=argparse.FileType('wt'))
     parser.add_argument('--eval', help='check f-score', action='store_true')
     parser.add_argument('--debug', help='enable debug', action='store_true')
+    parser.add_argument('--competition', help='output for competition', action='store_true')
     args = parser.parse_args()
 
     if args.input:
