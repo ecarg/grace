@@ -8,7 +8,10 @@ __author__ = 'Jamie (krikit@naver.com)'
 __copyright__ = 'No copyright. Just copyleft!'
 """
 
+
 #pylint: disable=no-member
+
+
 ###########
 # imports #
 ###########
@@ -36,13 +39,13 @@ import tagger
 ###########
 # options #
 ###########
+GPU_NUM = 0
 WINDOW = 10
 EMBED_DIM = 50
-GPU_NUM = 0
-BATCH_SIZE = 100
-EPOCH_NUM = 100
-RVT_ITER = 24    # 2 epoch
+RVT_EPOCH = 2
 RVT_TERM = 10
+BATCH_SIZE = 100
+
 
 #########
 # types #
@@ -95,10 +98,11 @@ def _make_model_id(args):
     model_ids.append('e%d' % args.embed_dim)
     model_ids.append('gzte' if args.gazet_embed else 'gzt1')
     model_ids.append('pe%d' % (1 if args.pos_enc else 0))
-    model_ids.append('ri%d' % args.rvt_iter)
+    model_ids.append('re%d' % args.rvt_epoch)
     model_ids.append('rt%d' % args.rvt_term)
     model_ids.append('bs%d' % args.batch_size)
     return '.'.join(model_ids)
+
 
 def _init(args):
     """
@@ -129,12 +133,17 @@ def _init(args):
         raise ValueError('unknown model name: %s' % args.model_name)
     return voca, gazet, data_, model
 
+
 def run(args):    # pylint: disable=too-many-locals,too-many-statements
     """
     run function which is the start point of program
     :param  args:  arguments
     """
     voca, gazet, data_, model = _init(args)
+
+    epoch_syl_cnt = data_['train'].get_syllable_count()
+    iter_per_epoch = epoch_syl_cnt // args.batch_size
+    iter_to_rvt = iter_per_epoch * args.rvt_epoch
 
     # Load GPU
     os.environ['CUDA_VISIBLE_DEVICES'] = str(args.gpu_num)
@@ -149,21 +158,23 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
     accuracies = []
     f_scores = []
 
+    iter_ = 1
+    best_iter = 0
     has_check_point = os.path.exists(args.output) and os.path.exists('%s.chk' % args.output)
     if has_check_point:
-        #model.load(args.output)
+        logging.info('==== reverting from check point ====')
         model_dump = CheckPoint.load('%s.chk' % args.output)
         model.load_state_dict(model_dump['model'])
         optimizer.load_state_dict(model_dump['optim'])
         best_iter = model_dump['iter']
+        iter_ = best_iter + 1
         losses.append(model_dump['loss'])
         accuracies.append(model_dump['accuracy'])
         f_scores.append(model_dump['f-score'])
-        iter_ = best_iter + 1
-        logging.info('==== reverting from check point ====')
-    else:
-        iter_ = 1
-        best_iter = 1
+        logging.info('---- iter: %dk, loss: %f, accuracy: %f, f-score: %f ----',
+                     iter_ // 1000, losses[-1], accuracies[-1], f_scores[-1])
+        lrs = [param_group['lr'] for param_group in optimizer.param_groups]
+        logging.info('learning rates: %s', ', '.join([str(_) for _ in lrs]))
 
     model_id = _make_model_id(args)
     logf = None
@@ -180,8 +191,9 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
             print('iter\tloss\taccuracy\tf-score', file=logf)
 
     revert = 0
-    while revert < args.rvt_term:
-        batches = []
+    one_more_thing = True    # one more change to increase learning rate into 10 times
+    batches = []
+    while revert <= args.rvt_term or one_more_thing:
         for train_sent in data_['train']:
             # Convert to CUDA Variable
             train_labels, train_contexts, train_gazet = \
@@ -202,8 +214,7 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
 
             outputs = model((train_contexts, train_gazet))
             batches.append((train_labels, outputs))
-            total_syllable_count = sum([x[0].size(0) for x in batches])
-            if total_syllable_count < args.batch_size and data_['train'].has_next():
+            if sum([batch[0].size(0) for batch in batches]) < args.batch_size:
                 continue
             batch_label = torch.cat([x[0] for x in batches], 0)
             batch_output = torch.cat([x[1] for x in batches], 0)
@@ -246,8 +257,9 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
                                               'accuracy': accuracy, 'f-score': f_score})
                     check_point.save('%s.chk' % args.output)
                     logging.info('check point: %s', check_point)
-                    revert = 0
                     best_iter = iter_
+                    revert = 0
+                    one_more_thing = True
                 accuracies.append(accuracy)
                 f_scores.append(f_score)
                 logging.info('---- iter: %dk, loss: %f, accuracy: %f, f-score: %f (max: %r) ----',
@@ -261,24 +273,38 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
                     logf.flush()
 
                 # revert policy
-                if (iter_ - best_iter) > (args.rvt_iter * 1000):
+                if (iter_ - best_iter) > iter_to_rvt:
+                    revert += 1
+                    logging.info('==== revert to iter: %dk, revert count: %d ====',
+                                 best_iter // 1000, revert)
                     model_dump = CheckPoint.load('%s.chk' % args.output)
                     model.load_state_dict(model_dump['model'])
                     optimizer.load_state_dict(model_dump['optim'])
-                    revert += 1
                     lrs = []
                     for param_group in optimizer.param_groups:
-                        param_group['lr'] *= 0.9 ** revert
+                        param_group['lr'] *= (0.9 if one_more_thing else 0.8) ** revert
                         lrs.append(param_group['lr'])
                     best_iter = iter_
-                    logging.info('==== revert to iter: %dk, revert count: %d ====', iter_ // 1000,
-                                 revert)
                     logging.info('learning rates: %s', ', '.join([str(_) for _ in lrs]))
             elif iter_ % 100 == 0:
                 print('.', end='', file=sys.stderr)
                 sys.stderr.flush()
 
             iter_ += 1
+        if revert > args.rvt_term and one_more_thing:
+            logging.info('==== one more thing, revert to iter: %dk ====', best_iter // 1000)
+            model_dump = CheckPoint.load('%s.chk' % args.output)
+            model.load_state_dict(model_dump['model'])
+            optimizer.load_state_dict(model_dump['optim'])
+            lrs = []
+            for param_group in optimizer.param_groups:
+                param_group['lr'] *= 10.0
+                lrs.append(param_group['lr'])
+            best_iter = iter_
+            revert = 0
+            one_more_thing = False
+            logging.info('learning rates: %s', ', '.join([str(_) for _ in lrs]))
+
 
 ########
 # main #
@@ -300,8 +326,6 @@ def main():
                         metavar='INT', type=int, default=EMBED_DIM)
     parser.add_argument('--gpu-num', help='GPU number to use <default: %d>' % GPU_NUM,
                         metavar='INT', type=int, default=GPU_NUM)
-    parser.add_argument('--batch-size', help='batch size <default: %d>' % BATCH_SIZE, metavar='INT',
-                        type=int, default=BATCH_SIZE)
     parser.add_argument('--phoneme', help='expand phonemes context', action='store_true')
     parser.add_argument('--pos-enc', help='add positional encoding',
                         action='store_true', default=False)
@@ -309,10 +333,12 @@ def main():
                         default=False)
     parser.add_argument('--cutoff', help='cutoff', action='store',\
                         type=int, metavar='NUM', default=5)
-    parser.add_argument('--rvt-iter', help='최대치 파라미터로 되돌아갈 반복 횟수 (천단위) <default: %d>' % \
-                                           RVT_ITER, type=int, metavar='NUM', default=RVT_ITER)
+    parser.add_argument('--rvt-epoch', help='최대치 파라미터로 되돌아갈 epoch 횟수 <default: %d>' % \
+                                            RVT_EPOCH, type=int, metavar='NUM', default=RVT_EPOCH)
     parser.add_argument('--rvt-term', help='파라미터로 되돌아갈 최대 횟수 <default: %d>' % \
                                            RVT_TERM, type=int, metavar='NUM', default=RVT_TERM)
+    parser.add_argument('--batch-size', help='batch size <default: %d>' % BATCH_SIZE, metavar='INT',
+                        type=int, default=BATCH_SIZE)
     parser.add_argument('--debug', help='enable debug', action='store_true')
     args = parser.parse_args()
 

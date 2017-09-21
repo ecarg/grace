@@ -56,11 +56,13 @@ class NerDataset(object):
             raise StopIteration()
         return self.sents[self.sent_idx]
 
-    def has_next(self):
+    def get_syllable_count(self):
         """
-        남아 있는 문장이 있는지 확인
+        전체 음절의 갯수
+        :return:  전체 음절의 갯수
         """
-        return self.sent_idx < len(self.sents)-1
+        return sum([sent.get_syllable_count() for sent in self.sents])
+
 
 #############
 # functions #
@@ -80,9 +82,6 @@ def load_voca(dir_, is_phonemes=False, cutoff=1):
         :param  is_in: is input voa
         :return:  (vocabulary, inverted vocabulary) pair
         """
-        metas = ['unk', 'pre', 'suf', 'op_wrd', 'cl_wrd', 'cho', 'u_cho', 'jung', 
-                'u_jung', 'jong', 'u_jong', 'dig', 'u_dig', 'eng', 'u_eng', 'hanja', 
-                'u_hanja', 'symbol', 'u_symbol', 'etc']
         voca = defaultdict(int)    # string to number
         acov = []    # number to string
         if is_in:
