@@ -129,6 +129,12 @@ def _init(args):
         model = models.Cnn7(args.window, voca, gazet,
                             args.embed_dim, hidden_dim,
                             args.phoneme, args.gazet_embed, args.pos_enc)
+    elif args.model_name.lower() == 'fnn6':
+        concat_dim = args.embed_dim + len(voca['out']) + 4
+        hidden_dim = (concat_dim * 4 + len(voca['out'])) // 2
+        model = models.Fnn6(args.window, voca, gazet,
+                            args.embed_dim, hidden_dim,
+                            args.phoneme, args.gazet_embed, args.pos_enc)
     else:
         raise ValueError('unknown model name: %s' % args.model_name)
     return voca, gazet, data_, model
@@ -212,15 +218,18 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
             # Forwardprop / Backprop
             model.train()
 
-            outputs = model((train_contexts, train_gazet))
-            batches.append((train_labels, outputs))
-            if sum([batch[0].size(0) for batch in batches]) < args.batch_size:
-                continue
-            batch_label = torch.cat([x[0] for x in batches], 0)
-            batch_output = torch.cat([x[1] for x in batches], 0)
-            batches = []
+           #outputs = model((train_contexts, train_gazet))
+            #batches.append((train_labels, outputs))
+            #total_syllable_count = sum([x[0].size(0) for x in batches])
+            #if total_syllable_count < args.batch_size and data_['train'].has_next():
+            #    continue
+            #batch_label = torch.cat([x[0] for x in batches], 0)
+            #batch_output = torch.cat([x[1] for x in batches], 0)
+            #batches = []
+            #loss = criterion(batch_output, batch_label)
+            #loss.backward()
 
-            loss = criterion(batch_output, batch_label)
+            loss = model.neg_log_likelihood((train_contexts, train_gazet), train_labels)
             loss.backward()
             optimizer.step()
 
@@ -242,8 +251,8 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
                         dev_contexts = dev_contexts.cuda()
                         dev_gazet = dev_gazet.cuda()
 
-                    outputs = model((dev_contexts, dev_gazet))
-                    _, predicts = outputs.max(1)
+                    predicts = model((dev_contexts, dev_gazet))
+                    #_, predicts = outputs.max(1)
                     dev_sent.compare_label(predicts, voca, measure)
 
                 accuracy, f_score = measure.get_score()
@@ -286,7 +295,7 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
                         lrs.append(param_group['lr'])
                     best_iter = iter_
                     logging.info('learning rates: %s', ', '.join([str(_) for _ in lrs]))
-            elif iter_ % 100 == 0:
+            elif iter_ % 10 == 0:
                 print('.', end='', file=sys.stderr)
                 sys.stderr.flush()
 

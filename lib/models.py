@@ -19,6 +19,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
+import torch.autograd as autograd
+
 
 #########
 # types #
@@ -307,3 +309,162 @@ class Cnn7(Ner):    # pylint: disable=too-many-instance-attributes
         hidden_out_drop = F.dropout(hidden_out, training=self.training)
         tag_out = self.hidden2tag(hidden_out_drop)
         return tag_out
+
+
+
+class Fnn6(Fnn5):    # pylint: disable=too-many-instance-attributes
+    """
+    convolutional neural network based named entity recognizer
+    """
+    def __init__(self, window, voca, gazet, embed_dim, hidden_dim, phoneme, gazet_embed, pos_enc):
+        """
+        :param  window:  left/right window size from current character
+        :param  voca:  vocabulary
+        :param  embed_dim:  character embedding dimension
+        :param  hidden_dim:  hidden layer dimension
+        """
+        self.START_TAG = 'BOS'
+        self.STOP_TAG = 'EOS'
+        voca['out'][self.START_TAG] = len(voca['out'])
+        voca['out'][self.STOP_TAG] = len(voca['out'])
+        super().__init__(window, voca, gazet, embed_dim, hidden_dim, phoneme, gazet_embed, pos_enc)
+        # 태그셋 크기가 10이라면, 11,12번째 엔트리로 START/END를 넣은 것처럼..
+        self.tagset_size = len(voca['out'])
+
+        # Matrix of transition parameters.  Entry i,j is the score of
+        # transitioning *to* i *from* j.
+        self.transitions = nn.Parameter(torch.randn(self.tagset_size, self.tagset_size))
+
+        # These two statements enforce the constraint that we never transfer
+        # to the start tag and we never transfer from the stop tag
+        self.transitions.data[voca['out'][self.START_TAG], :] = -10000
+        self.transitions.data[:, voca['out'][self.STOP_TAG]] = -10000
+
+    # Compute log sum exp in a numerically stable way for the forward algorithm
+    @classmethod
+    def to_scalar(cls, var):
+        # returns a python float
+        return var.view(-1).data.tolist()[0]
+
+    @classmethod
+    def argmax(cls, vec):
+        # return the argmax as a python int
+        _, idx = torch.max(vec, 1)
+        return cls.to_scalar(idx)
+
+    @classmethod
+    def log_sum_exp(cls, vec):
+        max_score = vec[0, cls.argmax(vec)]
+        max_score_broadcast = max_score.view(1, -1).expand(1, vec.size()[1])
+        return max_score + \
+            torch.log(torch.sum(torch.exp(vec - max_score_broadcast)))
+
+    def _forward_alg(self, feats):
+        # Do the forward algorithm to compute the partition function
+        if torch.cuda.is_available():
+            init_alphas = torch.cuda.FloatTensor(1, self.tagset_size).fill_(-10000.)
+        else:
+            init_alphas = torch.FloatTensor(1, self.tagset_size).fill_(-10000.)
+
+        # START_TAG has all of the score.
+        init_alphas[0][self.voca['out'][self.START_TAG]] = 0.
+
+        # Wrap in a variable so that we will get automatic backprop
+        forward_var = autograd.Variable(init_alphas)
+
+        # Iterate through the sentence
+        for feat in feats:
+            alphas_t = []  # The forward variables at this timestep
+            for next_tag in range(self.tagset_size):
+                # broadcast the emission score: it is the same regardless of
+                # the previous tag
+                emit_score = feat[next_tag].view(
+                    1, -1).expand(1, self.tagset_size)
+                # the ith entry of trans_score is the score of transitioning to
+                # next_tag from i
+                trans_score = self.transitions[next_tag].view(1, -1)
+                # The ith entry of next_tag_var is the value for the
+                # edge (i -> next_tag) before we do log-sum-exp
+                next_tag_var = forward_var + trans_score + emit_score
+                # The forward variable for this tag is log-sum-exp of all the
+                # scores.
+                alphas_t.append(self.log_sum_exp(next_tag_var))
+            forward_var = torch.cat(alphas_t).view(1, -1)
+        terminal_var = forward_var + self.transitions[self.voca['out'][self.STOP_TAG]]
+        alpha = self.log_sum_exp(terminal_var)
+        return alpha
+
+    def _viterbi_decode(self, feats):
+        backpointers = []
+
+        # Initialize the viterbi variables in log space
+        init_vvars = torch.Tensor(1, self.tagset_size).fill_(-10000.)
+        init_vvars[0][self.voca['out'][self.START_TAG]] = 0
+
+        # forward_var at step i holds the viterbi variables for step i-1
+        forward_var = autograd.Variable(init_vvars)
+        for feat in feats:
+            bptrs_t = []  # holds the backpointers for this step
+            viterbivars_t = []  # holds the viterbi variables for this step
+
+            for next_tag in range(self.tagset_size):
+                # next_tag_var[i] holds the viterbi variable for tag i at the
+                # previous step, plus the score of transitioning
+                # from tag i to next_tag.
+                # We don't include the emission scores here because the max
+                # does not depend on them (we add them in below)
+                next_tag_var = forward_var + self.transitions[next_tag]
+                best_tag_id = self.argmax(next_tag_var)
+                bptrs_t.append(best_tag_id)
+                viterbivars_t.append(next_tag_var[0][best_tag_id])
+            # Now add in the emission scores, and assign forward_var to the set
+            # of viterbi variables we just computed
+            forward_var = (torch.cat(viterbivars_t) + feat).view(1, -1)
+            backpointers.append(bptrs_t)
+
+        # Transition to STOP_TAG
+        terminal_var = forward_var + self.transitions[self.voca['out'][self.STOP_TAG]]
+        best_tag_id = self.argmax(terminal_var)
+        path_score = terminal_var[0][best_tag_id]
+
+        # Follow the back pointers to decode the best path.
+        best_path = [best_tag_id]
+        for bptrs_t in reversed(backpointers):
+            best_tag_id = bptrs_t[best_tag_id]
+            best_path.append(best_tag_id)
+        # Pop off the start tag (we dont want to return that to the caller)
+        start = best_path.pop()
+        assert start == self.voca['out'][self.START_TAG]  # Sanity check
+        best_path.reverse()
+        return path_score, best_path
+
+    def _score_sentence(self, feats, tags):
+        # Gives the score of a provided tag sequence
+        if torch.cuda.is_available():
+            score = autograd.Variable(torch.cuda.FloatTensor([0]))
+            lts = torch.cuda.LongTensor([self.voca['out'][self.START_TAG]])
+        else:
+            score = autograd.Variable(torch.FloatTensor([0]))
+            lts = torch.LongTensor([self.voca['out'][self.START_TAG]])
+        tags = torch.cat([lts, tags.data], 0)
+        for i, feat in enumerate(feats):
+            score = score + \
+                self.transitions[tags[i + 1], tags[i]] + feat[tags[i + 1]]
+        score = score + self.transitions[self.voca['out'][self.STOP_TAG], tags[-1]]
+        return score
+
+    def neg_log_likelihood(self, contexts_gazet, train_labels):
+        tag_out = super().forward(contexts_gazet)
+        forward_score = self._forward_alg(tag_out)
+        gold_score = self._score_sentence(tag_out, train_labels)
+
+        return forward_score - gold_score
+
+    def forward(self, contexts_gazet):    # pylint: disable=arguments-differ,too-many-locals
+        tag_out = super().forward(contexts_gazet)
+        _, tag_seq = self._viterbi_decode(tag_out)
+        if torch.cuda.is_available():
+            ret = autograd.Variable(torch.cuda.LongTensor(tag_seq))
+        else:
+            ret = autograd.Variable(torch.LongTensor(tag_seq))
+        return ret
