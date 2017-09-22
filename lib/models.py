@@ -20,6 +20,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
 
+from sru import SRU
+
+
 #########
 # types #
 #########
@@ -111,7 +114,6 @@ class Fnn5(Ner):
         if self.phoneme:
             self.pho2syl = nn.Conv2d(1, embed_dim, (3, embed_dim), 3)
 
-        self.relu = nn.ReLU()
         self.embeds2hidden = nn.Linear(context_len * (embed_dim + gazet_dim), hidden_dim)
         self.hidden2tag = nn.Linear(hidden_dim, len(voca['out']))
 
@@ -306,4 +308,132 @@ class Cnn7(Ner):    # pylint: disable=too-many-instance-attributes
         # hidden => tag
         hidden_out_drop = F.dropout(hidden_out, training=self.training)
         tag_out = self.hidden2tag(hidden_out_drop)
+        return tag_out
+
+
+class Rnn1(Ner):
+    """
+    recurrent neural network based named entity recognizer
+    """
+    def __init__(self, window, voca, gazet, embed_dim, rnn_dim, hidden_dim, phoneme, gazet_embed,
+                 pos_enc):
+        """
+        :param  window:  left/right window size from current character
+        :param  voca:  vocabulary
+        :param  embed_dim:  character embedding dimension
+        :param  hidden_dim:  hidden layer dimension
+        """
+        super().__init__(window, embed_dim, voca, gazet, phoneme, gazet_embed, pos_enc)
+        self.rnn_dim = rnn_dim
+        self.hidden_dim = hidden_dim
+        self.embedding = nn.Embedding(len(voca['in']), embed_dim)
+        gazet_dim = len(voca['out'])+4
+
+        if self.gazet_embed:
+            gazet_dim = 20
+            self.gazet_embedding = nn.Embedding(int(math.pow(2, len(voca['out'])+4)), gazet_dim)
+
+        if self.phoneme:
+            self.pho2syl = nn.Conv2d(1, embed_dim, (3, embed_dim), 3)
+
+        self.rnn = nn.LSTM(embed_dim + gazet_dim, rnn_dim, 2, batch_first=True, bidirectional=True)
+        self.rnn2hidden = nn.Linear(rnn_dim * 2, hidden_dim)
+        self.hidden2tag = nn.Linear(hidden_dim, len(voca['out']))
+
+    def forward(self, contexts_gazet):    # pylint: disable=arguments-differ
+        """
+        forward path
+        :param  contexts:  batch size list of character and context
+        :return:  output score
+        """
+        contexts, gazet = contexts_gazet
+        embeds = self.embedding(contexts)
+        if self.phoneme:
+            embeds = F.relu(self.pho2syl(embeds.unsqueeze(1)).squeeze().transpose(1, 2))
+
+        # Add Positional Encoding
+        if self.pos_enc:
+            if self.pe_tensor is None:
+                context_len = self.window * 2 + 1
+                self.pe_tensor = self.positional_encoding(context_len, self.embed_dim)
+            embeds += self.pe_tensor
+
+        if self.gazet_embed:
+            gazet_embeds = self.gazet_embedding(gazet)
+            embeds = torch.cat([embeds, gazet_embeds], 2)
+        else:
+            embeds = torch.cat([embeds, gazet], 2)
+
+        # initialize hidden and cell state
+        hs0 = Variable(torch.zeros(2 * 2, embeds.size(0), self.rnn_dim))
+        cs0 = Variable(torch.zeros(2 * 2, embeds.size(0), self.rnn_dim))
+        if torch.cuda.is_available():
+            hs0 = hs0.cuda()
+            cs0 = cs0.cuda()
+
+        rnn_out, _ = self.rnn(embeds, (hs0, cs0))
+        hidden_out = self.rnn2hidden(rnn_out[:, self.window, :])
+        hidden_drop = F.dropout(hidden_out, training=self.training)
+        tag_out = self.hidden2tag(hidden_drop)
+        return tag_out
+
+
+class Rnn2(Ner):
+    """
+    recurrent neural network based named entity recognizer
+    """
+    def __init__(self, window, voca, gazet, embed_dim, rnn_dim, hidden_dim, phoneme, gazet_embed,
+                 pos_enc):
+        """
+        :param  window:  left/right window size from current character
+        :param  voca:  vocabulary
+        :param  embed_dim:  character embedding dimension
+        :param  hidden_dim:  hidden layer dimension
+        """
+        super().__init__(window, embed_dim, voca, gazet, phoneme, gazet_embed, pos_enc)
+        self.rnn_dim = rnn_dim
+        self.hidden_dim = hidden_dim
+        self.embedding = nn.Embedding(len(voca['in']), embed_dim)
+        gazet_dim = len(voca['out'])+4
+
+        if self.gazet_embed:
+            gazet_dim = 20
+            self.gazet_embedding = nn.Embedding(int(math.pow(2, len(voca['out'])+4)), gazet_dim)
+
+        if self.phoneme:
+            self.pho2syl = nn.Conv2d(1, embed_dim, (3, embed_dim), 3)
+
+        self.rnn = SRU(embed_dim + gazet_dim, rnn_dim, bidirectional=True)
+        self.rnn2hidden = nn.Linear(rnn_dim * 2, hidden_dim)
+        self.hidden2tag = nn.Linear(hidden_dim, len(voca['out']))
+
+    def forward(self, contexts_gazet):    # pylint: disable=arguments-differ
+        """
+        forward path
+        :param  contexts:  batch size list of character and context
+        :return:  output score
+        """
+        contexts, gazet = contexts_gazet
+        embeds = self.embedding(contexts)
+        if self.phoneme:
+            embeds = F.relu(self.pho2syl(embeds.unsqueeze(1)).squeeze().transpose(1, 2))
+
+        # Add Positional Encoding
+        if self.pos_enc:
+            if self.pe_tensor is None:
+                context_len = self.window * 2 + 1
+                self.pe_tensor = self.positional_encoding(context_len, self.embed_dim)
+            embeds += self.pe_tensor
+
+        if self.gazet_embed:
+            gazet_embeds = self.gazet_embedding(gazet)
+            embeds = torch.cat([embeds, gazet_embeds], 2)
+        else:
+            embeds = torch.cat([embeds, gazet], 2)
+
+        # One time step
+        rnn_out, _ = self.rnn(embeds.transpose(0, 1))
+        hidden_out = self.rnn2hidden(rnn_out[self.window])
+        hidden_drop = F.dropout(hidden_out, training=self.training)
+        tag_out = self.hidden2tag(hidden_drop)
         return tag_out

@@ -129,6 +129,18 @@ def _init(args):
         model = models.Cnn7(args.window, voca, gazet,
                             args.embed_dim, hidden_dim,
                             args.phoneme, args.gazet_embed, args.pos_enc)
+    elif args.model_name.lower() == 'rnn1':
+        rnn_dim = 100
+        hidden_dim = rnn_dim * 2 + len(voca['out']) // 2
+        model = models.Rnn1(args.window, voca, gazet,
+                            args.embed_dim, rnn_dim, hidden_dim,
+                            args.phoneme, args.gazet_embed, args.pos_enc)
+    elif args.model_name.lower() == 'rnn2':
+        rnn_dim = 100
+        hidden_dim = rnn_dim * 2 + len(voca['out']) // 2
+        model = models.Rnn2(args.window, voca, gazet,
+                            args.embed_dim, rnn_dim, hidden_dim,
+                            args.phoneme, args.gazet_embed, args.pos_enc)
     else:
         raise ValueError('unknown model name: %s' % args.model_name)
     return voca, gazet, data_, model
@@ -214,7 +226,8 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
 
             outputs = model((train_contexts, train_gazet))
             batches.append((train_labels, outputs))
-            if sum([batch[0].size(0) for batch in batches]) < args.batch_size:
+            batch_size = sum([batch[0].size(0) for batch in batches])
+            if batch_size < args.batch_size:
                 continue
             batch_label = torch.cat([x[0] for x in batches], 0)
             batch_output = torch.cat([x[1] for x in batches], 0)
