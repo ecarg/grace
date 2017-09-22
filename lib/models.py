@@ -398,7 +398,10 @@ class Fnn6(Fnn5):    # pylint: disable=too-many-instance-attributes
         backpointers = []
 
         # Initialize the viterbi variables in log space
-        init_vvars = torch.Tensor(1, self.tagset_size).fill_(-10000.)
+        if torch.cuda.is_available():
+            init_vvars = torch.cuda.FloatTensor(1, self.tagset_size).fill_(-10000.)
+        else:
+            init_vvars = torch.FloatTensor(1, self.tagset_size).fill_(-10000.)
         init_vvars[0][self.voca['out'][self.START_TAG]] = 0
 
         # forward_var at step i holds the viterbi variables for step i-1
