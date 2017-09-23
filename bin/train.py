@@ -340,8 +340,8 @@ def main():
     parser.add_argument('--gpu-num', help='GPU number to use <default: %d>' % GPU_NUM,
                         metavar='INT', type=int, default=GPU_NUM)
     parser.add_argument('--phoneme', help='expand phonemes context', action='store_true')
-    parser.add_argument('--pos-enc', help='add positional encoding',
-                        action='store_true', default=False)
+    parser.add_argument('--disable-pos-enc', dest='pos_enc', help='disable positional encoding',
+                        action='store_false', default=True)
     parser.add_argument('--gazet-embed', help='gazetteer type', action='store_true',
                         default=False)
     parser.add_argument('--cutoff', help='cutoff', action='store',\

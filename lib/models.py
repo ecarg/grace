@@ -112,7 +112,7 @@ class Fnn5(Ner):
             self.gazet_embedding = nn.Embedding(int(math.pow(2, len(voca['out'])+4)), gazet_dim)
 
         if self.phoneme:
-            self.pho2syl = nn.Conv2d(1, embed_dim, (3, embed_dim), 3)
+            self.pho2syl = nn.Conv1d(embed_dim, embed_dim, 3, 3)
 
         self.embeds2hidden = nn.Linear(context_len * (embed_dim + gazet_dim), hidden_dim)
         self.hidden2tag = nn.Linear(hidden_dim, len(voca['out']))
@@ -126,7 +126,8 @@ class Fnn5(Ner):
         contexts, gazet = contexts_gazet
         embeds = self.embedding(contexts)
         if self.phoneme:
-            embeds = F.relu(self.pho2syl(embeds.unsqueeze(1)).squeeze().transpose(1, 2))
+            embeds_t = F.relu(self.pho2syl(embeds.transpose(1, 2)))
+            embeds = embeds_t.transpose(1, 2)
 
         # Add Positional Encoding
         if self.pos_enc:
@@ -334,7 +335,7 @@ class Rnn1(Ner):
             self.gazet_embedding = nn.Embedding(int(math.pow(2, len(voca['out'])+4)), gazet_dim)
 
         if self.phoneme:
-            self.pho2syl = nn.Conv2d(1, embed_dim, (3, embed_dim), 3)
+            self.pho2syl = nn.Conv1d(embed_dim, embed_dim, 3, 3)
 
         self.rnn = nn.LSTM(embed_dim + gazet_dim, rnn_dim, 2, batch_first=True, bidirectional=True)
         self.rnn2hidden = nn.Linear(rnn_dim * 2, hidden_dim)
@@ -349,7 +350,8 @@ class Rnn1(Ner):
         contexts, gazet = contexts_gazet
         embeds = self.embedding(contexts)
         if self.phoneme:
-            embeds = F.relu(self.pho2syl(embeds.unsqueeze(1)).squeeze().transpose(1, 2))
+            embeds_t = F.relu(self.pho2syl(embeds.transpose(1, 2)))
+            embeds = embeds_t.transpose(1, 2)
 
         # Add Positional Encoding
         if self.pos_enc:
@@ -401,7 +403,7 @@ class Rnn2(Ner):
             self.gazet_embedding = nn.Embedding(int(math.pow(2, len(voca['out'])+4)), gazet_dim)
 
         if self.phoneme:
-            self.pho2syl = nn.Conv2d(1, embed_dim, (3, embed_dim), 3)
+            self.pho2syl = nn.Conv1d(embed_dim, embed_dim, 3, 3)
 
         self.rnn = SRU(embed_dim + gazet_dim, rnn_dim, bidirectional=True)
         self.rnn2hidden = nn.Linear(rnn_dim * 2, hidden_dim)
@@ -416,7 +418,8 @@ class Rnn2(Ner):
         contexts, gazet = contexts_gazet
         embeds = self.embedding(contexts)
         if self.phoneme:
-            embeds = F.relu(self.pho2syl(embeds.unsqueeze(1)).squeeze().transpose(1, 2))
+            embeds_t = F.relu(self.pho2syl(embeds.transpose(1, 2)))
+            embeds = embeds_t.transpose(1, 2)
 
         # Add Positional Encoding
         if self.pos_enc:
