@@ -20,8 +20,12 @@ import hashlib
 import collections
 import unicodedata
 import string
+
+import numpy as np
 import torch
+from torch.autograd import Variable
 import torch.utils.data
+
 import gazetteer
 
 ##########
@@ -260,10 +264,12 @@ class Sentence(object):
         self.md5 = hashlib.sha224(sent.encode("UTF-8")).hexdigest()
         self.label_nums = []
         self.context_nums = []
+        self.context_strs = []    # 형태소 분석기에 입력으로 사용할 데이터
         self.gazet_matches = []
         self.label_tensors = None
         self.context_tensors = None
         self.gazet_tensors = None
+        self.pos_tensors = None
 
         for item in NamedEntity.parse(sent):
             self.named_entity.append(item)
@@ -304,6 +310,18 @@ class Sentence(object):
             self.context_nums.append([self.in_to_num(voca, char) for char in context.split()])
         return self.label_nums, self.context_nums
 
+    def to_str_arr(self, context_size):
+        """
+        문장을 문장에 포함된 문자 갯수 만큼의 배치 크기의 문자 배열을 생성하여 리턴한다.
+        :param  context_size: context size
+        :return:  문자 갯수만큼의 문자 배열
+        """
+        if self.context_strs:
+            return self.context_strs
+        self.context_strs = [context.split() for _, context
+                             in self.translate_cnn_corpus(context_size, False)]
+        return self.context_strs
+
     @classmethod
     def onehot2number(cls, gazet):
         """
@@ -322,6 +340,83 @@ class Sentence(object):
             gazet_list.append(scala)
         return gazet_list
 
+    def set_pos_feature(self, pos_model, window):
+        """
+        형태소 분석기를 실행하고 그 출력으로 임베딩을 만든다.
+        :param  pos_model:  형태소 분석기 모델
+        :param  window:  좌/우 문맥 길이
+        """
+        if self.pos_tensors is not None:
+            return
+
+        str_contexts = self.to_str_arr(window)
+        pos_contexts = []
+        for str_context in str_contexts:
+            pos_contexts.append([pos_model.cfg.voca['in'][char] for char in str_context])
+        # BS * PoS tagger output vocabulary size
+        pos_model.eval()
+        pos_contexts_var = Variable(torch.LongTensor(pos_contexts), volatile=True)
+        if torch.cuda.is_available():
+            pos_contexts_var = pos_contexts_var.cuda()
+        pos_outputs = pos_model(pos_contexts_var).data.cpu().numpy()
+
+        # 공백에 해당하는 자리에 [0 x PoS out dim] 텐서를 삽입
+        empty_output = np.zeros(len(pos_model.cfg.voca['out']))
+        out_idx = 0
+        pos_outputs_spc = []
+        raw_str = self.raw_str()
+        for char in raw_str:
+            if char == ' ':
+                pos_outputs_spc.append(copy.deepcopy(empty_output))
+            else:
+                pos_outputs_spc.append(pos_outputs[out_idx])
+                out_idx += 1
+
+        # BS * 626
+        # BS * 21 * 626 사이즈로 만들어야 한다.
+        pos_outputs_contexts = []
+        for idx, (char, pos_output) in enumerate(zip(raw_str, pos_outputs_spc)):
+            if char == ' ':
+                continue
+            has_boe = False
+            left_context = []
+            for jdx in range(idx-1, idx-(window*2), -1):
+                if jdx < 0 or len(left_context) >= window:
+                    break
+                if raw_str[jdx] == ' ':
+                    if has_boe:
+                        continue
+                    else:
+                        left_context.append(pos_outputs_spc[jdx])
+                        has_boe = True
+                else:
+                    left_context.append(pos_outputs_spc[jdx])
+            if not has_boe and len(left_context) < window:
+                left_context.append(copy.deepcopy(empty_output))
+            left_context.extend(copy.deepcopy([empty_output, ] * (window - len(left_context))))
+            assert len(left_context) == window
+            has_eoe = False
+            right_context = []
+            for jdx in range(idx+1, idx+(window*2)+1):
+                if jdx >= len(raw_str) or len(right_context) >= window:
+                    break
+                if raw_str[jdx] == ' ':
+                    if has_eoe:
+                        continue
+                    else:
+                        right_context.append(pos_outputs_spc[jdx])
+                        has_eoe = True
+                else:
+                    right_context.append(pos_outputs_spc[jdx])
+            if not has_eoe and len(right_context) < window:
+                right_context.append(copy.deepcopy(empty_output))
+            right_context.extend(copy.deepcopy([empty_output, ] * (window - len(right_context))))
+            assert len(right_context) == window
+
+            pos_outputs_contexts.append(\
+                    list(reversed(left_context))+[pos_output, ]+right_context)
+        assert len(pos_outputs_contexts) == self.get_syllable_count()
+        self.pos_tensors = torch.FloatTensor(np.stack(pos_outputs_contexts))
 
     def match_gazet(self, gazet, voca, context_size, gazet_embed=False):
         """
@@ -404,11 +499,11 @@ class Sentence(object):
             self.match_gazet(gazet, voca, context_size, gazet_embed)
 
         if self.label_tensors is not None and self.context_tensors is not None:
-            return self.label_tensors, self.context_tensors, self.gazet_tensors
+            return self.label_tensors, self.context_tensors, self.gazet_tensors, self.pos_tensors
         self.to_num_arr(voca, context_size, is_phonemes)
         self.label_tensors = torch.LongTensor(self.label_nums)
         self.context_tensors = torch.LongTensor(self.context_nums)
-        return self.label_tensors, self.context_tensors, self.gazet_tensors
+        return self.label_tensors, self.context_tensors, self.gazet_tensors, self.pos_tensors
 
     def get_word_count(self):
         """

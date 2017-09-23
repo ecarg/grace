@@ -33,6 +33,7 @@ import torch.utils.data
 import data
 import models
 import gazetteer
+import pos_models
 import tagger
 
 
@@ -112,14 +113,16 @@ def _init(args):
     """
     voca = data.load_voca(args.rsc_dir, args.phoneme, args.cutoff)
     gazet = gazetteer.load(codecs.open("%s/gazetteer.dic" % args.rsc_dir, 'r', encoding='UTF-8'))
+    pos_model = pos_models.PosTagger.load('%s/pos_tagger.model' % args.rsc_dir)
+    pos_model.eval()
 
     # Load Data
     data_ = data.load_data(args.in_pfx, voca)
 
     # Build Model
     if args.model_name.lower() == 'fnn5':
-        hidden_dim = (2 * args.window + 1) *\
-                (args.embed_dim + (args.embed_dim//2))+ len(voca['out'])
+        hidden_dim = ((2 * args.window + 1) *\
+                (args.embed_dim + 15 + len(pos_model.cfg.voca['out']))+ len(voca['out'])) // 2
         model = models.Fnn5(args.window, voca, gazet,
                             args.embed_dim, hidden_dim,
                             args.phoneme, args.gazet_embed, args.pos_enc)
@@ -143,7 +146,7 @@ def _init(args):
                             args.phoneme, args.gazet_embed, args.pos_enc)
     else:
         raise ValueError('unknown model name: %s' % args.model_name)
-    return voca, gazet, data_, model
+    return voca, gazet, pos_model, data_, model
 
 
 def run(args):    # pylint: disable=too-many-locals,too-many-statements
@@ -151,14 +154,15 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
     run function which is the start point of program
     :param  args:  arguments
     """
-    voca, gazet, data_, model = _init(args)
+    os.environ['CUDA_VISIBLE_DEVICES'] = str(args.gpu_num)
+
+    voca, gazet, pos_model, data_, model = _init(args)
 
     epoch_syl_cnt = data_['train'].get_syllable_count()
     iter_per_epoch = epoch_syl_cnt // args.batch_size
     iter_to_rvt = iter_per_epoch * args.rvt_epoch
 
     # Load GPU
-    os.environ['CUDA_VISIBLE_DEVICES'] = str(args.gpu_num)
     if torch.cuda.is_available():
         model.cuda()
 
@@ -208,15 +212,18 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
     while revert <= args.rvt_term or one_more_thing:
         for train_sent in data_['train']:
             # Convert to CUDA Variable
-            train_labels, train_contexts, train_gazet = \
+            train_sent.set_pos_feature(pos_model, args.window)
+            train_labels, train_contexts, train_gazet, train_pos = \
                 train_sent.to_tensor(voca, gazet, args.window, args.phoneme, args.gazet_embed)
             train_labels = Variable(train_labels)
             train_contexts = Variable(train_contexts)
             train_gazet = Variable(train_gazet)
+            train_pos = Variable(train_pos)
             if torch.cuda.is_available():
                 train_labels = train_labels.cuda()
                 train_contexts = train_contexts.cuda()
                 train_gazet = train_gazet.cuda()
+                train_pos = train_pos.cuda()
 
             # Reset Gradient
             optimizer.zero_grad()
@@ -224,7 +231,7 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
             # Forwardprop / Backprop
             model.train()
 
-            outputs = model((train_contexts, train_gazet))
+            outputs = model((train_contexts, train_gazet, train_pos))
             batches.append((train_labels, outputs))
             batch_size = sum([batch[0].size(0) for batch in batches])
             if batch_size < args.batch_size:
@@ -247,15 +254,18 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
                 losses.append(loss.data[0])
                 for dev_sent in data_['dev']:
                     # Convert to CUDA Variable
-                    _, dev_contexts, dev_gazet = \
+                    dev_sent.set_pos_feature(pos_model, args.window)
+                    _, dev_contexts, dev_gazet, dev_pos = \
                         dev_sent.to_tensor(voca, gazet, args.window, args.phoneme, args.gazet_embed)
                     dev_contexts = Variable(dev_contexts, volatile=True)
                     dev_gazet = Variable(dev_gazet, volatile=True)
+                    dev_pos = Variable(dev_pos, volatile=True)
                     if torch.cuda.is_available():
                         dev_contexts = dev_contexts.cuda()
                         dev_gazet = dev_gazet.cuda()
+                        dev_pos = dev_pos.cuda()
 
-                    outputs = model((dev_contexts, dev_gazet))
+                    outputs = model((dev_contexts, dev_gazet, dev_pos))
                     _, predicts = outputs.max(1)
                     dev_sent.compare_label(predicts, voca, measure)
 

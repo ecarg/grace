@@ -20,7 +20,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
 
-from sru import SRU
+from pos_models import PosTagger, FnnTagger, CnnTagger    # pylint: disable=unused-import
 
 
 #########
@@ -114,16 +114,16 @@ class Fnn5(Ner):
         if self.phoneme:
             self.pho2syl = nn.Conv2d(1, embed_dim, (3, embed_dim), 3)
 
-        self.embeds2hidden = nn.Linear(context_len * (embed_dim + gazet_dim), hidden_dim)
+        self.embeds2hidden = nn.Linear(context_len * (embed_dim + gazet_dim + 626), hidden_dim)
         self.hidden2tag = nn.Linear(hidden_dim, len(voca['out']))
 
-    def forward(self, contexts_gazet):    # pylint: disable=arguments-differ
+    def forward(self, inputs):    # pylint: disable=arguments-differ
         """
         forward path
         :param  contexts:  batch size list of character and context
         :return:  output score
         """
-        contexts, gazet = contexts_gazet
+        contexts, gazet, pos_embed = inputs
         embeds = self.embedding(contexts)
         if self.phoneme:
             embeds = F.relu(self.pho2syl(embeds.unsqueeze(1)).squeeze().transpose(1, 2))
@@ -141,9 +141,11 @@ class Fnn5(Ner):
         else:
             embeds = torch.cat([embeds, gazet], 2)
 
-        hidden_out = self.embeds2hidden(embeds.view(len(contexts), -1))
-        hidden_relu = self.relu(hidden_out)
-        hidden_drop = F.dropout(hidden_relu, training=self.training)
+        # PoS feature
+        embeds = torch.cat([embeds, pos_embed], 2)
+
+        hidden_out = F.relu(self.embeds2hidden(embeds.view(len(contexts), -1)))
+        hidden_drop = F.dropout(hidden_out, training=self.training)
         tag_out = self.hidden2tag(hidden_drop)
         return tag_out
 
@@ -225,8 +227,8 @@ class Cnn7(Ner):    # pylint: disable=too-many-instance-attributes
         # hidden => tag
         self.hidden2tag = nn.Linear(hidden_dim, len(voca['out']))
 
-    def forward(self, contexts_gazet):    # pylint: disable=arguments-differ,too-many-locals
-        contexts, gazet = contexts_gazet
+    def forward(self, inputs):    # pylint: disable=arguments-differ,too-many-locals
+        contexts, gazet, _ = inputs
         embeds = self.embedding(contexts)
         # batch_size x context_len x embedding_dim => batch_size x embedding_dim x context_len
         if self.phoneme:
@@ -340,13 +342,13 @@ class Rnn1(Ner):
         self.rnn2hidden = nn.Linear(rnn_dim * 2, hidden_dim)
         self.hidden2tag = nn.Linear(hidden_dim, len(voca['out']))
 
-    def forward(self, contexts_gazet):    # pylint: disable=arguments-differ
+    def forward(self, inputs):    # pylint: disable=arguments-differ
         """
         forward path
         :param  contexts:  batch size list of character and context
         :return:  output score
         """
-        contexts, gazet = contexts_gazet
+        contexts, gazet, _ = inputs
         embeds = self.embedding(contexts)
         if self.phoneme:
             embeds = F.relu(self.pho2syl(embeds.unsqueeze(1)).squeeze().transpose(1, 2))
@@ -390,6 +392,8 @@ class Rnn2(Ner):
         :param  embed_dim:  character embedding dimension
         :param  hidden_dim:  hidden layer dimension
         """
+        from sru import SRU
+
         super().__init__(window, embed_dim, voca, gazet, phoneme, gazet_embed, pos_enc)
         self.rnn_dim = rnn_dim
         self.hidden_dim = hidden_dim
@@ -407,13 +411,13 @@ class Rnn2(Ner):
         self.rnn2hidden = nn.Linear(rnn_dim * 2, hidden_dim)
         self.hidden2tag = nn.Linear(hidden_dim, len(voca['out']))
 
-    def forward(self, contexts_gazet):    # pylint: disable=arguments-differ
+    def forward(self, inputs):    # pylint: disable=arguments-differ
         """
         forward path
         :param  contexts:  batch size list of character and context
         :return:  output score
         """
-        contexts, gazet = contexts_gazet
+        contexts, gazet, _ = inputs
         embeds = self.embedding(contexts)
         if self.phoneme:
             embeds = F.relu(self.pho2syl(embeds.unsqueeze(1)).squeeze().transpose(1, 2))
