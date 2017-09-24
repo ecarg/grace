@@ -122,36 +122,42 @@ def build_model(cfg, char_voca, word_voca=None, gazet=None, pos_voca=None):
 
     print('Total Embedding_size: ', embedder.embed_dim)
 
-    # Build Classifier
-    if cfg.model_name.lower() == 'fnn5':
-        classifier = models.Fnn5(context_len=cfg.context_len, in_dim=embedder.embed_dim,
-                                 hidden_dim=cfg.hidden_dim, out_dim=cfg.n_tags)
-    elif cfg.model_name.lower() == 'cnn7':
-        classifier = models.Cnn7(context_len=cfg.context_len, in_dim=embedder.embed_dim,
-                                 hidden_dim=cfg.hidden_dim, out_dim=cfg.n_tags)
-    elif cfg.model_name.lower() == 'cnn8':
-        classifier = models.Cnn8(context_len=cfg.context_len, in_dim=embedder.embed_dim,
-                                 hidden_dim=cfg.hidden_dim, out_dim=cfg.n_tags)
-    elif cfg.model_name.lower() == 'lstm':
-        #classifier = models.Lstm(context_len=cfg.context_len, in_dim=embedder.embed_dim,
-        #                         hidden_dim=cfg.hidden_dim, out_dim=cfg.n_tags,
-        #                         num_layers=cfg.num_layers)
-        pass
-    elif cfg.model_name.lower() == 'gru':
-        #classifier = models.Gru(context_len=cfg.context_len, in_dim=embedder.embed_dim,
-        #                        hidden_dim=cfg.hidden_dim, out_dim=cfg.n_tags,
-        #                        num_layers=cfg.num_layers)
-        pass
-    elif cfg.model_name.lower() == 'sru':
-        #classifier = models.Sru(context_len=cfg.context_len, in_dim=embedder.embed_dim,
-        #                        hidden_dim=cfg.hidden_dim, out_dim=cfg.n_tags,
-        #                        num_layers=cfg.num_layers)
-        pass
 
+    encoder_name, decoder_name = cfg.model_name.lower().split('-')
+
+    # Build Encoder
+    if encoder_name == 'fnn5':
+        encoder = models.Fnn5(context_len=cfg.context_len,
+                              in_dim=embedder.embed_dim,
+                              hidden_dim=cfg.hidden_dim)
+    elif encoder_name == 'cnn7':
+        encoder = models.Cnn7(in_dim=embedder.embed_dim,
+                              hidden_dim=cfg.hidden_dim)
+    elif encoder_name == 'cnn8':
+        encoder = models.Cnn8(context_len=cfg.context_len,
+                              in_dim=embedder.embed_dim,
+                              hidden_dim=cfg.hidden_dim)
+    elif encoder_name in ['gru', 'lstm', 'sru']:
+        encoder = models.RnnEncoder(context_len=cfg.context_len,
+                                    in_dim=embedder.embed_dim,
+                                    out_dim=cfg.hidden_dim,
+                                    cell=encoder_name)
     else:
-        raise ValueError('unknown model name: %s' % cfg.model_name)
+          raise ValueError('unknown model name: %s' % cfg.model_name)
 
-    model = models.Ner(embedder, classifier)
+    # Build Decoder
+    if decoder_name.lower() == 'fc':
+        decoder = models.FCDecoder(in_dim=encoder.out_dim,
+                                   hidden_dim=cfg.hidden_dim,
+                                   n_tags=cfg.n_tags)
+    elif decoder_name in ['gru', 'lstm', 'sru']:
+        decoder = models.RnnDecoder(in_dim=encoder.out_dim,
+                                    hidden_dim=cfg.hidden_dim,
+                                    n_tags=cfg.n_tags,
+                                    num_layers=cfg.num_layers,
+                                    cell=decoder_name)
+
+    model = models.Ner(embedder, encoder, decoder)
 
     return model
 

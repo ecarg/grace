@@ -65,6 +65,7 @@ class Config(object):
         model_ids.append('char%d' % self.char_dim)
         model_ids.append('word%d' % self.word_dim)
         model_ids.append('pos%d' % self.pos_dim)
+        model_ids.append('hd%d' % self.hidden_dim)
         model_ids.append('gzte' if self.gazet_embed else 'gzt1')
         model_ids.append('pe%d' % (1 if self.pos_enc else 0))
         model_ids.append('re%d' % self.rvt_epoch)

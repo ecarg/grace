@@ -28,25 +28,33 @@ class Ner(nn.Module):
     """
     named entity recognizer pytorch model
     """
-    def __init__(self, embedder, classifier):
+    def __init__(self, embedder, encoder, decoder):
         """
         * embedder (Embedder)
             [sentence_len, context_len] => [sentence_len, context_len, embed_dim]
-        * classifier (nn.Module)
-            [sentence_len, context_len, embed_dim]   => [sentence_len, n_tags]
+        * encoder (nn.Module)
+            [sentence_len, context_len, embed_dim] => [sentence_len, hidden_dim]
+        * decoder (nn.Module)
+            [sentence_len, hidden_dim] => [sentence_len, n_tags],
         """
         super().__init__()
         self.embedder = embedder
-        self.classifier = classifier
+        self.encoder = encoder
+        self.decoder = decoder
 
         assert isinstance(embedder, Embedder)
-        assert isinstance(classifier, nn.Module)
+        assert isinstance(encoder, nn.Module)
+        assert isinstance(decoder, nn.Module)
 
     def forward(self, sentence, gazet, pos): #pylint: disable=arguments-differ
         # [sentence_len, context_len] => [sentence_len, context_len, embed_dim]
         sentence_embed = self.embedder(sentence, gazet, pos)
-        # [sentence_len, context_len, embed_dim]   => [sentence_len, n_tags]
-        predicted_tags = self.classifier(sentence_embed)
+
+        # [sentence_len, context_len, embed_dim] => [sentence_len, hidden_dim]
+        hidden = self.encoder(sentence_embed)
+
+        # [sentence_len, hidden_dim]   => [sentence_len, n_tags]
+        predicted_tags = self.decoder(hidden)
 
         return predicted_tags
 
@@ -73,36 +81,31 @@ class Ner(nn.Module):
             model.cuda()
         return model
 
-####################
-# Classifier Class #
-####################
 
+#################
+# Encoder Class #
+#################
 class Fnn5(nn.Module):
     """
     2-Layer Full-Connected Neural Networks
     """
-    def __init__(self, context_len=21, in_dim=50, hidden_dim=500, out_dim=11):
-        """
-        """
+    def __init__(self, context_len=21, in_dim=50, hidden_dim=500):
         super(Fnn5, self).__init__()
 
         self.context_len = context_len
-        self.hidden_dim = in_dim
-        self.out_dim = out_dim
+        self.hidden_dim = hidden_dim
+        self.out_dim = hidden_dim
 
         self.net = nn.Sequential(
             nn.Linear(context_len*in_dim, hidden_dim),
-            nn.ReLU(),
-            nn.Dropout(),
-            nn.Linear(hidden_dim, out_dim)
         )
 
-    def forward(self, x): #pylint: disable=arguments-differ
+    def forward(self, x):#pylint: disable=arguments-differ
         """
         Args:
-            * sentence: [sentence_len, context_len, in_dim]
+            x: [sentence_len, context_len, in_dim]
         Return:
-            * logit: [sentence_len, out_dim]
+            x: [sentence_len, out_dim]
         """
         sentence_len = x.size(0)
         x = x.view(sentence_len, -1) # [sentence_len, context_len x in_dim]
@@ -114,14 +117,14 @@ class Cnn7(nn.Module):
     """
     ConvNet kernels=[2,3,4,5] + Fully-Connected
     """
-    def __init__(self, in_dim=50, hidden_dim=500, out_dim=11, context_len=None):
+    def __init__(self, in_dim=50, hidden_dim=500):
         """
         """
         super(Cnn7, self).__init__()
 
         self.in_dim = in_dim
         self.hidden_dim = hidden_dim
-        self.out_dim = out_dim
+        self.out_dim = in_dim * 4
 
         self.conv2 = nn.Sequential(
             nn.Conv1d(in_dim, in_dim, kernel_size=2),    # 20
@@ -176,20 +179,12 @@ class Cnn7(nn.Module):
             nn.Conv1d(in_dim, in_dim, kernel_size=5, padding=1),    # 1
         )
 
-        self.fc = nn.Sequential(
-            nn.Dropout(),
-            nn.Linear(in_dim * 4, hidden_dim),
-            nn.ReLU(),
-            nn.Dropout(),
-            nn.Linear(hidden_dim, out_dim),
-        )
-
-    def forward(self, x): #pylint: disable=arguments-differ
+    def forward(self, x):   #pylint: disable=arguments-differ
         """
         Args:
             x: [sentence_length, context_len, in_dim]
         Return:
-            x: [sentence_length, context_len, out_dim]
+            x: [sentence_length, in_dim * 4]
         """
 
         # [sentence_length, in_dim, context_len]
@@ -201,10 +196,7 @@ class Cnn7(nn.Module):
         conv5 = self.conv5(x).squeeze(-1) # [sentence_len, in_dim]
 
         # [sentence_len, in_dim * 4]
-        hidden = torch.cat([conv2, conv3, conv4, conv5], dim=1)
-
-        # [sentence_len, out_dim]
-        out = self.fc(hidden)
+        out = torch.cat([conv2, conv3, conv4, conv5], dim=1)
 
         return out
 
@@ -213,7 +205,7 @@ class Cnn8(nn.Module):
     """
     9-layer Conv NN + Batch Norm + Residual
     """
-    def __init__(self, context_len=21, in_dim=64, out_dim=11, hidden_dim=None):
+    def __init__(self, context_len=21, in_dim=64, hidden_dim=None):
         super(Cnn8, self).__init__()
 
         self.context_len = context_len
@@ -242,10 +234,7 @@ class Cnn8(nn.Module):
         self.conv_block4_2_2 = self.conv_block(in_dim*8, 1, True)
         self.pool4 = nn.MaxPool1d(kernel_size=3)
 
-        # fully connected layers
-        self.fc = nn.Sequential(
-            nn.Linear(in_dim*16, out_dim)
-        )
+        self.out_dim = in_dim*16
 
     @classmethod
     def conv_block(cls, in_dim=64, depth=2, double=True):
@@ -267,7 +256,7 @@ class Cnn8(nn.Module):
             layers.append(nn.ReLU())
         return nn.Sequential(*layers)
 
-    def forward(self, sentence): #pylint: disable=arguments-differ
+    def forward(self, sentence):#pylint: disable=arguments-differ
         """
         Args:
             sentence: [sentence_len, context_len, embed_dim]
@@ -305,36 +294,47 @@ class Cnn8(nn.Module):
         return x
 
 
-class Gru(nn.Module):
+class RnnEncoder(nn.Module):
     """
-    Gru
+    RNN Encoder Module
     """
-    def __init__(self, input_size=1024, hidden_size=512,
-                 num_layers=2, dropout=0.5, rnn_dropout=0.5,
-                 bidirectional=True, n_classes=15):
-        super(Gru, self).__init__()
-        self.rnn = nn.GRU(
-            input_size=input_size,
-            hidden_size=hidden_size,
-            num_layers=num_layers,
-            bias=True,
-            batch_first=False,
-            dropout=dropout,
-            bidirectional=True)
+    def __init__(self, context_len=21, in_dim=1024, out_dim=1024,
+                 num_layers=2, cell='gru'):
+        super(RnnEncoder, self).__init__()
 
-        # fully connected layers
-        self.fc = nn.Sequential(
-            nn.Linear(hidden_size*2, # bidirectional
-                      n_classes)
-        )
+        self.hidden_dim = out_dim // 2
 
+        if cell == 'gru':
+            self.rnn = nn.GRU(
+                input_size=in_dim,
+                hidden_size=self.hidden_dim,
+                num_layers=num_layers,
+                dropout=0.5,
+                bidirectional=True)
 
-    def forward(self, x): #pylint: disable=arguments-differ
+        if cell == 'lstm':
+            self.rnn = nn.LSTM(
+                input_size=in_dim,
+                hidden_size=self.hidden_dim,
+                num_layers=num_layers,
+                dropout=0.5,
+                bidirectional=True)
+
+        elif cell == 'sru':
+            from sru import SRU
+            self.rnn = SRU(
+                input_size=in_dim,
+                hidden_size=self.hidden_dim,
+                num_layers=num_layers,
+                dropout=0.5,
+                bidirectional=True)
+
+    def forward(self, x):#pylint: disable=arguments-differ
         """
         Args:
-            x [sentence_len, input_size]
+            x: [sentence_len, context_len, input_size]
         Return:
-            [sentence_len, hidden_size]
+            x: [sentence_len, hidden_size]
         """
         # input (seq_len, batch, input_size)
         # h_0 (num_layers * num_directions, batch, hidden_size)
@@ -342,51 +342,79 @@ class Gru(nn.Module):
         # output (seq_len, batch, hidden_size * num_directions)
         # h_n (num_layers * num_directions, batch, hidden_size)
 
-        # [sequence_len, batch_size=1, input_size]
-        x = x.unsqueeze(1)
-
-        # x: [sequence_len, batch_size=1, hidden_size x 2]
-        # h_n: [num_layers * 2, batch=1, hidden_size]
+        #   [sequence_len, context_len, input_size]
+        # =>[sentence_len, context_len, hidden_size x 2]
         x, _ = self.rnn(x)
 
         # [sequence_len, hidden_size x 2]
-        x = x.squeeze(1)
-
-        x = self.fc(x)
+        x = x[:, 10, :]
 
         return x
 
-class Sru(nn.Module):
-    """
-    Sru
-    """
-    def __init__(self, input_size=1024, hidden_size=512,
-                 num_layers=2, dropout=0.5, rnn_dropout=0.5,
-                 bidirectional=True, n_classes=15):
-        super(Sru, self).__init__()
 
-        from sru import SRU
-        self.rnn = SRU(
-            input_size=input_size,
-            hidden_size=hidden_size,
-            num_layers=num_layers,
-            dropout=dropout,
-            rnn_dropout=rnn_dropout,
-            bidirectional=True)
+#################
+# Decoder Class #
+#################
 
-        # fully connected layers
-        self.fc = nn.Sequential(
-            nn.Linear(hidden_size*2, # bidirectional
-                      n_classes)
+class FCDecoder(nn.Module):
+    """
+    Fully-Connected Decoder
+    """
+    def __init__(self, in_dim, hidden_dim, n_tags):
+        super(FCDecoder, self).__init__()
+        self.net = nn.Sequential(
+            nn.ReLU(),
+            nn.Dropout(),
+            nn.Linear(in_dim, n_tags)
         )
 
-
-    def forward(self, x): #pylint: disable=arguments-differ
+    def forward(self, x):#pylint: disable=arguments-differ
         """
-        Args:
-            x [sentence_len, input_size]
-        Return:
-            [sentence_len, hidden_size]
+        [sentence_len, in_dim] => [sentence_len, n_tags]
+        """
+        return self.net(x)
+
+class RnnDecoder(nn.Module):
+    """
+    RNN-based Decoder
+    """
+    def __init__(self, in_dim=1024, hidden_dim=512, n_tags=11,
+                 num_layers=2, cell='gru'):
+        super(RnnDecoder, self).__init__()
+        if cell == 'gru':
+            self.rnn = nn.GRU(
+                input_size=in_dim,
+                hidden_size=hidden_dim,
+                num_layers=num_layers,
+                dropout=0.5,
+                bidirectional=True)
+
+        if cell == 'lstm':
+            self.rnn = nn.LSTM(
+                input_size=in_dim,
+                hidden_size=hidden_dim,
+                num_layers=num_layers,
+                dropout=0.5,
+                bidirectional=True)
+
+        elif cell == 'sru':
+            from sru import SRU
+            self.rnn = SRU(
+                input_size=in_dim,
+                hidden_size=hidden_dim,
+                num_layers=num_layers,
+                dropout=0.5,
+                bidirectional=True)
+
+        self.out = nn.Sequential(
+            nn.ReLU(),
+            nn.Dropout(),
+            nn.Linear(hidden_dim * 2, n_tags)
+        )
+
+    def forward(self, x):#pylint: disable=arguments-differ
+        """
+        [sentence_len, in_dim] => [sentence_len, n_tags]
         """
         # input (seq_len, batch, input_size)
         # h_0 (num_layers * num_directions, batch, hidden_size)
@@ -394,61 +422,10 @@ class Sru(nn.Module):
         # output (seq_len, batch, hidden_size * num_directions)
         # h_n (num_layers * num_directions, batch, hidden_size)
 
-        # [sequence_len, batch_size=1, input_size]
+        # [sentence_len, batch=1, input_size]
         x = x.unsqueeze(1)
 
-        # x: [sequence_len, batch_size=1, hidden_size x 2]
-        # h_n: [num_layers * 2, batch=1, hidden_size]
-        x, _ = self.rnn(x)
-
-        # [sequence_len, hidden_size x 2]
-        x = x.squeeze(1)
-
-        x = self.fc(x)
-
-        return x
-
-class Lstm(nn.Module):
-    """
-    Lstm
-    """
-    def __init__(self, input_size=1024, hidden_size=512,
-                 num_layers=2, dropout=0.5, rnn_dropout=0.5,
-                 bidirectional=True, n_classes=15):
-        super(Lstm, self).__init__()
-        self.rnn = nn.LSTM(
-            input_size=input_size,
-            hidden_size=hidden_size,
-            num_layers=num_layers,
-            bias=True,
-            batch_first=False,
-            dropout=dropout,
-            bidirectional=True)
-
-        # fully connected layers
-        self.fc = nn.Sequential(
-            nn.Linear(hidden_size*2, # bidirectional
-                      n_classes)
-        )
-
-
-    def forward(self, x): #pylint: disable=arguments-differ
-        """
-        Args:
-            x [sentence_len, input_size]
-        Return:
-            [sentence_len, hidden_size]
-        """
-        # input (seq_len, batch, input_size)
-        # h_0 (num_layers * num_directions, batch, hidden_size)
-
-        # output (seq_len, batch, hidden_size * num_directions)
-        # h_n (num_layers * num_directions, batch, hidden_size)
-
-        # [sequence_len, batch_size=1, input_size]
-        x = x.unsqueeze(1)
-
-        # x: [sequence_len, batch_size=1, hidden_size x 2]
+        # x: [sentence_len, batch=1, hidden_size x 2]
         # h_n: [num_layers * 2, batch=1, hidden_size]
         # c_n: [num_layers * 2, batch=1, hidden_size]
         x, _ = self.rnn(x)
@@ -456,6 +433,7 @@ class Lstm(nn.Module):
         # [sequence_len, hidden_size x 2]
         x = x.squeeze(1)
 
-        x = self.fc(x)
+        # [sequence_len, n_tags]
+        x = self.out(x)
 
         return x
