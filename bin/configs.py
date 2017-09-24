@@ -145,10 +145,10 @@ def get_config(parse=True, **optional_kwargs):
 
     parser.add_argument('--jaso-dim', type=int, metavar='INT', default=50)
     parser.add_argument('--char-dim', type=int, metavar='INT', default=50)
-    parser.add_argument('--word-dim', type=int, metavar='INT', default=50)
+    parser.add_argument('--word-dim', type=int, metavar='INT', default=100)
     parser.add_argument('--pos-dim', type=int, metavar='INT', default=20)
 
-    parser.add_argument('--hidden-dim', type=int, default=1024)
+    parser.add_argument('--hidden-dim', type=int, default=100)
     parser.add_argument('--num-layers', help='number of rnn layers', default=2)
 
     parser.add_argument('--window',

@@ -14,7 +14,10 @@ __copyright__ = 'No copyright. Just copyleft!'
 import codecs
 import random
 from collections import defaultdict
+from pathlib import Path
 import corpus_parser
+import fasttext
+import torch
 
 
 #########
@@ -129,3 +132,33 @@ def load_data(data_dir, path_pfx, voca):
         '{}.{}'.format(path_pfx, name)), 'r', encoding='UTF-8')) \
             for name in ['dev', 'test', 'train']]
     return {name: NerDataset(fin, voca) for name, fin in fins}
+
+
+class Vocabulary(object):
+    """Word Vocaublary class"""
+    def __init__(self, model_path):
+        """
+        model_path: pretrained embedding model trained with fasttext
+        """
+        print('Loading Word2Vec Embedding..', end=' ')
+
+        model_path = Path(model_path)
+        self.model = fasttext.load_model(str(model_path))
+        self.dim = self.model.dim
+        print('Done!')
+
+    def word2vec(self, word, to_tensor=False):
+        """word (str) => word vector (list of int)"""
+        vec = self.model[word]
+        if to_tensor:
+            vec = torch.FloatTensor(vec)
+        return vec
+
+    def sent2vec(self, sent, to_tensor=True):
+        """sent (list of str) => list of word vector [n_words, word dim]"""
+        if isinstance(sent, str):
+            sent = sent.split()
+        sent_tensor = [self.word2vec(word) for word in sent]
+        if to_tensor:
+            sent_tensor = torch.FloatTensor(sent_tensor)
+        return sent_tensor

@@ -16,7 +16,7 @@ class Embedder(nn.Module):
     :param  voca:  vocabulary
     """
     def __init__(self, window, char_voca, word_voca=None,
-                 jaso_dim=50, char_dim=50, word_dim=0, gazet=None,
+                 jaso_dim=50, char_dim=50, word_dim=100, gazet=None,
                  gazet_embed=False, pos_enc=True, phoneme=False,
                  pos_voca_size=627, pos_dim=20):
         super().__init__()
@@ -43,8 +43,7 @@ class Embedder(nn.Module):
         self.word_dim = word_dim
         self.pos_dim = pos_dim
         self.gazet_dim = self.gazet_voca_size
-        self.embed_dim = self.char_dim + self.gazet_dim + self.pos_dim
-        # self.embed_dim = self.char_dim + self.word_dim + self.gazet_dim
+        self.embed_dim = self.char_dim + self.pos_dim + self.word_dim + self.gazet_dim
 
         # Use word vocab
         if word_voca:
@@ -61,9 +60,6 @@ class Embedder(nn.Module):
 
         # char embedding
         self.char_embedding = nn.Embedding(self.char_voca_size, self.char_dim)
-
-        # word embedding
-        # self.word_embedding = nn.Embedding(self.word_vocab_size, self.word_dim)
 
         # pos embedding
         self.pos_embedding = nn.Embedding(pos_voca_size, self.pos_dim) # pos 태그 개수 * 임베딩크기
@@ -88,7 +84,7 @@ class Embedder(nn.Module):
             pe_tensor = pe_tensor.cuda()
         return pe_tensor
 
-    def forward(self, sentence, gazet, pos): #pylint: disable=arguments-differ
+    def forward(self, sentence, gazet, pos, words): #pylint: disable=arguments-differ
         """
         Args:
             sentence [seq_len, context_len=21]
@@ -101,16 +97,13 @@ class Embedder(nn.Module):
 
         pos_vec = self.pos_embedding(pos)
         # word vec
-        # word_vec = self.word_embedding(sentences) # [seq_len, context_len, word_dim]
+        word_vec = words # [seq_len, context_len, word_dim]
 
         # gazet vec
         gazet_vec = gazet # [seq_len, context_len, gazet_dim]
 
-        # sentence_embed = torch.cat([char_vec, word_vec, gazet], dim=2)
         # [seq_len, context_len, embed_dim]
-
-        # [seq_len, context_len, embed_dim]
-        sentence_embed = torch.cat([char_vec, pos_vec, gazet_vec], dim=2)
+        sentence_embed = torch.cat([char_vec, pos_vec, word_vec, gazet_vec], dim=2)
 
         if self.pos_enc:
             sentence_embed += self.pe_tensor
