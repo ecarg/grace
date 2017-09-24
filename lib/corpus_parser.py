@@ -269,6 +269,8 @@ class Sentence(object):
         self.context_tensors = None
         self.gazet_tensors = None
         self.pos_tensors = None
+        self.word_tensors = None
+        self.pos_outputs = None
 
         for item in NamedEntity.parse(sent):
             self.named_entity.append(item)
@@ -339,6 +341,121 @@ class Sentence(object):
             gazet_list.append(scala)
         return gazet_list
 
+    def set_word_feature(self, pos_model, word_model, window):
+        """
+        음절단위 형태소 분석결과로부터, 단어단위 형태소 분석
+        결과를 복원합니다.
+        :param pos_model: 형태소 분석기
+        :param pos_outpus: 형태소 분석결과(음절)
+        """
+        pos_outputs = self.run_pos_tagger(pos_model, window)
+        tags = [pos_model.cfg.voca['tuo'][x] for x in pos_outputs.data]
+        raw_str_spc = self.raw_str()
+        raw_str = raw_str_spc.replace(" ", "")
+        words = []
+        for idx, (char, tag) in enumerate(zip(raw_str, tags)):
+            bio_i, tag_i = tag.split('-', 1)
+            if tag_i[0] == 'N':
+                tag_i = 'N'
+            if bio_i == 'B' or bio_i == 'I' and idx == 0:
+                word = [raw_str[idx]]
+                for jdx in range(idx+1, len(raw_str)):
+                    bio_j, tag_j = tags[jdx].split('-', 1)
+                    if tag_j[0] == 'N':
+                        tag_j = 'N'
+                    if bio_j == 'B':
+                        break
+                    if tag_i == tag_j:
+                        word.append(raw_str[jdx])
+                    else:
+                        tags[jdx] = "B-%s" % (tag_j)
+                        break
+                words.append("%s/%s" % (''.join(word), tag_i[0]))
+            elif bio_i == 'I':
+                words.append(words[idx-1])
+
+        assert len(words) == len(raw_str)
+
+        # 공백에 해당하는 자리에 [0 x PoS out dim] 텐서를 삽입
+        out_idx = 0
+        words_spc = []
+        for char in raw_str_spc:
+            if char == ' ':
+                words_spc.append([0.0]*100)
+            else:
+                word_tensor = word_model.word2vec(words[out_idx])
+                words_spc.append(word_tensor)
+                out_idx += 1
+
+        # BS * 1
+        # BS * 21 * 100 사이즈로 만들어야 한다.
+        words_contexts = []
+        for idx, (char, word) in enumerate(zip(raw_str_spc, words_spc)):
+            if char == ' ':
+                continue
+            has_boe = False
+            left_context = []
+            for jdx in range(idx-1, idx-(window*2), -1):
+                if jdx < 0 or len(left_context) >= window:
+                    break
+                if raw_str_spc[jdx] == ' ':
+                    if has_boe:
+                        continue
+                    else:
+                        left_context.append(words_spc[jdx])
+                        has_boe = True
+                else:
+                    left_context.append(words_spc[jdx])
+            if not has_boe and len(left_context) < window:
+                left_context.append([0.0]*100)
+            left_context.extend([[0.0]* 100] * (window - len(left_context)))
+            assert len(left_context) == window
+            has_eoe = False
+            right_context = []
+            for jdx in range(idx+1, idx+(window*2)+1):
+                if jdx >= len(raw_str_spc) or len(right_context) >= window:
+                    break
+                if raw_str_spc[jdx] == ' ':
+                    if has_eoe:
+                        continue
+                    else:
+                        right_context.append(words_spc[jdx])
+                        has_eoe = True
+                else:
+                    right_context.append(words_spc[jdx])
+            if not has_eoe and len(right_context) < window:
+                right_context.append([0.0]*100)
+            right_context.extend([[0.0]* 100] * (window - len(right_context)))
+            assert len(right_context) == window
+            words_contexts.append(\
+                    list(reversed(left_context))+[word, ]+right_context)
+        assert len(words_contexts) == self.get_syllable_count()
+        self.word_tensors = torch.FloatTensor(words_contexts)
+        #self.word_tensors = torch.LongTensor((pos_outputs_contexts))
+        #print(raw_str_spc)
+        #for idx, line in enumerate(words_contexts):
+        #    print(raw_str[idx]+":::"+' '.join(line))
+
+    def run_pos_tagger(self, pos_model, window):
+        """
+        run tagger
+        """
+        if self.pos_outputs is not None:
+            return self.pos_outputs
+
+        str_contexts = self.to_str_arr(window)
+        pos_contexts = []
+        for str_context in str_contexts:
+            pos_contexts.append([pos_model.cfg.voca['in'][char] for char in str_context])
+        pos_model.eval()
+        pos_contexts_var = Variable(torch.LongTensor(pos_contexts), volatile=True)
+        if torch.cuda.is_available():
+            pos_contexts_var = pos_contexts_var.cuda()
+        _, pos_outputs = pos_model(pos_contexts_var).max(1) # BS * 1
+        self.pos_outputs = pos_outputs
+        return self.pos_outputs
+
+
     def set_pos_feature(self, pos_model, window):
         """
         형태소 분석기를 실행하고 그 출력으로 임베딩을 만든다.
@@ -348,16 +465,8 @@ class Sentence(object):
         if self.pos_tensors is not None:
             return
 
-        str_contexts = self.to_str_arr(window)
-        pos_contexts = []
-        for str_context in str_contexts:
-            pos_contexts.append([pos_model.cfg.voca['in'][char] for char in str_context])
-        # BS * PoS tagger output vocabulary size
-        pos_model.eval()
-        pos_contexts_var = Variable(torch.LongTensor(pos_contexts), volatile=True)
-        if torch.cuda.is_available():
-            pos_contexts_var = pos_contexts_var.cuda()
-        _, pos_outputs_0 = pos_model(pos_contexts_var).max(1) # BS * 1
+       # BS * PoS tagger output vocabulary size
+        pos_outputs_0 = self.run_pos_tagger(pos_model, window)
         pos_outputs = pos_outputs_0.data + 1
         #for char, tag_idx in zip(self.raw_str().replace(" ", ""), pos_outputs):
         #    print("%s/%s" % (char, pos_model.cfg.voca['tuo'][tag_idx-1]), end=' ')
@@ -502,12 +611,16 @@ class Sentence(object):
         if not self.gazet_matches:
             self.match_gazet(gazet, voca, context_size, gazet_embed)
 
-        if self.label_tensors is not None and self.context_tensors is not None:
-            return self.label_tensors, self.context_tensors, self.gazet_tensors, self.pos_tensors
+        if self.label_tensors is not None and\
+                self.context_tensors is not None and\
+                self.word_tensors is not None:
+            return self.label_tensors, self.context_tensors,\
+                   self.gazet_tensors, self.pos_tensors, self.word_tensors
         self.to_num_arr(voca, context_size, is_phonemes)
         self.label_tensors = torch.LongTensor(self.label_nums)
         self.context_tensors = torch.LongTensor(self.context_nums)
-        return self.label_tensors, self.context_tensors, self.gazet_tensors, self.pos_tensors
+        return self.label_tensors, self.context_tensors,\
+               self.gazet_tensors, self.pos_tensors, self.word_tensors
 
     def get_word_count(self):
         """

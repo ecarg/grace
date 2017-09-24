@@ -46,9 +46,9 @@ class Ner(nn.Module):
         assert isinstance(encoder, nn.Module)
         assert isinstance(decoder, nn.Module)
 
-    def forward(self, sentence, gazet, pos): #pylint: disable=arguments-differ
+    def forward(self, sentence, gazet, pos, words): #pylint: disable=arguments-differ
         # [sentence_len, context_len] => [sentence_len, context_len, embed_dim]
-        sentence_embed = self.embedder(sentence, gazet, pos)
+        sentence_embed = self.embedder(sentence, gazet, pos, words)
 
         # [sentence_len, context_len, embed_dim] => [sentence_len, hidden_dim]
         hidden = self.encoder(sentence_embed)

@@ -95,11 +95,13 @@ def load_text(cfg):
     gazet = gazetteer.load(codecs.open(gazet_path, 'r', encoding='UTF-8'))
     pos_path = cfg.rsc_dir.joinpath('pos_tagger.model')
     pos_model = pos_models.PosTagger.load(str(pos_path))
+    word_path = cfg.rsc_dir.joinpath('wiki_ko.model.bin')
+    word_model = data.Vocabulary(word_path)
     pos_model.eval()
 
     # Load Data
     data_ = data.load_data(cfg.data_dir, cfg.in_pfx, voca)
-    return voca, gazet, data_, pos_model
+    return voca, gazet, data_, pos_model, word_model
 
 
 def build_model(cfg, char_voca, word_voca=None, gazet=None, pos_voca=None):
@@ -169,7 +171,7 @@ def run(cfg):    # pylint: disable=too-many-locals,too-many-statements
     :param  cfg:  arguments
     """
     # load_text
-    voca, gazet, data_, pos_model = load_text(cfg)
+    voca, gazet, data_, pos_model, word_model = load_text(cfg)
 
     char_voca = voca['in']
 
@@ -237,15 +239,17 @@ def run(cfg):    # pylint: disable=too-many-locals,too-many-statements
             # labels [sentence_len]
             # contexts [sentence_len, 21]
             # gazet [sentence_len, 21, 15]
+            train_sent.set_word_feature(pos_model, word_model, cfg.window)
             train_sent.set_pos_feature(pos_model, cfg.window)
-            train_labels, train_contexts, train_gazet, train_pos = \
+            train_labels, train_contexts, train_gazet, train_pos, train_words = \
                 train_sent.to_tensor(voca, gazet, cfg.window, cfg.phoneme, cfg.gazet_embed)
 
             # Convert to Variable
             train_labels = Variable(train_labels)
             train_contexts = Variable(train_contexts)
             train_gazet = Variable(train_gazet)
-            train_pos = Variable(train_pos)
+            train_pos = Variable(train_pos, requires_grad=False)
+            train_words = Variable(train_words, requires_grad=False)
 
             # Load on GPU
             if torch.cuda.is_available():
@@ -253,6 +257,7 @@ def run(cfg):    # pylint: disable=too-many-locals,too-many-statements
                 train_contexts = train_contexts.cuda()
                 train_gazet = train_gazet.cuda()
                 train_pos = train_pos.cuda()
+                train_words = train_words.cuda()
 
             # Reset Gradient
             optimizer.zero_grad()
@@ -263,7 +268,7 @@ def run(cfg):    # pylint: disable=too-many-locals,too-many-statements
             # import ipdb; ipdb.set_trace()
 
             # Forward Prop
-            outputs = model(train_contexts, train_gazet, train_pos)
+            outputs = model(train_contexts, train_gazet, train_pos, train_words)
 
             batches.append((train_labels, outputs))
             if sum([batch[0].size(0) for batch in batches]) < cfg.batch_size:
@@ -287,18 +292,21 @@ def run(cfg):    # pylint: disable=too-many-locals,too-many-statements
                 losses.append(loss.data[0])
                 for dev_sent in data_['dev']:
                     # Convert to CUDA Variable
+                    dev_sent.set_word_feature(pos_model, word_model, cfg.window)
                     dev_sent.set_pos_feature(pos_model, cfg.window)
-                    _, dev_contexts, dev_gazet, dev_pos = \
+                    _, dev_contexts, dev_gazet, dev_pos, dev_words = \
                         dev_sent.to_tensor(voca, gazet, cfg.window, cfg.phoneme, cfg.gazet_embed)
                     dev_contexts = Variable(dev_contexts, volatile=True)
                     dev_gazet = Variable(dev_gazet, volatile=True)
                     dev_pos = Variable(dev_pos, volatile=True)
+                    dev_words = Variable(dev_words, volatile=True)
                     if torch.cuda.is_available():
                         dev_contexts = dev_contexts.cuda()
                         dev_gazet = dev_gazet.cuda()
                         dev_pos = dev_pos.cuda()
+                        dev_words = dev_words.cuda()
 
-                    outputs = model(dev_contexts, dev_gazet, dev_pos)
+                    outputs = model(dev_contexts, dev_gazet, dev_pos, dev_words)
 
                     _, predicts = outputs.max(1)
                     dev_sent.compare_label(predicts, voca, measure)
