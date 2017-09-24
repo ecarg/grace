@@ -122,12 +122,12 @@ def _init(args):
     # Build Model
     if args.model_name.lower() == 'fnn5':
         hidden_dim = ((2 * args.window + 1) *\
-                (args.embed_dim + 15 + len(pos_model.cfg.voca['out']))+ len(voca['out'])) // 2
+                (args.embed_dim + 15 + 20)+ len(voca['out'])) // 2
         model = models.Fnn5(args.window, voca, gazet,
                             args.embed_dim, hidden_dim,
                             args.phoneme, args.gazet_embed, args.pos_enc)
     elif args.model_name.lower() == 'cnn7':
-        concat_dim = args.embed_dim + len(voca['out']) + 4
+        concat_dim = args.embed_dim + 20 + len(voca['out']) + 4
         hidden_dim = (concat_dim * 4 + len(voca['out'])) // 2
         model = models.Cnn7(args.window, voca, gazet,
                             args.embed_dim, hidden_dim,

@@ -105,6 +105,7 @@ class Fnn5(Ner):
         super().__init__(window, embed_dim, voca, gazet, phoneme, gazet_embed, pos_enc)
         context_len = 2 * window + 1
         self.embedding = nn.Embedding(len(voca['in']), embed_dim)
+        self.pos_embedding = nn.Embedding(627, 20) # pos 태그 개수 * 임베딩크기
         gazet_dim = len(voca['out'])+4
 
         if self.gazet_embed:
@@ -114,7 +115,7 @@ class Fnn5(Ner):
         if self.phoneme:
             self.pho2syl = nn.Conv2d(1, embed_dim, (3, embed_dim), 3)
 
-        self.embeds2hidden = nn.Linear(context_len * (embed_dim + gazet_dim + 626), hidden_dim)
+        self.embeds2hidden = nn.Linear(context_len * (embed_dim + gazet_dim + 20), hidden_dim)
         self.hidden2tag = nn.Linear(hidden_dim, len(voca['out']))
 
     def forward(self, inputs):    # pylint: disable=arguments-differ
@@ -123,16 +124,20 @@ class Fnn5(Ner):
         :param  contexts:  batch size list of character and context
         :return:  output score
         """
-        contexts, gazet, pos_embed = inputs
+        contexts, gazet, pos = inputs
         embeds = self.embedding(contexts)
         if self.phoneme:
             embeds = F.relu(self.pho2syl(embeds.unsqueeze(1)).squeeze().transpose(1, 2))
+
+        # PoS feature
+        pos_embed = self.pos_embedding(pos)
+        embeds = torch.cat([embeds, pos_embed], 2)
 
         # Add Positional Encoding
         if self.pos_enc:
             if self.pe_tensor is None:
                 context_len = self.window * 2 + 1
-                self.pe_tensor = self.positional_encoding(context_len, self.embed_dim)
+                self.pe_tensor = self.positional_encoding(context_len, self.embed_dim+20)
             embeds += self.pe_tensor
 
         if self.gazet_embed:
@@ -140,9 +145,6 @@ class Fnn5(Ner):
             embeds = torch.cat([embeds, gazet_embeds], 2)
         else:
             embeds = torch.cat([embeds, gazet], 2)
-
-        # PoS feature
-        embeds = torch.cat([embeds, pos_embed], 2)
 
         hidden_out = F.relu(self.embeds2hidden(embeds.view(len(contexts), -1)))
         hidden_drop = F.dropout(hidden_out, training=self.training)
@@ -164,6 +166,7 @@ class Cnn7(Ner):    # pylint: disable=too-many-instance-attributes
         super().__init__(window, embed_dim, voca, gazet, phoneme, gazet_embed, pos_enc)
         self.context_len = 2 * window + 1
         self.embedding = nn.Embedding(len(voca['in']), embed_dim)
+        self.pos_embedding = nn.Embedding(627, 20) # pos 태그 개수 * 임베딩크기
 
         gazet_dim = len(voca['out'])+4
         if self.gazet_embed:
@@ -173,7 +176,7 @@ class Cnn7(Ner):    # pylint: disable=too-many-instance-attributes
         if self.phoneme:
             self.pho2syl = nn.Conv1d(embed_dim, embed_dim, 3, 3)
 
-        concat_dim = embed_dim + gazet_dim
+        concat_dim = embed_dim + 20 + gazet_dim
         # conv2_1
         self.conv2_1 = nn.Conv1d(concat_dim, concat_dim, kernel_size=2)    # 20
         self.pool2_1 = nn.MaxPool1d(kernel_size=2, ceil_mode=True)    # 10
@@ -228,18 +231,22 @@ class Cnn7(Ner):    # pylint: disable=too-many-instance-attributes
         self.hidden2tag = nn.Linear(hidden_dim, len(voca['out']))
 
     def forward(self, inputs):    # pylint: disable=arguments-differ,too-many-locals
-        contexts, gazet, _ = inputs
+        contexts, gazet, pos = inputs
         embeds = self.embedding(contexts)
         # batch_size x context_len x embedding_dim => batch_size x embedding_dim x context_len
         if self.phoneme:
             embeds_t = F.relu(self.pho2syl(embeds.transpose(1, 2)))
             embeds = embeds_t.transpose(1, 2)
 
+        # PoS feature
+        pos_embed = self.pos_embedding(pos)
+        embeds = torch.cat([embeds, pos_embed], 2)
+
         # Add Positional Encoding
         if self.pos_enc:
             if self.pe_tensor is None:
                 context_len = self.window * 2 + 1
-                self.pe_tensor = self.positional_encoding(context_len, self.embed_dim)
+                self.pe_tensor = self.positional_encoding(context_len, self.embed_dim+20)
 
             embeds = embeds + self.pe_tensor
 

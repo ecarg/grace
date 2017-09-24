@@ -21,7 +21,6 @@ import collections
 import unicodedata
 import string
 
-import numpy as np
 import torch
 from torch.autograd import Variable
 import torch.utils.data
@@ -358,22 +357,25 @@ class Sentence(object):
         pos_contexts_var = Variable(torch.LongTensor(pos_contexts), volatile=True)
         if torch.cuda.is_available():
             pos_contexts_var = pos_contexts_var.cuda()
-        pos_outputs = pos_model(pos_contexts_var).data.cpu().numpy()
+        _, pos_outputs_0 = pos_model(pos_contexts_var).max(1) # BS * 1
+        pos_outputs = pos_outputs_0.data + 1
+        #for char, tag_idx in zip(self.raw_str().replace(" ", ""), pos_outputs):
+        #    print("%s/%s" % (char, pos_model.cfg.voca['tuo'][tag_idx-1]), end=' ')
+        #print('')
 
         # 공백에 해당하는 자리에 [0 x PoS out dim] 텐서를 삽입
-        empty_output = np.zeros(len(pos_model.cfg.voca['out']))
         out_idx = 0
         pos_outputs_spc = []
         raw_str = self.raw_str()
         for char in raw_str:
             if char == ' ':
-                pos_outputs_spc.append(copy.deepcopy(empty_output))
+                pos_outputs_spc.append(0)
             else:
                 pos_outputs_spc.append(pos_outputs[out_idx])
                 out_idx += 1
 
-        # BS * 626
-        # BS * 21 * 626 사이즈로 만들어야 한다.
+        # BS * 1
+        # BS * 21 * 1 사이즈로 만들어야 한다.
         pos_outputs_contexts = []
         for idx, (char, pos_output) in enumerate(zip(raw_str, pos_outputs_spc)):
             if char == ' ':
@@ -392,8 +394,8 @@ class Sentence(object):
                 else:
                     left_context.append(pos_outputs_spc[jdx])
             if not has_boe and len(left_context) < window:
-                left_context.append(copy.deepcopy(empty_output))
-            left_context.extend(copy.deepcopy([empty_output, ] * (window - len(left_context))))
+                left_context.append(0)
+            left_context.extend([0] * (window - len(left_context)))
             assert len(left_context) == window
             has_eoe = False
             right_context = []
@@ -409,14 +411,16 @@ class Sentence(object):
                 else:
                     right_context.append(pos_outputs_spc[jdx])
             if not has_eoe and len(right_context) < window:
-                right_context.append(copy.deepcopy(empty_output))
-            right_context.extend(copy.deepcopy([empty_output, ] * (window - len(right_context))))
+                right_context.append(0)
+            right_context.extend([0, ] * (window - len(right_context)))
             assert len(right_context) == window
 
             pos_outputs_contexts.append(\
                     list(reversed(left_context))+[pos_output, ]+right_context)
         assert len(pos_outputs_contexts) == self.get_syllable_count()
-        self.pos_tensors = torch.FloatTensor(np.stack(pos_outputs_contexts))
+        self.pos_tensors = torch.LongTensor((pos_outputs_contexts))
+        #for line in pos_outputs_contexts:
+        #    print(' '.join([(pos_model.cfg.voca['tuo'][x-1] if x > 0 else 'unk') for x in line]))
 
     def match_gazet(self, gazet, voca, context_size, gazet_embed=False):
         """
