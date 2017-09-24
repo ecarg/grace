@@ -108,22 +108,23 @@ def load_voca(dir_, is_phonemes=False, cutoff=1):
     voca_dic = {}
     for name in ['in', 'out']:
         if is_phonemes:
-            voca_path = '%s/voca.pho.%s' % (dir_, name)
+            voca_path = dir_.joinpath('voca.pho.%s' % name)
         else:
-            voca_path = '%s/voca.syl.%s' % (dir_, name)
+            voca_path = dir_.joinpath('voca.syl.%s' % name)
         voca, acov = _load_voca_inner(voca_path, name == 'in')
         voca_dic[name] = voca
         voca_dic[name[::-1]] = acov
     return voca_dic
 
 
-def load_data(path_pfx, voca):
+def load_data(data_dir, path_pfx, voca):
     """
     load training/dev/test data
+    :param data_dir: data directory
     :param  path_pfx:  path prefix
     :param  voca:  vocabulary
     :return:  (dev, test, train) dataset triple
     """
-    fins = [(name, codecs.open('%s.%s' % (path_pfx, name), 'r', encoding='UTF-8')) \
+    fins = [(name, codecs.open(data_dir.joinpath('{}.{}'.format(path_pfx, name)), 'r', encoding='UTF-8')) \
             for name in ['dev', 'test', 'train']]
     return {name: NerDataset(fin, voca) for name, fin in fins}

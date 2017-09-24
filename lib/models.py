@@ -9,18 +9,15 @@ __copyright__ = 'No copyright. Just copyleft!'
 
 
 # pylint: disable=no-member
+# pylint: disable=invalid-name
 
 
 ###########
 # imports #
 ###########
-import math
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-from torch.autograd import Variable
 from embedder import Embedder
-from sru import SRU
 
 #############
 # Ner Class #
@@ -39,7 +36,7 @@ class Ner(nn.Module):
         super().__init__()
         self.embedder = embedder
         self.classifier = classifier
-        
+
         assert isinstance(embedder, Embedder)
         assert isinstance(classifier, nn.Module)
 
@@ -48,7 +45,7 @@ class Ner(nn.Module):
         sentence_embed = self.embedder(sentence, gazet)
         # [sentence_len, context_len, embed_dim]   => [sentence_len, n_tags]
         predicted_tags = self.classifier(sentence_embed)
-        
+
         return predicted_tags
 
     def save(self, path):
@@ -58,7 +55,7 @@ class Ner(nn.Module):
         """
         if torch.cuda.is_available():
             self.cpu()
-        torch.save(self, path)
+        torch.save(self, str(path))
         if torch.cuda.is_available():
             self.cuda()
 
@@ -69,7 +66,7 @@ class Ner(nn.Module):
         :param  path:  경로
         :return:  모델 클래스 객체
         """
-        model = torch.load(path)
+        model = torch.load(str(path))
         if torch.cuda.is_available():
             model.cuda()
         return model
@@ -86,7 +83,7 @@ class Fnn5(nn.Module):
         """
         """
         super(Fnn5, self).__init__()
-        
+
         self.context_len = context_len
         self.hidden_dim = in_dim
         self.out_dim = out_dim
@@ -118,8 +115,8 @@ class Cnn7(nn.Module):
     def __init__(self, in_dim=50, hidden_dim=500, out_dim=11, context_len=None):
         """
         """
-        super(Fnn5, self).__init__()
-        
+        super(Cnn7, self).__init__()
+
         self.in_dim = in_dim
         self.hidden_dim = hidden_dim
         self.out_dim = out_dim
@@ -136,7 +133,7 @@ class Cnn7(nn.Module):
             nn.MaxPool1d(kernel_size=2, ceil_mode=True),    # 2
             nn.Conv1d(in_dim, in_dim, kernel_size=2),    # 1
         )
-                
+
         self.conv3 = nn.Sequential(
             nn.Conv1d(in_dim, in_dim, kernel_size=3, padding=1),    # 21
             nn.ReLU(),
@@ -149,8 +146,8 @@ class Cnn7(nn.Module):
             nn.MaxPool1d(kernel_size=2, ceil_mode=True),    # 3
             nn.Conv1d(in_dim, in_dim, kernel_size=3),    # 1
         )
-        
-        
+
+
         self.conv4 = nn.Sequential(
             nn.Conv1d(in_dim, in_dim, kernel_size=4, padding=1),    # 20
             nn.ReLU(),
@@ -160,25 +157,25 @@ class Cnn7(nn.Module):
             nn.MaxPool1d(kernel_size=2, ceil_mode=True),    # 5
             nn.Conv1d(in_dim, in_dim, kernel_size=4, padding=1),    # 4
             nn.ReLU(),
-            
+
             nn.Conv1d(in_dim, in_dim, kernel_size=4),    # 1
         )
-                
+
         self.conv5 = nn.Sequential(
             nn.Conv1d(in_dim, in_dim, kernel_size=5, padding=2),    # 21
             nn.ReLU(),
             nn.MaxPool1d(kernel_size=2, ceil_mode=True),    # 11
-            nn.Conv1d(in_dim, in_dim, kernel_size=5, padding=2),    # 1
+            nn.Conv1d(in_dim, in_dim, kernel_size=5, padding=2),    # 11
             nn.ReLU(),
             nn.MaxPool1d(kernel_size=2, ceil_mode=True),    # 6
-            nn.Conv1d(in_dim, in_dim, kernel_size=5, padding=2),    # 3
+            nn.Conv1d(in_dim, in_dim, kernel_size=5, padding=2),    # 6
             nn.ReLU(),
-
+            nn.MaxPool1d(kernel_size=2, ceil_mode=True),    # 3
             nn.Conv1d(in_dim, in_dim, kernel_size=5, padding=1),    # 1
         )
 
         self.fc = nn.Sequential(
-            nn.Droput(),
+            nn.Dropout(),
             nn.Linear(in_dim * 4, hidden_dim),
             nn.ReLU(),
             nn.Dropout(),
@@ -192,18 +189,18 @@ class Cnn7(nn.Module):
         Return:
             x: [sentence_length, context_len, out_dim]
         """
-        
+
         # [sentence_length, in_dim, context_len]
         x = x.transpose(1, 2)
-                
+
         conv2 = self.conv2(x).squeeze(-1) # [sentence_len, in_dim]
         conv3 = self.conv3(x).squeeze(-1) # [sentence_len, in_dim]
         conv4 = self.conv4(x).squeeze(-1) # [sentence_len, in_dim]
         conv5 = self.conv5(x).squeeze(-1) # [sentence_len, in_dim]
-        
+
         # [sentence_len, in_dim * 4]
         hidden = torch.cat([conv2, conv3, conv4, conv5], dim=1)
-        
+
         # [sentence_len, out_dim]
         out = self.fc(hidden)
 
@@ -211,12 +208,12 @@ class Cnn7(nn.Module):
 
 
 class Cnn8(nn.Module):
+    """
+    9-layer Conv NN + Batch Norm + Residual
+    """
     def __init__(self, context_len=21, in_dim=64, out_dim=11, hidden_dim=None):
-        """
-        9-layer Conv NN + Batch Norm + Residual
-        """
         super(Cnn8, self).__init__()
-        
+
         self.context_len = context_len
 
         # conv block 64
@@ -247,7 +244,7 @@ class Cnn8(nn.Module):
         self.fc = nn.Sequential(
             nn.Linear(in_dim*16, out_dim)
         )
-    
+
     @classmethod
     def conv_block(cls, in_dim=64, depth=2, double=True):
         """
@@ -275,7 +272,6 @@ class Cnn8(nn.Module):
         Return:
             logit: [batch_size, out_dim]
         """
-        
         # [sentence_len, embed_dim, context_len]
         x = sentence.transpose(1, 2)
 
@@ -302,13 +298,18 @@ class Cnn8(nn.Module):
         x = self.conv_block4_2_1(x) + x # [batch, in_dim*8, 3]
         x = self.conv_block4_2_2(x) # [batch, in_dim*16, 3]
         x = self.pool4(x) # [batch_size, in_dim*16, 1]
-        x = x.view(batch_size, -1).contiguous() # [batch, in_dim*16]
+        x = x.squeeze(-1) # [batch, in_dim*16]
 
         return x
 
 
 class Gru(nn.Module):
-    def __init__(self, input_size=1024, hidden_size=512, num_layers=2, dropout=0.5, rnn_dropout=0.5, bidirectional=True, n_classes=15):
+    """
+    Gru
+    """
+    def __init__(self, input_size=1024, hidden_size=512,
+                 num_layers=2, dropout=0.5, rnn_dropout=0.5,
+                 bidirectional=True, n_classes=15):
         super(Gru, self).__init__()
         self.rnn = nn.GRU(
             input_size=input_size,
@@ -318,14 +319,14 @@ class Gru(nn.Module):
             batch_first=False,
             dropout=dropout,
             bidirectional=True)
-        
+
         # fully connected layers
         self.fc = nn.Sequential(
             nn.Linear(hidden_size*2, # bidirectional
                       n_classes)
         )
 
-        
+
     def forward(self, x):
         """
         Args:
@@ -335,28 +336,34 @@ class Gru(nn.Module):
         """
         # input (seq_len, batch, input_size)
         # h_0 (num_layers * num_directions, batch, hidden_size)
-        
+
         # output (seq_len, batch, hidden_size * num_directions)
         # h_n (num_layers * num_directions, batch, hidden_size)
-        
+
         # [sequence_len, batch_size=1, input_size]
         x = x.unsqueeze(1)
-        
+
         # x: [sequence_len, batch_size=1, hidden_size x 2]
         # h_n: [num_layers * 2, batch=1, hidden_size]
-        x, h_n = self.rnn(x)
-        
+        x, _ = self.rnn(x)
+
         # [sequence_len, hidden_size x 2]
         x = x.squeeze(1)
 
         x = self.fc(x)
-        
+
         return x
 
 class Sru(nn.Module):
-    def __init__(self, input_size=1024, hidden_size=512, num_layers=2, dropout=0.5, rnn_dropout=0.5, bidirectional=True, n_classes=15):
+    """
+    Sru
+    """
+    def __init__(self, input_size=1024, hidden_size=512,
+                 num_layers=2, dropout=0.5, rnn_dropout=0.5,
+                 bidirectional=True, n_classes=15):
         super(Sru, self).__init__()
 
+        from sru import SRU
         self.rnn = SRU(
             input_size=input_size,
             hidden_size=hidden_size,
@@ -364,14 +371,14 @@ class Sru(nn.Module):
             dropout=dropout,
             rnn_dropout=rnn_dropout,
             bidirectional=True)
-        
+
         # fully connected layers
         self.fc = nn.Sequential(
             nn.Linear(hidden_size*2, # bidirectional
                       n_classes)
         )
 
-        
+
     def forward(self, x):
         """
         Args:
@@ -381,26 +388,31 @@ class Sru(nn.Module):
         """
         # input (seq_len, batch, input_size)
         # h_0 (num_layers * num_directions, batch, hidden_size)
-        
+
         # output (seq_len, batch, hidden_size * num_directions)
         # h_n (num_layers * num_directions, batch, hidden_size)
-        
+
         # [sequence_len, batch_size=1, input_size]
         x = x.unsqueeze(1)
-        
+
         # x: [sequence_len, batch_size=1, hidden_size x 2]
         # h_n: [num_layers * 2, batch=1, hidden_size]
-        x, h_n = self.rnn(x)
-        
+        x, _ = self.rnn(x)
+
         # [sequence_len, hidden_size x 2]
         x = x.squeeze(1)
 
         x = self.fc(x)
-        
+
         return x
 
 class Lstm(nn.Module):
-    def __init__(self, input_size=1024, hidden_size=512, num_layers=2, dropout=0.5, rnn_dropout=0.5, bidirectional=True, n_classes=15):
+    """
+    Lstm
+    """
+    def __init__(self, input_size=1024, hidden_size=512,
+                 num_layers=2, dropout=0.5, rnn_dropout=0.5,
+                 bidirectional=True, n_classes=15):
         super(Lstm, self).__init__()
         self.rnn = nn.LSTM(
             input_size=input_size,
@@ -410,14 +422,14 @@ class Lstm(nn.Module):
             batch_first=False,
             dropout=dropout,
             bidirectional=True)
-        
+
         # fully connected layers
         self.fc = nn.Sequential(
             nn.Linear(hidden_size*2, # bidirectional
                       n_classes)
         )
 
-        
+
     def forward(self, x):
         """
         Args:
@@ -427,21 +439,21 @@ class Lstm(nn.Module):
         """
         # input (seq_len, batch, input_size)
         # h_0 (num_layers * num_directions, batch, hidden_size)
-        
+
         # output (seq_len, batch, hidden_size * num_directions)
         # h_n (num_layers * num_directions, batch, hidden_size)
-        
+
         # [sequence_len, batch_size=1, input_size]
         x = x.unsqueeze(1)
-        
+
         # x: [sequence_len, batch_size=1, hidden_size x 2]
         # h_n: [num_layers * 2, batch=1, hidden_size]
         # c_n: [num_layers * 2, batch=1, hidden_size]
-        x, (h_n, c_n) = self.rnn(x)
-        
+        x, _ = self.rnn(x)
+
         # [sequence_len, hidden_size x 2]
         x = x.squeeze(1)
 
         x = self.fc(x)
-        
+
         return x

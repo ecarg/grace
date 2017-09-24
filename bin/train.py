@@ -63,7 +63,7 @@ class CheckPoint(object):
         save current state
         :param  path:  path
         """
-        torch.save(self.model_dump, path)
+        torch.save(self.model_dump, str(path))
 
     @classmethod
     def load(cls, path):
@@ -72,7 +72,7 @@ class CheckPoint(object):
         :param  path:  path
         :return:  dumped model
         """
-        return torch.load(path)
+        return torch.load(str(path))
 
 
 #########
@@ -80,11 +80,15 @@ class CheckPoint(object):
 #########
 
 def load_text(cfg):
+    """
+    load text data
+    :param  cfg: config
+    """
     # Load Vocabulary
     # voca['in'] = char
     # voca['out'] = word
     voca = data.load_voca(cfg.rsc_dir, cfg.phoneme, cfg.cutoff)
-    
+
     # gazet
     gazet_path = cfg.rsc_dir.joinpath('gazetteer.dic')
     gazet = gazetteer.load(codecs.open(gazet_path, 'r', encoding='UTF-8'))
@@ -96,7 +100,7 @@ def load_text(cfg):
 
 def build_model(cfg, char_voca, word_voca=None, gazet=None):
     """Build Neural Network based Ner model (Embedder + Classifier)"""
-    
+
     # Build Embedder
     embedder = Embedder(
         window=cfg.window,
@@ -109,9 +113,9 @@ def build_model(cfg, char_voca, word_voca=None, gazet=None):
         gazet_embed=True,
         pos_enc=True,
         phoneme=True)
-    
+
     print('Total Embedding_size: ', embedder.embed_dim)
-    
+
     # Build Classifier
     if cfg.model_name.lower() == 'fnn5':
         classifier = models.Fnn5(context_len=cfg.context_len, in_dim=embedder.embed_dim,
@@ -123,25 +127,28 @@ def build_model(cfg, char_voca, word_voca=None, gazet=None):
         classifier = models.Cnn8(context_len=cfg.context_len, in_dim=embedder.embed_dim,
                                  hidden_dim=cfg.hidden_dim, out_dim=cfg.n_tags)
     elif cfg.model_name.lower() == 'lstm':
-        classifier = models.lstm(context_len=cfg.context_len, in_dim=embedder.embed_dim,
-                                hidden_dim=cfg.hidden_dim, out_dim=cfg.n_tags,
-                                num_layers=cfg.num_layers)
+        #classifier = models.Lstm(context_len=cfg.context_len, in_dim=embedder.embed_dim,
+        #                         hidden_dim=cfg.hidden_dim, out_dim=cfg.n_tags,
+        #                         num_layers=cfg.num_layers)
+        pass
     elif cfg.model_name.lower() == 'gru':
-        classifier = models.gru(context_len=cfg.context_len, in_dim=embedder.embed_dim,
-                                hidden_dim=cfg.hidden_dim, out_dim=cfg.n_tags,
-                                num_layers=cfg.num_layers)
+        #classifier = models.Gru(context_len=cfg.context_len, in_dim=embedder.embed_dim,
+        #                        hidden_dim=cfg.hidden_dim, out_dim=cfg.n_tags,
+        #                        num_layers=cfg.num_layers)
+        pass
     elif cfg.model_name.lower() == 'sru':
-        classifier = models.sru(context_len=cfg.context_len, in_dim=embedder.embed_dim,
-                                hidden_dim=cfg.hidden_dim, out_dim=cfg.n_tags,
-                                num_layers=cfg.num_layers)
+        #classifier = models.Sru(context_len=cfg.context_len, in_dim=embedder.embed_dim,
+        #                        hidden_dim=cfg.hidden_dim, out_dim=cfg.n_tags,
+        #                        num_layers=cfg.num_layers)
+        pass
 
     else:
         raise ValueError('unknown model name: %s' % cfg.model_name)
-                
+
     model = models.Ner(embedder, classifier)
-    
+
     return model
-    
+
 
 
 def run(cfg):    # pylint: disable=too-many-locals,too-many-statements
@@ -151,9 +158,9 @@ def run(cfg):    # pylint: disable=too-many-locals,too-many-statements
     """
     # load_text
     voca, gazet, data_ = load_text(cfg)
-    
+
     char_voca = voca['in']
-    
+
     # Build Ner model
     model = build_model(cfg, char_voca=char_voca, word_voca=None, gazet=gazet)
 
@@ -162,7 +169,6 @@ def run(cfg):    # pylint: disable=too-many-locals,too-many-statements
     iter_to_rvt = iter_per_epoch * cfg.rvt_epoch
 
     # Load GPU
-    os.environ['CUDA_VISIBLE_DEVICES'] = str(cfg.gpu_num)
     if torch.cuda.is_available():
         model.cuda()
 
@@ -176,7 +182,7 @@ def run(cfg):    # pylint: disable=too-many-locals,too-many-statements
 
     iter_ = 1
     best_iter = 0
-    
+
     # Remove existing log directory
     if cfg.clean:
         logging.info('==== removing log: %s ====', cfg.model_dir)
@@ -198,10 +204,10 @@ def run(cfg):    # pylint: disable=too-many-locals,too-many-statements
                          iter_ // 1000, losses[-1], accuracies[-1], f_scores[-1])
             lrs = [param_group['lr'] for param_group in optimizer.param_groups]
             logging.info('learning rates: %s', ', '.join([str(_) for _ in lrs]))
-    
+
     # Tensorboard Summary Writer
     sum_wrt = SummaryWriter(cfg.model_dir)
-    
+
     # loss / accuracy / f-score logging (.tsv)
     log_path = cfg.model_dir.joinpath('log.tsv')
     logf = open(log_path, 'at' if cfg.ckpt_path.exists() else 'wt')
@@ -214,19 +220,18 @@ def run(cfg):    # pylint: disable=too-many-locals,too-many-statements
     batches = []
     while revert <= cfg.rvt_term or one_more_thing:
         for train_sent in data_['train']:
-            
             # Convert to Tensor
             # labels [sentence_len]
             # contexts [sentence_len, 21]
             # gazet [sentence_len, 21, 15]
             train_labels, train_contexts, train_gazet = \
                 train_sent.to_tensor(voca, gazet, cfg.window, cfg.phoneme, cfg.gazet_embed)
-                
+
             # Convert to Variable
             train_labels = Variable(train_labels)
             train_contexts = Variable(train_contexts)
             train_gazet = Variable(train_gazet)
-            
+
             # Load on GPU
             if torch.cuda.is_available():
                 train_labels = train_labels.cuda()
@@ -238,12 +243,13 @@ def run(cfg):    # pylint: disable=too-many-locals,too-many-statements
 
             # Training mode (updates/dropout/batchnorm)
             model.train()
-            
+
             # import ipdb; ipdb.set_trace()
 
             # Forward Prop
             outputs = model(train_contexts, train_gazet)
 
+            batches.append((train_labels, outputs))
             if sum([batch[0].size(0) for batch in batches]) < cfg.batch_size:
                 continue
             batch_label = torch.cat([x[0] for x in batches], 0)
@@ -296,7 +302,7 @@ def run(cfg):    # pylint: disable=too-many-locals,too-many-statements
                 f_scores.append(f_score)
                 logging.info('---- iter: %dk, loss: %f, accuracy: %f, f-score: %f (max: %r) ----',
                              iter_ // 1000, losses[-1], accuracy, f_score, max(f_scores))
-                
+
                 if cfg.model_dir.exists():
                     sum_wrt.add_scalar('loss', losses[-1], iter_ // 1000)
                     sum_wrt.add_scalar('accuracy', accuracy, iter_ // 1000)
@@ -347,10 +353,9 @@ def main():
     Main training function
     """
     cfg = get_config(is_train=True)
+    os.environ['CUDA_VISIBLE_DEVICES'] = str(cfg.gpu_num)
     print(cfg)
     run(cfg)
-    
-
 
 if __name__ == '__main__':
     main()
