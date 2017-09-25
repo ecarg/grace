@@ -164,13 +164,18 @@ def get_config(parse=True, **optional_kwargs):
     else:
         kwargs = parser.parse_known_args()[0]
 
-
     if kwargs.debug:
         logging.basicConfig(level=logging.DEBUG)
     else:
         logging.basicConfig(level=logging.INFO)
 
     # Return Config class
+    if isinstance(kwargs.rsc_dir, str):
+        setattr(kwargs, 'rsc_dir', Path(kwargs.rsc_dir))
+    if isinstance(kwargs.data_dir, str):
+        setattr(kwargs, 'data_dir', Path(kwargs.data_dir))
+    if isinstance(kwargs.log_dir, str):
+        setattr(kwargs, 'log_dir', Path(kwargs.log_dir))
     kwargs = vars(kwargs) # Namespace => Dictionary
     kwargs.update(optional_kwargs) # update optional keyword arguments
     return Config(**kwargs)
