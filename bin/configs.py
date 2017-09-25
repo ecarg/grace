@@ -50,11 +50,7 @@ class Config(object):
         self.ckpt_path = self.model_dir.joinpath('ckpt')
 
         if self.is_train:
-            if self.clean:
-                self.model_dir.mkdir(exist_ok=True)
-            else:
-                self.model_dir.mkdir(exist_ok=False)
-
+            self.model_dir.mkdir(exist_ok=True)
 
     def get_model_id(self):
         """Configuration summary string"""
