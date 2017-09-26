@@ -1,7 +1,7 @@
 # project specific settings
 data/
 events.out.tfevents.*
-chpt
+ckpt
 
 
 # Byte-compiled / optimized / DLL files
