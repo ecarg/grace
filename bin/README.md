@@ -76,7 +76,7 @@ bin/train.py -r rsc -p data/corpus -m fnn -o fnn.out  --log fnn.log
 ```
 $ cat ./sample.txt
 이날 에인절스 선발 존 래키를 상태로 최희섭이
-$ ./tag.py -i ./sample -m model_path
+$ ./tag.py -i ./sample -m model_path -p rsc_dir
 이날에 <인절스:OG> 선발 <존 래키:PS>를 상대로 <최희섭:PS>이
 
 ```
@@ -84,8 +84,12 @@ $ ./tag.py -i ./sample -m model_path
 * 태깅된 원문도 같이 출력됩니다.
 $ cat ./tagged.txt
 이날에 <인절스:OG> 선발 <존 래키:PS>를 상대로 <최희섭:PS>은
-$ ./tag.py -i ./tagged.txt -m model_path --eval
+$ ./tag.py -i ./tagged.txt -m model_path -p rsc_dir--eval
 이날에 <인절스:OG> 선발 <존 래키:PS>를 상대로 <최희섭:PS>은
 accuracy: 0.902757, f-score: 0.366470 (recall = 0.387546, precision = 0.347569
 ```
+* 참고
+  * model_path는 train.py에서 model_dir로 지정되는 경로를 입력합니다.
+  * model_dir안에 model_param, cfg 이 두 파일을 사용합니다.
+  * rsc_dir은 train.py에서 학습할 때 사용한 리소스를 지정합니다.
 

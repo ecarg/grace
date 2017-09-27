@@ -15,7 +15,6 @@ __copyright__ = 'No copyright. Just copyleft!'
 ###########
 # imports #
 ###########
-import codecs
 import copy
 import logging
 import os
@@ -30,15 +29,9 @@ import torch.nn as nn
 import torch.utils.data
 
 import data
-import models
-from embedder import Embedder
-import gazetteer
 import tagger
-import pos_models
 
 from configs import get_config
-
-
 
 ##############
 # checkpoint #
@@ -76,108 +69,19 @@ class CheckPoint(object):
         return torch.load(str(path))
 
 
-#########
-# build #
-#########
-
-def load_text(cfg):
-    """
-    load text data
-    :param  cfg: config
-    """
-    # Load Vocabulary
-    # voca['in'] = char
-    # voca['out'] = word
-    voca = data.load_voca(cfg.rsc_dir, cfg.phoneme, cfg.cutoff)
-
-    # gazet
-    gazet_path = cfg.rsc_dir.joinpath('gazetteer.dic')
-    gazet = gazetteer.load(codecs.open(gazet_path, 'r', encoding='UTF-8'))
-    pos_path = cfg.rsc_dir.joinpath('pos_tagger.model')
-    pos_model = pos_models.PosTagger.load(str(pos_path))
-    word_path = cfg.rsc_dir.joinpath('wiki_ko.model.bin')
-    word_model = data.Vocabulary(word_path)
-    pos_model.eval()
-
-    # Load Data
-    data_ = data.load_data(cfg.data_dir, cfg.in_pfx, voca)
-    return voca, gazet, data_, pos_model, word_model
-
-
-def build_model(cfg, char_voca, word_voca=None, gazet=None, pos_voca=None):
-    """Build Neural Network based Ner model (Embedder + Classifier)"""
-
-    # Build Embedder
-    embedder = Embedder(
-        window=cfg.window,
-        char_voca=char_voca,
-        word_voca=word_voca,
-        jaso_dim=cfg.jaso_dim,
-        char_dim=cfg.char_dim,
-        word_dim=cfg.word_dim,
-        gazet=gazet,
-        gazet_embed=True,
-        pos_enc=True,
-        phoneme=True,
-        pos_voca_size=len(pos_voca),
-        pos_dim=cfg.pos_dim)
-
-    print('Total Embedding_size: ', embedder.embed_dim)
-
-
-    encoder_name, decoder_name = cfg.model_name.lower().split('-')
-
-    # Build Encoder
-    if encoder_name == 'fnn5':
-        encoder = models.Fnn5(context_len=cfg.context_len,
-                              in_dim=embedder.embed_dim,
-                              hidden_dim=cfg.hidden_dim)
-    elif encoder_name == 'cnn7':
-        encoder = models.Cnn7(in_dim=embedder.embed_dim,
-                              hidden_dim=cfg.hidden_dim)
-    elif encoder_name == 'cnn8':
-        encoder = models.Cnn8(context_len=cfg.context_len,
-                              in_dim=embedder.embed_dim,
-                              hidden_dim=cfg.hidden_dim)
-    elif encoder_name in ['gru', 'lstm', 'sru']:
-        encoder = models.RnnEncoder(context_len=cfg.context_len,
-                                    in_dim=embedder.embed_dim,
-                                    out_dim=cfg.hidden_dim,
-                                    cell=encoder_name)
-    else:
-          raise ValueError('unknown model name: %s' % cfg.model_name)
-
-    # Build Decoder
-    if decoder_name.lower() == 'fc':
-        decoder = models.FCDecoder(in_dim=encoder.out_dim,
-                                   hidden_dim=cfg.hidden_dim,
-                                   n_tags=cfg.n_tags)
-    elif decoder_name in ['gru', 'lstm', 'sru']:
-        decoder = models.RnnDecoder(in_dim=encoder.out_dim,
-                                    hidden_dim=cfg.hidden_dim,
-                                    n_tags=cfg.n_tags,
-                                    num_layers=cfg.num_layers,
-                                    cell=decoder_name)
-
-    model = models.Ner(embedder, encoder, decoder)
-
-    return model
-
-
-
 def run(cfg):    # pylint: disable=too-many-locals,too-many-statements
     """
     run function which is the start point of program
     :param  cfg:  arguments
     """
     # load_text
-    voca, gazet, data_, pos_model, word_model = load_text(cfg)
+    voca, gazet, data_, pos_model, word_model = data.load_text(cfg)
 
     char_voca = voca['in']
 
     # Build Ner model
-    model = build_model(cfg, char_voca=char_voca, word_voca=None,
-                        gazet=gazet, pos_voca=pos_model.cfg.voca['out'])
+    model = data.build_model(cfg, char_voca=char_voca, word_voca=None,
+                             gazet=gazet, pos_voca=pos_model.cfg.voca['out'])
 
     epoch_syl_cnt = data_['train'].get_syllable_count()
     iter_per_epoch = epoch_syl_cnt // cfg.batch_size
@@ -233,6 +137,7 @@ def run(cfg):    # pylint: disable=too-many-locals,too-many-statements
     revert = 0
     one_more_thing = True    # one more change to increase learning rate into 10 times
     batches = []
+    torch.save(cfg, str(cfg.cfg_path))
     while revert <= cfg.rvt_term or one_more_thing:
         for train_sent in data_['train']:
             # Convert to Tensor
@@ -316,7 +221,7 @@ def run(cfg):    # pylint: disable=too-many-locals,too-many-statements
                 sys.stderr.flush()
                 if not f_scores or f_score > max(f_scores):
                     logging.info('==== writing best model: %f ====', f_score)
-                    model.save(cfg.ckpt_path)
+                    model.save(cfg.model_param_path)
                     check_point = CheckPoint(optimizer, model,
                                              {'iter': iter_, 'loss': loss.data[0],
                                               'accuracy': accuracy, 'f-score': f_score})

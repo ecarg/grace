@@ -48,6 +48,8 @@ class Config(object):
         # Where to save model checkpoints / log tensorboard summary
         self.model_dir = self.log_dir.joinpath(self.model_id)
         self.ckpt_path = self.model_dir.joinpath('ckpt')
+        self.cfg_path = self.model_dir.joinpath('cfg')
+        self.model_param_path = self.model_dir.joinpath('model_param')
 
         if self.is_train:
             self.model_dir.mkdir(exist_ok=True)

@@ -33,7 +33,7 @@ def run(args):    # pylint: disable=too-many-locals,too-many-statements
     if args.gpu_num:
         os.environ['CUDA_VISIBLE_DEVICES'] = str(args.gpu_num)
 
-    grace = tagger.GraceTagger(args.model)
+    grace = tagger.GraceTagger(args.model, args.rsc)
     logging.info("model loading complete...")
     if args.eval:
         grace.evaluate(sys.stdin)
@@ -54,7 +54,8 @@ def main():
     main function processes only argument parsing
     """
     parser = argparse.ArgumentParser(description='train model from data')
-    parser.add_argument('-m', '--model', help='model path', metavar='FILE', required=True)
+    parser.add_argument('-m', '--model', help='model path', metavar='DIR', required=True)
+    parser.add_argument('-p', '--rsc', help='resource path', metavar='DIR', required=True)
     parser.add_argument('-i', '--input', help='corpus to tagging', metavar='FILE')
     parser.add_argument('-o', '--output', help='named entity tagged corpus', metavar='FILE')
     parser.add_argument('--gpu-num', help='GPU number to use <default: %d>' % GPU_NUM,\
