@@ -436,6 +436,9 @@ iter	loss	accuracy	f-score
 ```
 
 
-## Model & Embedding
+### Model & Embedding
 ![Cnn7](../doc/jpg/IMG_6210.jpg)
 ![Embedding](../doc/jpg/IMG_6211.jpg)
+
+### Reference
+[Very Deep Convolutional Networks for Text Classification](https://arxiv.org/pdf/1606.01781.pdf)
