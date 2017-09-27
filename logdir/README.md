@@ -438,6 +438,7 @@ iter	loss	accuracy	f-score
 
 ### Model & Embedding
 ![Cnn7](../doc/jpg/IMG_6210.jpg)
+![Cnn8](../doc/jpg/IMG_6212.jpg)
 ![Embedding](../doc/jpg/IMG_6211.jpg)
 
 ### Reference
