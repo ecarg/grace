@@ -437,8 +437,13 @@ iter	loss	accuracy	f-score
 
 
 ### Model & Embedding
+* CNN7 Model
 ![Cnn7](../doc/jpg/cnn7.jpeg)
+---
+* CNN8 Model
 ![Cnn8](../doc/jpg/cnn8.jpeg)
+---
+* Embedding
 ![Embedding](../doc/jpg/embedding.jpeg)
 
 ### Reference
