@@ -12,11 +12,13 @@ __copyright__ = 'No copyright. Just copyleft!'
 ###########
 import collections
 import logging
+from pathlib import Path
 import torch
-import torch.autograd as autograd
+from torch.autograd import Variable
 
 import corpus_parser as cp
 import models
+import data
 
 #########
 # types #
@@ -166,14 +168,16 @@ class GraceTagger(object):
     """
     학습된 모델을 이용하여 원문을 태깅하는 클리스입니다.
     """
-    def __init__(self, model_path):
-        self.model = models.Ner.load(model_path)
-        self.model.eval()
-        self.voca = self.model.voca
-        self.gazet = self.model.gazet
-        self.window = self.model.window
-        self.phoneme = self.model.phoneme
-        self.gazet_embed = self.model.gazet_embed
+    def __init__(self, model_path, rsc_path):
+        self.cfg = torch.load(model_path+"/cfg")
+        setattr(self.cfg, 'rsc_dir', Path(rsc_path))
+        logging.info(self.cfg)
+        rsc = data.load_text(self.cfg, True)
+        self.voca = rsc[0]
+        self.gazet = rsc[1]
+        self.pos_model = rsc[3]
+        self.word_model = rsc[4]
+        self.model = models.Ner.load(model_path+"/model_param")
 
     def get_predicts(self, sent):
         """
@@ -181,12 +185,22 @@ class GraceTagger(object):
         :param sent: Sentnece class
         :return predicts: 태깅된 레이블 시퀀스
         """
-        _, contexts, gazet = sent.to_tensor(self.voca, self.gazet, self.window,
-                                            self.phoneme, self.gazet_embed)
+        sent.set_word_feature(self.pos_model, self.word_model, self.cfg.window)
+        sent.set_pos_feature(self.pos_model, self.cfg.window)
+        _, dev_contexts, dev_gazet, dev_pos, dev_words = \
+            sent.to_tensor(self.voca, self.gazet, self.cfg.window,
+                           self.cfg.phoneme, self.cfg.gazet_embed)
+        dev_contexts = Variable(dev_contexts, volatile=True)
+        dev_gazet = Variable(dev_gazet, volatile=True)
+        dev_pos = Variable(dev_pos, volatile=True)
+        dev_words = Variable(dev_words, volatile=True)
         if torch.cuda.is_available():
-            contexts = contexts.cuda()
-            gazet = gazet.cuda()
-        outputs = self.model((autograd.Variable(contexts), autograd.Variable(gazet)))
+            dev_contexts = dev_contexts.cuda()
+            dev_gazet = dev_gazet.cuda()
+            dev_pos = dev_pos.cuda()
+            dev_words = dev_words.cuda()
+
+        outputs = self.model(dev_contexts, dev_gazet, dev_pos, dev_words)
         _, predicts = outputs.max(1)
         return predicts
 
