@@ -426,6 +426,7 @@ iter	loss	accuracy	f-score
 ```
 
 ### cnn8-fc.cut5.chr.w10.char50.word100.pos20.hd100.gzt1.pe1.re2.rt10.bs100
+
 ```
 iter	loss	accuracy	f-score
 659     2.3386057819152484e-06  0.94448631943921        0.7506764592191727
@@ -433,6 +434,56 @@ iter	loss	accuracy	f-score
 765     5.1855040510417894e-05  0.94448631943921        0.750096562379297
 486     3.7310417155822506e-06  0.9445616944297882      0.75
 525     2.5716799427755177e-06  0.9445616944297882      0.75
+```
+
+* dev
+
+```
+========== CATEGORY SCORE(Accuracy) ==========
+B-OG : 0.655462 : (correct = 234, total = 357)
+I-OG : 0.621000 : (correct = 621, total = 1000)
+O : 0.993829 : (correct = 21740, total = 21875)
+B-PS : 0.736842 : (correct = 364, total = 494)
+I-PS : 0.676388 : (correct = 719, total = 1063)
+B-DT : 0.867521 : (correct = 203, total = 234)
+I-DT : 0.802413 : (correct = 532, total = 663)
+B-LC : 0.800000 : (correct = 212, total = 265)
+I-LC : 0.728972 : (correct = 312, total = 428)
+B-TI : 0.875000 : (correct = 35, total = 40)
+I-TI : 0.773913 : (correct = 89, total = 115)
+========== CATEGORY SCORE(f-score) ==========
+PS : f-score: 0.766780 (recall = 0.682186, precision = 0.875325):(gold = 494, pred = 385, match = 337)
+OG : f-score: 0.707006 (recall = 0.621849, precision = 0.819188):(gold = 357, pred = 271, match = 222)
+DT : f-score: 0.774194 (recall = 0.769231, precision = 0.779221):(gold = 234, pred = 231, match = 180)
+LC : f-score: 0.783270 (recall = 0.777358, precision = 0.789272):(gold = 265, pred = 261, match = 206)
+TI : f-score: 0.584270 (recall = 0.650000, precision = 0.530612):(gold = 40, pred = 49, match = 26)
+========== TOTAL SCORE ==========
+accuracy: 0.944486, f-score: 0.750676 (recall = 0.698561, precision = 0.811195)
+```
+
+* test
+
+```
+========== CATEGORY SCORE(Accuracy) ==========
+B-PS : 0.730932 : (correct = 345, total = 472)
+O : 0.993904 : (correct = 20871, total = 20999)
+I-PS : 0.676413 : (correct = 694, total = 1026)
+B-LC : 0.808511 : (correct = 266, total = 329)
+I-LC : 0.696459 : (correct = 413, total = 593)
+B-DT : 0.845588 : (correct = 230, total = 272)
+I-DT : 0.803398 : (correct = 662, total = 824)
+B-OG : 0.705094 : (correct = 263, total = 373)
+I-OG : 0.610700 : (correct = 742, total = 1215)
+B-TI : 0.820513 : (correct = 32, total = 39)
+I-TI : 0.821429 : (correct = 69, total = 84)
+========== CATEGORY SCORE(f-score) ==========
+PS : f-score: 0.778698 (recall = 0.697034, precision = 0.882038):(gold = 472, pred = 373, match = 329)
+LC : f-score: 0.800000 (recall = 0.778116, precision = 0.823151):(gold = 329, pred = 311, match = 256)
+DT : f-score: 0.720293 (recall = 0.724265, precision = 0.716364):(gold = 272, pred = 275, match = 197)
+OG : f-score: 0.706056 (recall = 0.640751, precision = 0.786184):(gold = 373, pred = 304, match = 239)
+TI : f-score: 0.666667 (recall = 0.692308, precision = 0.642857):(gold = 39, pred = 42, match = 27)
+========== TOTAL SCORE ==========
+accuracy: 0.937505, f-score: 0.751254 (recall = 0.705724, precision = 0.803065)
 ```
 
 
