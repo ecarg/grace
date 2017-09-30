@@ -487,6 +487,15 @@ accuracy: 0.937505, f-score: 0.751254 (recall = 0.705724, precision = 0.803065)
 ```
 
 
-## Model & Embedding
-![Cnn7](../doc/jpg/IMG_6210.jpg)
-![Embedding](../doc/jpg/IMG_6211.jpg)
+### Model & Embedding
+* CNN7 Model
+![Cnn7](../doc/jpg/cnn7.jpeg)
+---
+* CNN8 Model
+![Cnn8](../doc/jpg/cnn8.jpeg)
+---
+* Embedding
+![Embedding](../doc/jpg/embedding.jpeg)
+
+### Reference
+[Very Deep Convolutional Networks for Text Classification](https://arxiv.org/pdf/1606.01781.pdf)

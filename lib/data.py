@@ -18,6 +18,10 @@ from pathlib import Path
 import corpus_parser
 import fasttext
 import torch
+import gazetteer
+import models
+import pos_models
+from embedder import Embedder
 
 
 #########
@@ -162,3 +166,90 @@ class Vocabulary(object):
         if to_tensor:
             sent_tensor = torch.FloatTensor(sent_tensor)
         return sent_tensor
+
+def load_text(cfg, except_data=False):
+    """
+    load text data
+    :param  cfg: config
+    :param  except_data: 코퍼스로딩 여부를 지정
+    """
+    # Load Vocabulary
+    # voca['in'] = char
+    # voca['out'] = word
+    voca = load_voca(cfg.rsc_dir, cfg.phoneme, cfg.cutoff)
+
+    # gazet
+    gazet_path = cfg.rsc_dir.joinpath('gazetteer.dic')
+    gazet = gazetteer.load(codecs.open(gazet_path, 'r', encoding='UTF-8'))
+    pos_path = cfg.rsc_dir.joinpath('pos_tagger.model')
+    pos_model = pos_models.PosTagger.load(str(pos_path))
+    word_path = cfg.rsc_dir.joinpath('wiki_ko.model.bin')
+    word_model = Vocabulary(word_path)
+    pos_model.eval()
+
+    # Load Data
+    if except_data:
+        data_ = None
+    else:
+        data_ = load_data(cfg.data_dir, cfg.in_pfx, voca)
+    return voca, gazet, data_, pos_model, word_model
+
+
+def build_model(cfg, char_voca, word_voca=None, gazet=None, pos_voca=None):
+    """Build Neural Network based Ner model (Embedder + Classifier)"""
+
+    # Build Embedder
+    embedder = Embedder(
+        window=cfg.window,
+        char_voca=char_voca,
+        word_voca=word_voca,
+        jaso_dim=cfg.jaso_dim,
+        char_dim=cfg.char_dim,
+        word_dim=cfg.word_dim,
+        gazet=gazet,
+        gazet_embed=True,
+        pos_enc=True,
+        phoneme=True,
+        pos_voca_size=len(pos_voca),
+        pos_dim=cfg.pos_dim)
+
+    print('Total Embedding_size: ', embedder.embed_dim)
+
+
+    encoder_name, decoder_name = cfg.model_name.lower().split('-')
+
+    # Build Encoder
+    if encoder_name == 'fnn5':
+        encoder = models.Fnn5(context_len=cfg.context_len,
+                              in_dim=embedder.embed_dim,
+                              hidden_dim=cfg.hidden_dim)
+    elif encoder_name == 'cnn7':
+        encoder = models.Cnn7(in_dim=embedder.embed_dim,
+                              hidden_dim=cfg.hidden_dim)
+    elif encoder_name == 'cnn8':
+        encoder = models.Cnn8(context_len=cfg.context_len,
+                              in_dim=embedder.embed_dim,
+                              hidden_dim=cfg.hidden_dim)
+    elif encoder_name in ['gru', 'lstm', 'sru']:
+        encoder = models.RnnEncoder(context_len=cfg.context_len,
+                                    in_dim=embedder.embed_dim,
+                                    out_dim=cfg.hidden_dim,
+                                    cell=encoder_name)
+    else:
+        raise ValueError('unknown model name: %s' % cfg.model_name)
+
+    # Build Decoder
+    if decoder_name.lower() == 'fc':
+        decoder = models.FCDecoder(in_dim=encoder.out_dim,
+                                   hidden_dim=cfg.hidden_dim,
+                                   n_tags=cfg.n_tags)
+    elif decoder_name in ['gru', 'lstm', 'sru']:
+        decoder = models.RnnDecoder(in_dim=encoder.out_dim,
+                                    hidden_dim=cfg.hidden_dim,
+                                    n_tags=cfg.n_tags,
+                                    num_layers=cfg.num_layers,
+                                    cell=decoder_name)
+
+    model = models.Ner(embedder, encoder, decoder)
+
+    return model
