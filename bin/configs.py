@@ -159,6 +159,8 @@ def get_config(parse=True, **optional_kwargs):
                         action='store_false', default=True)
     parser.add_argument('--gazet-embed', help='gazetteer type',
                         action='store_true', default=False)
+    parser.add_argument('--train-cache', help='whether cache train data or not',
+                        action='store_true', default=False)
 
     #=============== Parse Arguments===============#
     if parse:

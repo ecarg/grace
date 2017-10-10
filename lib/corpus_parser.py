@@ -278,6 +278,37 @@ class Sentence(object):
             self.tagcnt.update(item.tagcnt)
         self.org = ''.join([item.ne_str for item in self.named_entity])
 
+    def del_all_except_tensor(self):
+        """
+        메모리 사용량을 줄이기 위해 학습 시 사용하는 텐서들을 제외한 나머지는 삭제합니다.
+        """
+        # self.raw = ''
+        # self.named_entity = []
+        # self.syl2tag = {}
+        self.tagcnt = {}
+        # self.md5 = ''
+        self.label_nums = []
+        self.context_nums = []
+        self.context_strs = []
+        self.gazet_matches = []
+        # self.label_tensors = None
+        # self.context_tensors = None
+        # self.gazet_tensors = None
+        # self.pos_tensors = None
+        # self.word_tensors = None
+        self.pos_outputs = None
+        self.org = ''
+
+    def del_tensor(self):
+        """
+        캐시를 사용하는 경우 텐서도 메모리에서 삭제한다.
+        """
+        self.label_tensors = None
+        self.context_tensors = None
+        self.gazet_tensors = None
+        self.pos_tensors = None
+        self.word_tensors = None
+
     def __str__(self):
         return ''.join([str(ne) for ne in self.named_entity])
 
@@ -348,6 +379,9 @@ class Sentence(object):
         :param pos_model: 형태소 분석기
         :param pos_outpus: 형태소 분석결과(음절)
         """
+        if self.word_tensors is not None:
+            return
+
         pos_outputs = self.run_pos_tagger(pos_model, window)
         tags = [pos_model.cfg.voca['tuo'][x] for x in pos_outputs.data]
         raw_str_spc = self.raw_str()
@@ -431,10 +465,6 @@ class Sentence(object):
                     list(reversed(left_context))+[word, ]+right_context)
         assert len(words_contexts) == self.get_syllable_count()
         self.word_tensors = torch.FloatTensor(words_contexts)
-        #self.word_tensors = torch.LongTensor((pos_outputs_contexts))
-        #print(raw_str_spc)
-        #for idx, line in enumerate(words_contexts):
-        #    print(raw_str[idx]+":::"+' '.join(line))
 
     def run_pos_tagger(self, pos_model, window):
         """
@@ -455,7 +485,6 @@ class Sentence(object):
         self.pos_outputs = pos_outputs
         return self.pos_outputs
 
-
     def set_pos_feature(self, pos_model, window):
         """
         형태소 분석기를 실행하고 그 출력으로 임베딩을 만든다.
@@ -468,9 +497,6 @@ class Sentence(object):
        # BS * PoS tagger output vocabulary size
         pos_outputs_0 = self.run_pos_tagger(pos_model, window)
         pos_outputs = pos_outputs_0.data + 1
-        #for char, tag_idx in zip(self.raw_str().replace(" ", ""), pos_outputs):
-        #    print("%s/%s" % (char, pos_model.cfg.voca['tuo'][tag_idx-1]), end=' ')
-        #print('')
 
         # 공백에 해당하는 자리에 [0 x PoS out dim] 텐서를 삽입
         out_idx = 0
@@ -528,8 +554,6 @@ class Sentence(object):
                     list(reversed(left_context))+[pos_output, ]+right_context)
         assert len(pos_outputs_contexts) == self.get_syllable_count()
         self.pos_tensors = torch.LongTensor((pos_outputs_contexts))
-        #for line in pos_outputs_contexts:
-        #    print(' '.join([(pos_model.cfg.voca['tuo'][x-1] if x > 0 else 'unk') for x in line]))
 
     def match_gazet(self, gazet, voca, context_size, gazet_embed=False):
         """
@@ -598,7 +622,6 @@ class Sentence(object):
         else:
             self.gazet_tensors = torch.FloatTensor(gazet_context)
 
-
     def to_tensor(self, voca, gazet, context_size, is_phonemes=False, gazet_embed=False):
         """
         문장을 문장에 포함된 문자 갯수 만큼의 배치 크기의 텐서를 생성하여 리턴한다.
@@ -608,19 +631,20 @@ class Sentence(object):
         :param context_size: context size
         :return:  문자 갯수만큼의 텐서
         """
+        if (self.label_tensors is not None and self.context_tensors is not None and
+                self.gazet_tensors is not None and self.pos_tensors is not None and
+                self.word_tensors is not None):
+            return (self.label_tensors, self.context_tensors,
+                    self.gazet_tensors, self.pos_tensors, self.word_tensors)
+
         if not self.gazet_matches:
             self.match_gazet(gazet, voca, context_size, gazet_embed)
-
-        if self.label_tensors is not None and\
-                self.context_tensors is not None and\
-                self.word_tensors is not None:
-            return self.label_tensors, self.context_tensors,\
-                   self.gazet_tensors, self.pos_tensors, self.word_tensors
         self.to_num_arr(voca, context_size, is_phonemes)
         self.label_tensors = torch.LongTensor(self.label_nums)
         self.context_tensors = torch.LongTensor(self.context_nums)
-        return self.label_tensors, self.context_tensors,\
-               self.gazet_tensors, self.pos_tensors, self.word_tensors
+        self.del_all_except_tensor()
+        return (self.label_tensors, self.context_tensors, self.gazet_tensors,
+                self.pos_tensors, self.word_tensors)
 
     def get_word_count(self):
         """
@@ -838,7 +862,6 @@ class NamedEntity(object): # pylint: disable=too-few-public-methods
             return (self.ne_beg, self.ne_end, self.ne_tag, self.ne_str)
         return None
 
-
     @classmethod
     def parse(cls, sent): # pylint: disable=too-many-branches
         """
@@ -901,6 +924,7 @@ class NamedEntity(object): # pylint: disable=too-few-public-methods
 
         if outside_str:
             yield NamedEntity(outside_str, OUTSIDE_TAG, start, start+len(outside_str)-1)
+
 
 #############
 # functions #

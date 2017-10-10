@@ -15,12 +15,17 @@ __copyright__ = 'No copyright. Just copyleft!'
 ###########
 # imports #
 ###########
+import base64
 import copy
+import datetime
+import dbm
 import logging
 import os
+import pickle
 import shutil
 import sys
 import time
+import zlib
 
 from tensorboardX import SummaryWriter
 import torch
@@ -28,14 +33,14 @@ from torch.autograd import Variable
 import torch.nn as nn
 import torch.utils.data
 
+from configs import get_config
 import data
 import tagger
 
-from configs import get_config
 
-##############
-# checkpoint #
-##############
+#########
+# types #
+#########
 class CheckPoint(object):
     """
     check point to revert model and optimizer
@@ -69,6 +74,49 @@ class CheckPoint(object):
         return torch.load(str(path))
 
 
+class Cache(object):
+    """
+    disk cache
+    """
+    def __init__(self, path, is_clean=False):
+        """
+        :param  path:  file path
+        :param  is_clean:  remove previous cache data if True
+        """
+        self.dbf = dbm.open(path, 'n' if is_clean else 'c')
+
+    def __del__(self):
+        if self.dbf:
+            self.dbf.close()
+
+    def put(self, key, val):
+        """
+        put data into db
+        :param  key:  key (must be a string)
+        :param  val:  value
+        """
+        self.dbf[key] = base64.b85encode(zlib.compress(pickle.dumps(val)))
+
+    def get(self, key):
+        """
+        get data from db
+        :param  key:  key (must be a string)
+        :return:  value
+        """
+        return pickle.loads(zlib.decompress(base64.b85decode(self.dbf[key])))
+
+    def contains(self, key):
+        """
+        whether db contains key or not
+        :param  key:  key (must be a string)
+        :return:  contains key
+        """
+        return key in self.dbf
+
+
+#############
+# functions #
+#############
 def run(cfg):    # pylint: disable=too-many-locals,too-many-statements
     """
     run function which is the start point of program
@@ -107,7 +155,6 @@ def run(cfg):    # pylint: disable=too-many-locals,too-many-statements
         logging.info('==== removing log: %s ====', cfg.model_dir)
         shutil.rmtree(cfg.model_dir)
         time.sleep(3)
-
     else:
         if cfg.ckpt_path.exists():
             logging.info('==== reverting from check point ====')
@@ -133,21 +180,38 @@ def run(cfg):    # pylint: disable=too-many-locals,too-many-statements
     if os.path.getsize(log_path) == 0:
         print('iter\tloss\taccuracy\tf-score', file=logf)
 
+    train_cache = None
+    if cfg.train_cache:
+        train_cache_path = cfg.model_dir.joinpath('train_cache.dbm')
+        train_cache = Cache(str(train_cache_path), cfg.clean)
+
     # Main Training Loop
     revert = 0
     one_more_thing = True    # one more change to increase learning rate into 10 times
     batches = []
     torch.save(cfg, str(cfg.cfg_path))
+    time1 = datetime.datetime.now()
     while revert <= cfg.rvt_term or one_more_thing:
         for train_sent in data_['train']:
             # Convert to Tensor
             # labels [sentence_len]
             # contexts [sentence_len, 21]
             # gazet [sentence_len, 21, 15]
-            train_sent.set_word_feature(pos_model, word_model, cfg.window)
-            train_sent.set_pos_feature(pos_model, cfg.window)
-            train_labels, train_contexts, train_gazet, train_pos, train_words = \
-                train_sent.to_tensor(voca, gazet, cfg.window, cfg.phoneme, cfg.gazet_embed)
+            train_labels, train_contexts, train_gazet, train_pos, train_words = [None, ] * 5
+            if train_cache is None or not train_cache.contains(train_sent.md5):
+                train_sent.set_word_feature(pos_model, word_model, cfg.window)
+                train_sent.set_pos_feature(pos_model, cfg.window)
+                train_labels, train_contexts, train_gazet, train_pos, train_words = \
+                    train_sent.to_tensor(voca, gazet, cfg.window, cfg.phoneme, cfg.gazet_embed)
+                if train_cache is not None:
+                    train_cache.put(train_sent.md5, (train_labels, train_contexts, train_gazet,
+                                                     train_pos, train_words))
+                    train_sent.del_tensor()
+            else:
+                train_labels, train_contexts, train_gazet, train_pos, train_words = \
+                    train_cache.get(train_sent.md5)
+                train_sent.del_all_except_tensor()
+                train_sent.del_tensor()
 
             # Convert to Variable
             train_labels = Variable(train_labels)
@@ -189,6 +253,9 @@ def run(cfg):    # pylint: disable=too-many-locals,too-many-statements
 
             # Validation
             if iter_ % 1000 == 0:
+                time2 = datetime.datetime.now()
+                elapsed = time2 - time1
+                time1 = time2
                 measure = tagger.PerformanceMeasure()
                 # Freeze parameters
                 model.eval()
@@ -232,8 +299,9 @@ def run(cfg):    # pylint: disable=too-many-locals,too-many-statements
                     one_more_thing = True
                 accuracies.append(accuracy)
                 f_scores.append(f_score)
-                logging.info('---- iter: %dk, loss: %f, accuracy: %f, f-score: %f (max: %r) ----',
-                             iter_ // 1000, losses[-1], accuracy, f_score, max(f_scores))
+                logging.info('---- elapsed: %s, iter: %dk, loss: %f, accuracy: %f, f-score: %f'
+                             ' (max: %f) ----', elapsed, iter_ // 1000, losses[-1], accuracy,
+                             f_score, max(f_scores))
 
                 if cfg.model_dir.exists():
                     sum_wrt.add_scalar('loss', losses[-1], iter_ // 1000)
