@@ -114,10 +114,8 @@ def load_voca(dir_, is_phonemes=False, cutoff=1):
 
     voca_dic = {}
     for name in ['in', 'out']:
-        if is_phonemes:
-            voca_path = dir_.joinpath('voca.pho.%s' % name)
-        else:
-            voca_path = dir_.joinpath('voca.syl.%s' % name)
+        infix = '' if name == 'out' else ('.pho' if is_phonemes else '.syl')
+        voca_path = dir_.joinpath('voca%s.%s' % (infix, name))
         voca, acov = _load_voca_inner(voca_path, name == 'in')
         voca_dic[name] = voca
         voca_dic[name[::-1]] = acov

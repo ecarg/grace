@@ -30,7 +30,12 @@ def _print_line(line):
     line = line.strip()
     if not line:
         return
-    print(' '.join(line.split()))
+    lines = line.split()
+    if len(lines) > 1 and lines[-1] == '.':
+        # 마지막 구두점만 따로 떨어지고 나머지가 모두 동일한 경우가 많아 앞으로 붙이는 정규화를 수행
+        lines[-2] += '.'
+        del lines[-1]
+    print(' '.join(lines))
 
 
 def _json2exo():
